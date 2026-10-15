@@ -122,6 +122,7 @@ const en = {
     savedOnDevice: "Saved on this device",
     restore: "Load",
     summaryBase: "Base vehicle",
+    paintNote: "Photo shows the standard colour — your chosen paint is applied at the factory.",
     gallery: "Gallery",
     specsTitle: "Specifications",
     specsEstimated: "Typical figures shown — the factory has not published full specifications for this model yet.",
@@ -302,6 +303,7 @@ const en = {
     hq: "Headquarters: Jiangsu, China",
     pk: "Pakistan: partner dealerships in 10 cities",
     rights: "All rights reserved.",
+    admin: "Staff login",
   },
 };
 
@@ -429,6 +431,7 @@ const ur: SiteDict = {
     savedOnDevice: "اس ڈیوائس پر محفوظ",
     restore: "لوڈ کریں",
     summaryBase: "بنیادی گاڑی",
+    paintNote: "تصویر معیاری رنگ میں ہے — آپ کا منتخب کردہ رنگ فیکٹری میں لگایا جائے گا۔",
     gallery: "تصاویر",
     specsTitle: "خصوصیات",
     specsEstimated: "اندازاً اعداد دکھائے گئے ہیں — فیکٹری نے اس ماڈل کی مکمل خصوصیات ابھی شائع نہیں کیں۔",
@@ -609,6 +612,7 @@ const ur: SiteDict = {
     hq: "ہیڈکوارٹر: جیانگسو، چین",
     pk: "پاکستان: 10 شہروں میں پارٹنر ڈیلرز",
     rights: "جملہ حقوق محفوظ ہیں۔",
+    admin: "اسٹاف لاگ اِن",
   },
 };
 

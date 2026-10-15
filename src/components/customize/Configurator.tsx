@@ -150,6 +150,12 @@ export default function Configurator({ model, models, options, colors, initial, 
                 <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-white/75 to-transparent" />
                 <div className="flex-1" />
               </>
+            ) : realThumb ? (
+              <div className="relative flex flex-1 flex-col items-center justify-center px-4 pb-8">
+                {/* no per-colour photos for this model: show the real product, not an illustration */}
+                <motion.img key={realThumb} src={realThumb} alt={model.name} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, ease }} className="max-h-[48vh] w-full max-w-[860px] object-contain mix-blend-multiply drop-shadow-[0_24px_24px_rgba(0,0,0,0.18)]" draggable={false} />
+                <p className="absolute inset-x-4 bottom-2 text-center text-[11px] text-ink/55">{t.customize.paintNote}</p>
+              </div>
             ) : (
               <div className="relative flex flex-1 items-center justify-center px-2">
                 <AnimatePresence mode="popLayout" initial={false}>
@@ -160,10 +166,6 @@ export default function Configurator({ model, models, options, colors, initial, 
                 <AnimatePresence>
                   <motion.span key={color} initial={{ opacity: 0.6, scale: 0.6 }} animate={{ opacity: 0, scale: 2.4 }} transition={{ duration: 0.9 }} className="pointer-events-none absolute h-40 w-40 rounded-full" style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }} />
                 </AnimatePresence>
-                {realThumb && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={realThumb} alt={model.name} className="absolute bottom-2 end-3 hidden w-36 rounded-xl border border-black/10 bg-white object-contain p-1 shadow-md sm:block" />
-                )}
               </div>
             )}
 

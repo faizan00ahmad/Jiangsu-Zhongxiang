@@ -1,13 +1,19 @@
+import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { DB_VERSION, type DB, type Order } from "../types";
 import { buildSeed } from "./seed";
 
 /** Single-file JSON store. One in-memory copy per process (kept on globalThis so every route bundle shares it),
  *  writes are serialized and land atomically (temp file + rename). Swap this module for ApsaraDB/MySQL on Alibaba Cloud
- *  when traffic needs more than one server instance. */
+ *  when traffic needs more than one server instance.
+ *
+ *  On Vercel the project folder is read-only and only /tmp is writable, and each server instance has its own /tmp, so
+ *  data there lasts only as long as the instance — fine for a preview, not for real orders (use a database). */
 
-const DIR = process.env.DATA_DIR || path.join(process.cwd(), "data");
+const ON_VERCEL = !!process.env.VERCEL;
+const DIR = process.env.DATA_DIR || (ON_VERCEL ? path.join(os.tmpdir(), "zx-ev") : path.join(process.cwd(), "data"));
 const FILE = path.join(DIR, "db.json");
 export const UPLOAD_DIR = path.join(DIR, "uploads");
 
@@ -16,11 +22,29 @@ const g = globalThis as typeof globalThis & { __zxStore?: Store };
 const store: Store = (g.__zxStore ??= { data: null, loading: null, chain: Promise.resolve() });
 
 let seq = 0;
+let warned = false;
 async function persist(db: DB) {
-  await fs.mkdir(DIR, { recursive: true });
-  const tmp = `${FILE}.${process.pid}.${++seq}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(db, null, 1), "utf8");
-  await fs.rename(tmp, FILE);
+  try {
+    await fs.mkdir(DIR, { recursive: true });
+    const tmp = `${FILE}.${process.pid}.${++seq}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(db, null, 1), "utf8");
+    await fs.rename(tmp, FILE);
+  } catch (e) {
+    // a read-only host must not take the whole site down: keep serving from memory
+    const code = (e as NodeJS.ErrnoException).code;
+    if (!["EROFS", "EACCES", "EPERM", "ENOTDIR"].includes(code ?? "")) throw e;
+    if (!warned) {
+      warned = true;
+      console.warn(`[db] ${DIR} is not writable (${code}); running from memory only — changes last until this server restarts.`);
+    }
+  }
+}
+
+/** Without SESSION_SECRET, several Vercel instances would each invent their own key and sign each other out. */
+function sharedSecret() {
+  if (!ON_VERCEL || process.env.SESSION_SECRET) return null;
+  const seed = `zx-ev-preview:${process.env.VERCEL_PROJECT_ID ?? ""}:${process.env.VERCEL_GIT_REPO_ID ?? ""}`;
+  return crypto.createHash("sha256").update(seed).digest("base64url");
 }
 
 function load(): Promise<DB> {
@@ -42,6 +66,8 @@ function load(): Promise<DB> {
       current = buildSeed();
       await persist(current);
     }
+    const shared = sharedSecret();
+    if (shared) current.secret = shared;
     store.data = current;
     return store.data!;
   })().finally(() => {

@@ -8,8 +8,10 @@ const enabledItems = (g: OptionGroup) => g.items.filter((i) => i.enabled);
 export function groupsFor(model: Pick<Model, "colors">, options: OptionGroup[]): OptionGroup[] {
   const live = options.filter((g) => g.enabled && enabledItems(g).length > 0);
   const paints = (model.colors ?? []).filter((c) => c.enabled);
-  if (!paints.length) return live;
-  return live.map((g) => (g.key === "color" ? { ...g, items: paints.map((c) => ({ id: c.id, label: c.label, price: c.price, enabled: true, hex: c.hex })) } : g));
+  const hint = paints.length
+    ? { en: "The photo changes with every paint.", ur: "ہر رنگ کے ساتھ تصویر بدلتی ہے۔" }
+    : { en: "Choose your paint. It is applied at the factory.", ur: "اپنا رنگ منتخب کریں۔ یہ فیکٹری میں لگایا جائے گا۔" };
+  return live.map((g) => (g.key !== "color" ? g : paints.length ? { ...g, hint, items: paints.map((c) => ({ id: c.id, label: c.label, price: c.price, enabled: true, hex: c.hex })) } : { ...g, hint }));
 }
 
 /** Kept for callers that only need the global, model-independent groups. */

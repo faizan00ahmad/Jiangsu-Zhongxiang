@@ -52,7 +52,12 @@ export default function Footer() {
           <p>
             © <span className="latin">{process.env.NEXT_PUBLIC_YEAR}</span> {t.brand.name} {t.brand.sub}. {t.footer.rights}
           </p>
-          <p>{t.common.pkrNote}</p>
+          <p className="flex items-center gap-4">
+            <span>{t.common.pkrNote}</span>
+            <a href="/admin" className="rounded border border-white/20 px-2.5 py-1 text-white/70 transition hover:bg-white hover:text-black">
+              {t.footer.admin}
+            </a>
+          </p>
         </div>
       </div>
     </footer>
