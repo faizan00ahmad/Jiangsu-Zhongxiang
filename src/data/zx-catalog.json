@@ -1,0 +1,2880 @@
+[
+ {
+  "id": 130,
+  "slug": "r-xfx",
+  "name": "R-XFX",
+  "series": "motorcycle",
+  "source": "https://www.zxjtmco.com/?product_34/130.html",
+  "description": "electric bicycle",
+  "specs": [],
+  "thumb": "/products/r-xfx/thumb.webp",
+  "banner": "/products/r-xfx/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/r-xfx/gallery-1.webp",
+   "/products/r-xfx/gallery-2.webp",
+   "/products/r-xfx/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 120,
+  "slug": "r-jlong",
+  "name": "R-JLong",
+  "series": "motorcycle",
+  "source": "https://www.zxjtmco.com/?product_34/120.html",
+  "description": "electric bicycle",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "2150x785x1325"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "120"
+     },
+     {
+      "label": "Tire type",
+      "value": "F:130/60-13 R:120/70-12"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "3000W"
+     },
+     {
+      "label": "Max speed",
+      "value": "100km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "F-DISC R-DISC"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "> 20°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lithium"
+     },
+     {
+      "label": "Battery",
+      "value": "72V40Ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "90-100km"
+     },
+     {
+      "label": "Charging time",
+      "value": "4-5 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/r-jlong/thumb.webp",
+  "banner": "/products/r-jlong/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/r-jlong/gallery-1.webp",
+   "/products/r-jlong/gallery-2.webp",
+   "/products/r-jlong/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 121,
+  "slug": "retro-cg",
+  "name": "Retro-CG",
+  "series": "motorcycle",
+  "source": "https://www.zxjtmco.com/?product_34/121.html",
+  "description": "electric bicycle",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Model Name",
+      "value": "CG"
+     },
+     {
+      "label": "Dimension(mm)",
+      "value": "1880x710x1100"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "80"
+     },
+     {
+      "label": "Tire type",
+      "value": "3.5-18"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "2000W"
+     },
+     {
+      "label": "Max speed",
+      "value": "60km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Disc Brake"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "< 13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lead-acid/Lithium"
+     },
+     {
+      "label": "Battery",
+      "value": "72V23Ah/72V40Ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "80-100km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/retro-cg/thumb.webp",
+  "banner": "/products/retro-cg/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/retro-cg/gallery-1.webp",
+   "/products/retro-cg/gallery-2.webp",
+   "/products/retro-cg/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 128,
+  "slug": "crown-ii",
+  "name": "CROWN II",
+  "series": "scooter",
+  "source": "https://www.zxjtmco.com/?product_6/128.html",
+  "description": "Electric Motorycle",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1930X760x1145"
+     },
+     {
+      "label": "Wheelbase",
+      "value": "1400mm"
+     },
+     {
+      "label": "Min.Ground Clearance",
+      "value": "155mm"
+     },
+     {
+      "label": "Seating Height",
+      "value": "780mm"
+     },
+     {
+      "label": "Certificate",
+      "value": "L1e -B"
+     },
+     {
+      "label": "Front/Rear Tyre",
+      "value": "120/70-12"
+     },
+     {
+      "label": "Max payload",
+      "value": "245Kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Rated power",
+      "value": "4000W"
+     },
+     {
+      "label": "Maximum power",
+      "value": "4800W(input) -4300W(output)"
+     },
+     {
+      "label": "Engine Type",
+      "value": "Hub motor"
+     },
+     {
+      "label": "Max speed",
+      "value": "85 Km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc/Rear Drum"
+     },
+     {
+      "label": "Climbing",
+      "value": "30%"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Voltage",
+      "value": "72V-30ah Double Lithium/72V20ah Lead-acid"
+     },
+     {
+      "label": "MAX torque",
+      "value": "140N.M 150RPM"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/crown-ii/thumb.webp",
+  "banner": null,
+  "colors": [],
+  "gallery": [
+   "/products/crown-ii/gallery-1.webp",
+   "/products/crown-ii/gallery-2.webp",
+   "/products/crown-ii/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 127,
+  "slug": "phoenix",
+  "name": "Phoenix",
+  "series": "scooter",
+  "source": "https://www.zxjtmco.com/?product_6/127.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "2000x720x1210mm"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "90/90-14 / 90/80-14"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "150kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Power",
+      "value": "2000W / 3000W"
+     },
+     {
+      "label": "Standard max speed",
+      "value": "45km/h / 75km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "F-DISC R-DISC"
+     },
+     {
+      "label": "Climbing",
+      "value": "15°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "lithium battery"
+     },
+     {
+      "label": "Specification",
+      "value": "60V30AH / 72v 32AH"
+     },
+     {
+      "label": "Standard range per charge",
+      "value": "65-70km / 80-100km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/phoenix/thumb.webp",
+  "banner": "/products/phoenix/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/phoenix/gallery-1.webp",
+   "/products/phoenix/gallery-2.webp",
+   "/products/phoenix/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 150,
+  "slug": "griffin",
+  "name": "Griffin",
+  "series": "scooter",
+  "source": "https://www.zxjtmco.com/?product_6/150.html",
+  "description": "EEC Electric Motorcycle 3000W Lithium motorcycles",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Model Name",
+      "value": "Griffin"
+     },
+     {
+      "label": "Dimension(mm)",
+      "value": "2010x720x1210"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "72"
+     },
+     {
+      "label": "Tire type",
+      "value": "90/90-12"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "1500W"
+     },
+     {
+      "label": "Max speed",
+      "value": "60km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Disc Brake"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "< 13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lead-acid"
+     },
+     {
+      "label": "Battery",
+      "value": "72V32Ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "80-90km"
+     },
+     {
+      "label": "Charging time",
+      "value": "7-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/griffin/thumb.webp",
+  "banner": "/products/griffin/banner.webp",
+  "colors": [
+   {
+    "hex": "#ccc3bc",
+    "image": "/products/griffin/color-1.webp"
+   },
+   {
+    "hex": "#898c95",
+    "image": "/products/griffin/color-2.webp"
+   }
+  ],
+  "gallery": [
+   "/products/griffin/gallery-1.webp",
+   "/products/griffin/gallery-2.webp",
+   "/products/griffin/gallery-3.webp",
+   "/products/griffin/gallery-4.webp"
+  ]
+ },
+ {
+  "id": 177,
+  "slug": "dubhe",
+  "name": "DUBHE",
+  "series": "scooter",
+  "source": "https://www.zxjtmco.com/?product_6/177.html",
+  "description": "electric bicycle",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Model Name",
+      "value": "DUBHE"
+     },
+     {
+      "label": "Dimension(mm)",
+      "value": "2005x780x1130"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "79"
+     },
+     {
+      "label": "Tire type",
+      "value": "120/70-14"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "3000W"
+     },
+     {
+      "label": "Max speed",
+      "value": "80km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Disc Brake"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": ">13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lithium-ion"
+     },
+     {
+      "label": "Battery",
+      "value": "72V40Ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "90-100km"
+     },
+     {
+      "label": "Charging time",
+      "value": "5-6 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/dubhe/thumb.webp",
+  "banner": "/products/dubhe/banner.webp",
+  "colors": [
+   {
+    "hex": "#ffffff",
+    "image": "/products/dubhe/color-1.webp"
+   },
+   {
+    "hex": "#4e0a17",
+    "image": "/products/dubhe/color-2.webp"
+   }
+  ],
+  "gallery": [
+   "/products/dubhe/gallery-1.webp",
+   "/products/dubhe/gallery-2.webp",
+   "/products/dubhe/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 146,
+  "slug": "alkaid",
+  "name": "ALKAID",
+  "series": "scooter",
+  "source": "https://www.zxjtmco.com/?product_6/146.html",
+  "description": "New electric motorcycle 3000w motor 72v40ah battery high speed motorcycles long range bike",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Model Name",
+      "value": "ALKAID"
+     },
+     {
+      "label": "Dimension(mm)",
+      "value": "1920x730x1210"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "79"
+     },
+     {
+      "label": "Tire type",
+      "value": "120/70-12"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "3000W"
+     },
+     {
+      "label": "Max speed",
+      "value": "80km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Disc Brake"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lithium-ion"
+     },
+     {
+      "label": "Battery",
+      "value": "72V 27Ah(Duble)"
+     },
+     {
+      "label": "Range per charge",
+      "value": "120-130km"
+     },
+     {
+      "label": "Charging time",
+      "value": "5-6hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/alkaid/thumb.webp",
+  "banner": "/products/alkaid/banner.webp",
+  "colors": [
+   {
+    "hex": "#ffffff",
+    "image": "/products/alkaid/color-1.webp"
+   },
+   {
+    "hex": "#ecaf45",
+    "image": "/products/alkaid/color-2.webp"
+   },
+   {
+    "hex": "#39453b",
+    "image": "/products/alkaid/color-3.webp"
+   }
+  ],
+  "gallery": [
+   "/products/alkaid/gallery-1.webp",
+   "/products/alkaid/gallery-2.webp",
+   "/products/alkaid/gallery-3.webp",
+   "/products/alkaid/gallery-4.webp",
+   "/products/alkaid/gallery-5.webp"
+  ]
+ },
+ {
+  "id": 129,
+  "slug": "zx-xpg",
+  "name": "ZX-XPG",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/129.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1700x650x860"
+     },
+     {
+      "label": "Certificate",
+      "value": "EEC"
+     },
+     {
+      "label": "Tyre Type",
+      "value": "3.0-10 ''"
+     },
+     {
+      "label": "Max Loading Weight(kg)",
+      "value": "75kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "650W/1000W"
+     },
+     {
+      "label": "Engine Type",
+      "value": "Brushless Direct Current motor"
+     },
+     {
+      "label": "Max speed",
+      "value": "45km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "F-Drum R-Drum"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "≤13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery Type",
+      "value": "Lithium-ion"
+     },
+     {
+      "label": "Battery",
+      "value": "48V/60V 20Ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "40-50km"
+     },
+     {
+      "label": "Charging time",
+      "value": "7-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/zx-xpg/thumb.png",
+  "banner": "/products/zx-xpg/banner.png",
+  "colors": [
+   {
+    "hex": "#b8d3e4",
+    "image": "/products/zx-xpg/color-1.jpg"
+   },
+   {
+    "hex": "#efe8e3",
+    "image": "/products/zx-xpg/color-2.jpg"
+   },
+   {
+    "hex": "#adaeb0",
+    "image": "/products/zx-xpg/color-3.jpg"
+   },
+   {
+    "hex": "#000000",
+    "image": "/products/zx-xpg/color-4.jpg"
+   },
+   {
+    "hex": "#f31623",
+    "image": "/products/zx-xpg/color-5.jpg"
+   }
+  ],
+  "gallery": [
+   "/products/zx-xpg/gallery-1.png",
+   "/products/zx-xpg/gallery-2.png",
+   "/products/zx-xpg/gallery-3.png"
+  ]
+ },
+ {
+  "id": 119,
+  "slug": "galaxy",
+  "name": "Galaxy",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/119.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1750*340*1200mm"
+     },
+     {
+      "label": "Certificate",
+      "value": "EEC"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "90/90-12'' Vaccum"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "150kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Power",
+      "value": "2000W"
+     },
+     {
+      "label": "Engine Type",
+      "value": "Brushless Direct Current motor"
+     },
+     {
+      "label": "Max.Speed(KMPH)",
+      "value": "45kmph"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc/Rear Disc Φ220"
+     },
+     {
+      "label": "Climbing",
+      "value": "≤15°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lithium battery / Lead-acid"
+     },
+     {
+      "label": "Specification",
+      "value": "60V / 72V"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "60-70km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/galaxy/thumb.png",
+  "banner": "/products/galaxy/banner.png",
+  "colors": [],
+  "gallery": [
+   "/products/galaxy/gallery-1.png",
+   "/products/galaxy/gallery-2.png",
+   "/products/galaxy/gallery-3.png"
+  ]
+ },
+ {
+  "id": 118,
+  "slug": "sy",
+  "name": "SY",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/118.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1850x680x1050"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "90/90-12'' Vaccum"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "150kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Power",
+      "value": "1200W"
+     },
+     {
+      "label": "Max.Speed",
+      "value": "55km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc/Rear Disc"
+     },
+     {
+      "label": "Climbing",
+      "value": "< 13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lithium-ion/Lead-acid"
+     },
+     {
+      "label": "Specification",
+      "value": "60V / 72V 20Ah"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "50-60 km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/sy/thumb.png",
+  "banner": "/products/sy/banner.png",
+  "colors": [],
+  "gallery": [
+   "/products/sy/gallery-1.png",
+   "/products/sy/gallery-2.png",
+   "/products/sy/gallery-3.png"
+  ]
+ },
+ {
+  "id": 117,
+  "slug": "shangling",
+  "name": "ShangLing",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/117.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1850x680x1050"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "300-10"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "150kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Power",
+      "value": "1000W"
+     },
+     {
+      "label": "Max.Speed",
+      "value": "50km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc/Rear Disc"
+     },
+     {
+      "label": "Climbing",
+      "value": "< 13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lithium-ion/Lead-acid"
+     },
+     {
+      "label": "Specification",
+      "value": "60V 20Ah"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "40-50 km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/shangling/thumb.png",
+  "banner": "/products/shangling/banner.png",
+  "colors": [],
+  "gallery": [
+   "/products/shangling/gallery-1.png",
+   "/products/shangling/gallery-2.png",
+   "/products/shangling/gallery-3.png"
+  ]
+ },
+ {
+  "id": 116,
+  "slug": "df17",
+  "name": "DF17",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/116.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "2000/710/1150"
+     },
+     {
+      "label": "Certificate",
+      "value": "EEC"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "90/90-12"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "150kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Power",
+      "value": "3000W"
+     },
+     {
+      "label": "Max.Speed",
+      "value": "75KM/H"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc / Rear Disc"
+     },
+     {
+      "label": "Climbing",
+      "value": "< 15°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lithium-ion"
+     },
+     {
+      "label": "Specification",
+      "value": "72V 40Ah"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "90-100km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/df17/thumb.webp",
+  "banner": "/products/df17/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/df17/gallery-1.webp",
+   "/products/df17/gallery-2.webp",
+   "/products/df17/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 115,
+  "slug": "maike",
+  "name": "Maike",
+  "series": "eec",
+  "source": "https://www.zxjtmco.com/?product_35/115.html",
+  "description": "electric bicycle",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Model Name",
+      "value": "Maike(XN)"
+     },
+     {
+      "label": "Dimension(mm)",
+      "value": "1800x710x1070"
+     },
+     {
+      "label": "Certificate",
+      "value": "EEC"
+     },
+     {
+      "label": "Net weigt( kg )",
+      "value": "55"
+     },
+     {
+      "label": "Tire type",
+      "value": "3.0-10 ''"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "800W/1200W"
+     },
+     {
+      "label": "Max speed",
+      "value": "45km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front disc & rear drum"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "< 13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Battery type",
+      "value": "Lithium-ion/Lead-acid"
+     },
+     {
+      "label": "Battery",
+      "value": "48/60V 23AH"
+     },
+     {
+      "label": "Range per charge",
+      "value": "45-60 km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/maike/thumb.webp",
+  "banner": null,
+  "colors": [
+   {
+    "hex": "#a8a8a8",
+    "image": "/products/maike/color-1.webp"
+   },
+   {
+    "hex": "#ffffff",
+    "image": "/products/maike/color-2.webp"
+   },
+   {
+    "hex": "#000000",
+    "image": "/products/maike/color-3.webp"
+   },
+   {
+    "hex": "#7c849b",
+    "image": "/products/maike/color-4.webp"
+   },
+   {
+    "hex": "#de1e2d",
+    "image": "/products/maike/color-5.webp"
+   }
+  ],
+  "gallery": [
+   "/products/maike/gallery-1.webp",
+   "/products/maike/gallery-2.webp",
+   "/products/maike/gallery-3.webp"
+  ]
+ },
+ {
+  "id": 140,
+  "slug": "z3",
+  "name": "Z3",
+  "series": "light",
+  "source": "https://www.zxjtmco.com/?product_38/140.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1750*340*1200"
+     },
+     {
+      "label": "Certificate",
+      "value": "L1e -B"
+     },
+     {
+      "label": "Front/Rear Tyre",
+      "value": "90/90-12'' Vaccum"
+     },
+     {
+      "label": "Max Loading Weight(kg)",
+      "value": "≤150kgs"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "800W/1200W"
+     },
+     {
+      "label": "Engine Type",
+      "value": "Brushless Direct Current motor"
+     },
+     {
+      "label": "Max speed",
+      "value": "25kmph/45kmph"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Disc/Rear Disc Φ220"
+     },
+     {
+      "label": "Climbing capacity",
+      "value": "≤15°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Recommend Battery Capacity (Ah)",
+      "value": "LFP Battery 48V 24ah"
+     },
+     {
+      "label": "Range per charge",
+      "value": "50-60km"
+     },
+     {
+      "label": "Charging time",
+      "value": "6-8 hrs"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/z3/thumb.png",
+  "banner": "/products/z3/banner.png",
+  "colors": [],
+  "gallery": [
+   "/products/z3/gallery-1.png",
+   "/products/z3/gallery-2.png",
+   "/products/z3/gallery-3.png"
+  ]
+ },
+ {
+  "id": 141,
+  "slug": "lb-q3",
+  "name": "LB-Q3",
+  "series": "light",
+  "source": "https://www.zxjtmco.com/?product_38/141.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1650*400*1050"
+     },
+     {
+      "label": "Certificate",
+      "value": "CCC"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "2.5*14"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "75kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "350W"
+     },
+     {
+      "label": "Max.Speed(KMPH)",
+      "value": "38Km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Drum/Rear Drum"
+     },
+     {
+      "label": "Climbing",
+      "value": "≤13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lead-acid"
+     },
+     {
+      "label": "Specification",
+      "value": "48v/60v 12-20Ah"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "45-75Km"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/lb-q3/thumb.png",
+  "banner": "/products/lb-q3/banner.png",
+  "colors": [
+   {
+    "hex": "#e2d8c4",
+    "image": "/products/lb-q3/color-1.jpg"
+   },
+   {
+    "hex": "#a9c38f",
+    "image": "/products/lb-q3/color-2.jpg"
+   },
+   {
+    "hex": "#59646a",
+    "image": "/products/lb-q3/color-3.jpg"
+   },
+   {
+    "hex": "#93d5e0",
+    "image": "/products/lb-q3/color-4.jpg"
+   },
+   {
+    "hex": "#dee0de",
+    "image": "/products/lb-q3/color-5.jpg"
+   }
+  ],
+  "gallery": [
+   "/products/lb-q3/gallery-1.png",
+   "/products/lb-q3/gallery-2.png",
+   "/products/lb-q3/gallery-3.png"
+  ]
+ },
+ {
+  "id": 139,
+  "slug": "lb-r7",
+  "name": "LB-R7",
+  "series": "light",
+  "source": "https://www.zxjtmco.com/?product_38/139.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "BODY DIMENSION",
+    "items": [
+     {
+      "label": "Dimension(mm)",
+      "value": "1635*720*1050"
+     },
+     {
+      "label": "Certificate",
+      "value": "CCC"
+     },
+     {
+      "label": "Tyre specification",
+      "value": "2.5*14"
+     },
+     {
+      "label": "Standard load capacity",
+      "value": "75kg"
+     }
+    ]
+   },
+   {
+    "group": "MOTOR",
+    "items": [
+     {
+      "label": "Motor",
+      "value": "800W"
+     },
+     {
+      "label": "Max.Speed(KMPH)",
+      "value": "45Km/h"
+     },
+     {
+      "label": "Brake System",
+      "value": "Front Drum/Rear Drum"
+     },
+     {
+      "label": "Climbing",
+      "value": "≤13°"
+     }
+    ]
+   },
+   {
+    "group": "ELECTRICALS",
+    "items": [
+     {
+      "label": "Type removable",
+      "value": "Lead-acid"
+     },
+     {
+      "label": "Specification",
+      "value": "60v/72v 20Ah"
+     },
+     {
+      "label": "Max Range(km)",
+      "value": "45-75Km"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/lb-r7/thumb.png",
+  "banner": "/products/lb-r7/banner.png",
+  "colors": [
+   {
+    "hex": "#4c4c91",
+    "image": "/products/lb-r7/color-1.jpg"
+   },
+   {
+    "hex": "#85afcf",
+    "image": "/products/lb-r7/color-2.jpg"
+   },
+   {
+    "hex": "#bdbab9",
+    "image": "/products/lb-r7/color-3.jpg"
+   },
+   {
+    "hex": "#ffffff",
+    "image": "/products/lb-r7/color-4.jpg"
+   },
+   {
+    "hex": "#315656",
+    "image": "/products/lb-r7/color-5.jpg"
+   },
+   {
+    "hex": "#000000",
+    "image": "/products/lb-r7/color-6.jpg"
+   }
+  ],
+  "gallery": [
+   "/products/lb-r7/gallery-1.png",
+   "/products/lb-r7/gallery-2.png",
+   "/products/lb-r7/gallery-3.png"
+  ]
+ },
+ {
+  "id": 137,
+  "slug": "lb-r6",
+  "name": "LB-R6",
+  "series": "light",
+  "source": "https://www.zxjtmco.com/?product_38/137.html",
+  "description": "Product informationTechnical DetailsBike Type‎Folding Electric Bike, City Commuting BikeAge Range (Description)‎UnisexBrand‎LuckeepNumber of Speeds‎7Color‎Ebike with Rear BagWheel Size‎20 InchesFrame Material‎AluminumSuspension Type‎FrontSpecial Feature‎Cruise Control function, 3 riding mod",
+  "specs": [],
+  "thumb": "/products/lb-r6/thumb.png",
+  "banner": "/products/lb-r6/banner.png",
+  "colors": [],
+  "gallery": [
+   "/products/lb-r6/gallery-1.png",
+   "/products/lb-r6/gallery-2.png",
+   "/products/lb-r6/gallery-3.png"
+  ]
+ },
+ {
+  "id": 198,
+  "slug": "luckeep-x3",
+  "name": "Luckeep-X3",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/198.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep X3 Full Suspension Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "All-terrain&Commute"
+     },
+     {
+      "label": "RANGE",
+      "value": "40 miles on Throttle mode, 70 miles on pedal assist mode."
+     },
+     {
+      "label": "SPEED",
+      "value": "Up To 28 MPH on Throttle"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "75 lbs (Battery Included)"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'4\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Hydraulic Suspension Fork with Adjustable&lockout"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step Through"
+     },
+     {
+      "label": "REAR SHOCK",
+      "value": "Air,Four-bar Linkage suspension"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "20x4.0\" Puncture Resistant Fat Tire"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1400w (peak), 750w (sustained), 48V Brushless Rear Hub Motor with 80Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "4.0\" VA Display LED Integrated with APP Control"
+     },
+     {
+      "label": "BATTERY",
+      "value": "Removable Internal Lithium-ion 48V 20AH(960Wh),UL2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "Torque Sensor,Speed Sensor,Brake Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "UL 1310 Certification 3A Fast Charger,6-7 Hour Charging Time"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Headlight and Taillight with Turn Signals & Brake Light"
+     },
+     {
+      "label": "BRAKES",
+      "value": "F & R Hydraulic Disc Brakes,180mm Rotors"
+     },
+     {
+      "label": "CONTROLLER",
+      "value": "48v 25A Frame-integrated Controller"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Square Taper, Sealed, Speed Sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "7 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano 7-Speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "7 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/luckeep-x3/thumb.png",
+  "banner": "/products/luckeep-x3/banner.webp",
+  "colors": [
+   {
+    "hex": "#ff7801",
+    "image": "/products/luckeep-x3/color-1.webp"
+   },
+   {
+    "hex": "#ffffff",
+    "image": "/products/luckeep-x3/color-2.webp"
+   },
+   {
+    "hex": "#3a666b",
+    "image": "/products/luckeep-x3/color-3.webp"
+   }
+  ],
+  "gallery": [
+   "/products/luckeep-x3/gallery-1.webp",
+   "/products/luckeep-x3/gallery-2.webp",
+   "/products/luckeep-x3/gallery-3.webp",
+   "/products/luckeep-x3/gallery-4.webp",
+   "/products/luckeep-x3/gallery-5.webp",
+   "/products/luckeep-x3/gallery-6.webp"
+  ]
+ },
+ {
+  "id": 196,
+  "slug": "c23",
+  "name": "C23",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/196.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep C23 Foldable Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Commute for women"
+     },
+     {
+      "label": "RANGE",
+      "value": "30 miles on throttle mode, 60 miles on pedal assist mode"
+     },
+     {
+      "label": "SPEED",
+      "value": "Up To 28 MPH on Throttle"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "67 lbs (Battery Included)"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "265 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "4'6\"-5'9\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "Steel"
+     },
+     {
+      "label": "FORK",
+      "value": "Rront Suspension Fork with Lockout"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step-Through"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "20x3.0\" All-Terrain Tire"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Half twist throttle"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1200w (peak), 750w (sustained), 48V Brushless gear Hub Motor with 70Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "LCD display with NFC unlock"
+     },
+     {
+      "label": "BATTERY",
+      "value": "Removable Lithium-ion 48V 15AH (720Wh)"
+     },
+     {
+      "label": "SENSORS",
+      "value": "Speed Sensor, Brake Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "54.6V 2.0A, A Smart Charger, 4-5 Hour Charging Time"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "48V LED Light"
+     },
+     {
+      "label": "BRAKES",
+      "value": "Disc Brakes, 180mm Rotors"
+     },
+     {
+      "label": "Controller",
+      "value": "48V, 25A"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "Gearing",
+      "value": "7 Speed gear shift system"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/c23/thumb.png",
+  "banner": "/products/c23/banner.webp",
+  "colors": [
+   {
+    "hex": "#63b5c1",
+    "image": "/products/c23/color-1.jpg"
+   },
+   {
+    "hex": "#fa7143",
+    "image": "/products/c23/color-2.jpg"
+   },
+   {
+    "hex": "#87888a",
+    "image": "/products/c23/color-3.jpg"
+   }
+  ],
+  "gallery": [
+   "/products/c23/gallery-1.webp",
+   "/products/c23/gallery-2.webp",
+   "/products/c23/gallery-3.webp",
+   "/products/c23/gallery-4.webp",
+   "/products/c23/gallery-5.webp",
+   "/products/c23/gallery-6.webp",
+   "/products/c23/gallery-7.webp"
+  ]
+ },
+ {
+  "id": 195,
+  "slug": "luckeep-m5",
+  "name": "LUCKEEP-M5",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/195.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep M5 Moped Style Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Off-Road/Commute"
+     },
+     {
+      "label": "RANGE",
+      "value": "60 miles"
+     },
+     {
+      "label": "SPEED",
+      "value": "32 MPH"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "95 lbs (Including Battery weigh)"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "400 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'2\"-7'2\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Spring Oil Fork"
+     },
+     {
+      "label": "REAR SUSPENSION",
+      "value": "200L 1200LBS COIL"
+     },
+     {
+      "label": "FRAME STYLESADDLE MATERIAL:",
+      "value": "Foam + Leather"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Yes"
+     },
+     {
+      "label": "TUBES",
+      "value": "Rubber"
+     },
+     {
+      "label": "TIRES",
+      "value": "20x4.0\" Puncture Resistant Fat Tire"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1000w, 48V DC Hub Motor 90Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "4.0\" VA Color Screen"
+     },
+     {
+      "label": "BATTERY",
+      "value": "48V 15AH (720Wh) lithium battery"
+     },
+     {
+      "label": "SENSORS",
+      "value": "Speed Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "54.6V 2A Smart Charge, 6-7 Hours Charging Time"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Front LED light,rear light with brake signal and turn signal blinker."
+     },
+     {
+      "label": "BRAKES",
+      "value": "Mechanical Disc Brakes,180mm Rotors"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Square Taper, Sealed, Speed Sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "7 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano 7-Speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "7 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/luckeep-m5/thumb.png",
+  "banner": "/products/luckeep-m5/banner.webp",
+  "colors": [
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-1.webp"
+   },
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-2.webp"
+   },
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-3.webp"
+   },
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-4.webp"
+   },
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-5.webp"
+   },
+   {
+    "hex": "#dac4ac",
+    "image": "/products/luckeep-m5/color-6.webp"
+   }
+  ],
+  "gallery": [
+   "/products/luckeep-m5/gallery-1.webp",
+   "/products/luckeep-m5/gallery-2.webp",
+   "/products/luckeep-m5/gallery-3.webp",
+   "/products/luckeep-m5/gallery-4.webp",
+   "/products/luckeep-m5/gallery-5.webp",
+   "/products/luckeep-m5/gallery-6.webp",
+   "/products/luckeep-m5/gallery-7.webp"
+  ]
+ },
+ {
+  "id": 176,
+  "slug": "x1pro",
+  "name": "X1pro",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/176.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep X2 Step-Through/Step-Over Commuter Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Commuting"
+     },
+     {
+      "label": "SINGLE BATTERY RANGE",
+      "value": "40 miles on throttle mode, 80 miles on pas mode"
+     },
+     {
+      "label": "DUAL BATTERY RANGE",
+      "value": "15A/20A/25A extra battery. 90/100/110 miles on throttle mode. 140/160/180 miles on pas mode"
+     },
+     {
+      "label": "SPEED",
+      "value": "Up to 28 MPH on Throttle （You can contact our official customer service to unlock speeds of up to 32 mph）"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "70 lbs"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'3\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Alloy Hydraulic front suspension fork with lockout and adjustment"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step-Through/Step-Over"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Black Stainless 13G Front / 12G Rear"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "26\"x 3\" Chaoyang Commute Fat Tires"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1200w (peak), 750w (sustained), 48V Brushless Rear Hub Motor 80Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "Embedded Flush IPS display with APP Control"
+     },
+     {
+      "label": "BATTERY",
+      "value": "SAMSUNG Dual battery 48V 20AH (960Wh), UL 2271, UL 2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "5 Levels Pedal Assist, Torque Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "UL 1310 Certification 54.6V 3A Fast Charger, 6-7 Hour Charging Time. input 100-240V 50/60Hz"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Front LED light, rear light with brake signal and turn signal blinker."
+     },
+     {
+      "label": "BRAKES",
+      "value": "F & R Hydraulic Disc Brakes, 180mm Rotors"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Torque sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "8 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano-13-32T 8-speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "8 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/x1pro/thumb.webp",
+  "banner": "/products/x1pro/banner.webp",
+  "colors": [],
+  "gallery": [
+   "/products/x1pro/gallery-1.webp",
+   "/products/x1pro/gallery-2.webp",
+   "/products/x1pro/gallery-3.webp",
+   "/products/x1pro/gallery-4.webp",
+   "/products/x1pro/gallery-5.webp"
+  ]
+ },
+ {
+  "id": 155,
+  "slug": "c26",
+  "name": "C26",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/155.html",
+  "description": "",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Benifore C26 Hilly Mountain Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Off-Road/Commute"
+     },
+     {
+      "label": "SINGLE BATTERY RANGE",
+      "value": "35 miles on Throttle, 60 miles on pas mode."
+     },
+     {
+      "label": "DUAL BATTERY RANGE",
+      "value": "15A/20A/25A extra battery. 90/100/110 miles on throttle mode. 140/160/180 miles on pas mode"
+     },
+     {
+      "label": "SPEED",
+      "value": "Up To 28 MPH on Throttle"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "62 lbs (Including battery weight)"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'4\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Hydraulic Spring Suspension Alloy Fork, Lockout And Adjustable."
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "High Step"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Yes"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "26x3\" Puncture Resistant Fat Tire"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1400w (peak), 750w (sustained), 48V DC Hub Motor 80Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "3.5\" Colorful LCD display"
+     },
+     {
+      "label": "BATTERY",
+      "value": "48V 15AH (750Wh) lithium battery., UL 2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "Speed Sensor, Brake Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "54.6V 2A Smart Charge, Charging time is about 6-7 hours"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Front LED light, rear light with brake signal and turn signal blinker."
+     },
+     {
+      "label": "BRAKES",
+      "value": "Mechanical Disc Brakes, 160mm Rotors"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Square Taper, Sealed, Speed Sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "7 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano 7-Speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "7 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/c26/thumb.webp",
+  "banner": "/products/c26/banner.webp",
+  "colors": [
+   {
+    "hex": null,
+    "image": "/products/c26/color-1.jpg"
+   }
+  ],
+  "gallery": [
+   "/products/c26/gallery-1.jpg",
+   "/products/c26/gallery-2.jpg",
+   "/products/c26/gallery-3.jpg",
+   "/products/c26/gallery-4.jpg",
+   "/products/c26/gallery-5.jpg"
+  ]
+ },
+ {
+  "id": 103,
+  "slug": "luckeep-x1",
+  "name": "Luckeep-X1",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/103.html",
+  "description": "750W BaFang motor fat tire ebike with folding design, you can pull out for all-terrain rides, trips to the beach, or spins around town.",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep X1 Foldable Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "All-terrain"
+     },
+     {
+      "label": "RANGE",
+      "value": "40 miles on throttle mode, 60 miles on pedal assist mode"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "76 lbs (Battery Included)"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'4\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Suspension Fork with 80mm Travel, with Lockout"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step-Over"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "20x4.0\" ChaoYang Puncture Resistant Magnesium alloy Fat Tire"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1400w (peak), 750w (sustained), 48VBAFANG Brushless Rear Hub Motor with 85Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "3.5\" IPS Display LED Integrated with APP Control"
+     },
+     {
+      "label": "BATTERY",
+      "value": "Removable Internal Lithium-ion 48V 15AH (720Wh), UL 2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "Speed Sensor, Brake Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "54.6V 3.0A, US Standard 3A Fast Charger, 4-5 Hour Charging Time"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Inclued"
+     },
+     {
+      "label": "BRAKES",
+      "value": "F & R Hydraulic Disc Brakes, 160mm Rotors"
+     },
+     {
+      "label": "Controller",
+      "value": "48V, 25±1A"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Square Taper, Sealed, Speed Sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "7 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano 7-Speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "7 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/luckeep-x1/thumb.webp",
+  "banner": "/products/luckeep-x1/banner.webp",
+  "colors": [
+   {
+    "hex": null,
+    "image": "/products/luckeep-x1/color-1.webp"
+   }
+  ],
+  "gallery": [
+   "/products/luckeep-x1/gallery-1.webp",
+   "/products/luckeep-x1/gallery-2.webp",
+   "/products/luckeep-x1/gallery-3.webp",
+   "/products/luckeep-x1/gallery-4.webp",
+   "/products/luckeep-x1/gallery-5.webp",
+   "/products/luckeep-x1/gallery-6.webp",
+   "/products/luckeep-x1/gallery-7.webp",
+   "/products/luckeep-x1/gallery-8.webp",
+   "/products/luckeep-x1/gallery-9.webp",
+   "/products/luckeep-x1/gallery-10.webp"
+  ]
+ },
+ {
+  "id": 133,
+  "slug": "luckeep-x2",
+  "name": "Luckeep-X2",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/133.html",
+  "description": "Product informationTechnical DetailsBike Type‎Electric Bike, Electric BicycleAge Range (Description)‎AdultBrandZXMCONumber of Speeds‎8Color‎GreyWheel Size‎27.5 InchesFrame Material‎6061 One-Piece Aluminum AlloySuspension Type‎FrontSpecial Feature‎Embedded IPS Smart 3.5'' LCD, T",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep X2 Step-Through/Step-Over Commuter Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Commuting"
+     },
+     {
+      "label": "SINGLE BATTERY RANGE",
+      "value": "40 miles on throttle mode, 80 miles on pas mode"
+     },
+     {
+      "label": "DUAL BATTERY RANGE",
+      "value": "15A/20A/25A extra battery. 90/100/110 miles on throttle mode. 140/160/180 miles on pas mode"
+     },
+     {
+      "label": "SPEED",
+      "value": "Up to 28 MPH on Throttle （You can contact our official customer service to unlock speeds of up to 32 mph）"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "70 lbs"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'3\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Alloy Hydraulic front suspension fork with lockout and adjustment"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step-Through/Step-Over"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Black Stainless 13G Front / 12G Rear"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "26\"x 3\" Chaoyang Commute Fat Tires"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1200w (peak), 750w (sustained), 48V Brushless Rear Hub Motor 80Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "Embedded Flush IPS display with APP Control"
+     },
+     {
+      "label": "BATTERY",
+      "value": "SAMSUNG Dual battery 48V 20AH (960Wh), UL 2271, UL 2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "5 Levels Pedal Assist, Torque Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "UL 1310 Certification 54.6V 3A Fast Charger, 6-7 Hour Charging Time. input 100-240V 50/60Hz"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Front LED light, rear light with brake signal and turn signal blinker."
+     },
+     {
+      "label": "BRAKES",
+      "value": "F & R Hydraulic Disc Brakes, 180mm Rotors"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Torque sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "8 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano-13-32T 8-speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "8 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/luckeep-x2/thumb.webp",
+  "banner": "/products/luckeep-x2/banner.webp",
+  "colors": [
+   {
+    "hex": "#ffffff",
+    "image": "/products/luckeep-x2/color-1.webp"
+   },
+   {
+    "hex": "#c5d2c8",
+    "image": "/products/luckeep-x2/color-2.webp"
+   },
+   {
+    "hex": "#e5c161",
+    "image": "/products/luckeep-x2/color-3.webp"
+   }
+  ],
+  "gallery": [
+   "/products/luckeep-x2/gallery-1.webp",
+   "/products/luckeep-x2/gallery-2.webp",
+   "/products/luckeep-x2/gallery-3.webp",
+   "/products/luckeep-x2/gallery-4.webp",
+   "/products/luckeep-x2/gallery-5.webp",
+   "/products/luckeep-x2/gallery-6.webp",
+   "/products/luckeep-x2/gallery-7.webp"
+  ]
+ },
+ {
+  "id": 101,
+  "slug": "luckeep-x2-101",
+  "name": "Luckeep-X2",
+  "series": "bicycle",
+  "source": "https://www.zxjtmco.com/?product_37/101.html",
+  "description": "Product informationTechnical DetailsBike Type‎Electric Bike, Electric BicycleAge Range (Description)‎AdultBrandZXMCONumber of Speeds‎8Color‎GreyWheel Size‎27.5 InchesFrame Material‎6061 One-Piece Aluminum AlloySuspension Type‎FrontSpecial Feature‎Embedded IPS Smart 3.5'' LCD, T",
+  "specs": [
+   {
+    "group": "General Info",
+    "items": [
+     {
+      "label": "MODEL",
+      "value": "Luckeep X2 Step-Through/Step-Over Commuter Ebike"
+     },
+     {
+      "label": "IDEAL USE",
+      "value": "Commuting"
+     },
+     {
+      "label": "SINGLE BATTERY RANGE",
+      "value": "40 miles on throttle mode, 80 miles on pas mode"
+     },
+     {
+      "label": "DUAL BATTERY RANGE",
+      "value": "15A/20A/25A extra battery. 90/100/110 miles on throttle mode. 140/160/180 miles on pas mode"
+     },
+     {
+      "label": "SPEED",
+      "value": "Up to 28 MPH on Throttle （You can contact our official customer service to unlock speeds of up to 32 mph）"
+     },
+     {
+      "label": "WEIGHT",
+      "value": "70 lbs"
+     },
+     {
+      "label": "TOTAL WEIGHT LIMIT",
+      "value": "330 lbs"
+     },
+     {
+      "label": "RIDER HEIGHT",
+      "value": "5'3\"-6'4\"FT"
+     },
+     {
+      "label": "PEDAL ASSIST",
+      "value": "5 levels"
+     }
+    ]
+   },
+   {
+    "group": "Frameset",
+    "items": [
+     {
+      "label": "FRAME",
+      "value": "6061 Aluminum Alloy"
+     },
+     {
+      "label": "FORK",
+      "value": "Alloy Hydraulic front suspension fork with lockout and adjustment"
+     },
+     {
+      "label": "FRAME STYLE",
+      "value": "Step-Through/Step-Over"
+     }
+    ]
+   },
+   {
+    "group": "Wheelset",
+    "items": [
+     {
+      "label": "RIM",
+      "value": "Aluminum Alloy"
+     },
+     {
+      "label": "SPOKES",
+      "value": "Black Stainless 13G Front / 12G Rear"
+     },
+     {
+      "label": "TUBES",
+      "value": "Butyl Rubber, Schrader Valve"
+     },
+     {
+      "label": "TIRES",
+      "value": "26\"x 3\" Chaoyang Commute Fat Tires"
+     }
+    ]
+   },
+   {
+    "group": "Ebike System",
+    "items": [
+     {
+      "label": "THROTTLE",
+      "value": "Twist Throttle with Cruise Control"
+     },
+     {
+      "label": "MOTOR",
+      "value": "1200w (peak), 750w (sustained), 48V Brushless Rear Hub Motor 80Nm"
+     },
+     {
+      "label": "DISPLAY",
+      "value": "Embedded Flush IPS display with APP Control"
+     },
+     {
+      "label": "BATTERY",
+      "value": "SAMSUNG Dual battery 48V 20AH (960Wh), UL 2271, UL 2849 Compliant"
+     },
+     {
+      "label": "SENSORS",
+      "value": "5 Levels Pedal Assist, Torque Sensor"
+     },
+     {
+      "label": "CHARGER",
+      "value": "UL 1310 Certification 54.6V 3A Fast Charger, 6-7 Hour Charging Time. input 100-240V 50/60Hz"
+     },
+     {
+      "label": "LIGHTS",
+      "value": "Front LED light, rear light with brake signal and turn signal blinker."
+     },
+     {
+      "label": "BRAKES",
+      "value": "F & R Hydraulic Disc Brakes, 180mm Rotors"
+     }
+    ]
+   },
+   {
+    "group": "Drivetrain",
+    "items": [
+     {
+      "label": "BOTTOM BRACKET",
+      "value": "Torque sensor"
+     },
+     {
+      "label": "PEDALS",
+      "value": "9/16\""
+     },
+     {
+      "label": "REAR DERAILLEUR",
+      "value": "8 Speed Shimano Rear Derailleur"
+     },
+     {
+      "label": "CASSETTE",
+      "value": "Shimano-13-32T 8-speed"
+     },
+     {
+      "label": "SHIFT LEVER",
+      "value": "8 Speed Trigger"
+     }
+    ]
+   }
+  ],
+  "thumb": "/products/luckeep-x2-101/thumb.webp",
+  "banner": "/products/luckeep-x2-101/banner.webp",
+  "colors": [
+   {
+    "hex": "#c5d2c8",
+    "image": "/products/luckeep-x2-101/color-1.webp"
+   },
+   {
+    "hex": "#e5c161",
+    "image": "/products/luckeep-x2-101/color-2.webp"
+   },
+   {
+    "hex": "#ffffff",
+    "image": "/products/luckeep-x2-101/color-3.webp"
+   }
+  ],
+  "gallery": [
+   "/products/luckeep-x2-101/gallery-1.webp",
+   "/products/luckeep-x2-101/gallery-2.webp"
+  ]
+ },
+ {
+  "id": 131,
+  "slug": "zx-x-cool",
+  "name": "ZX-X-COOL",
+  "series": "tricycle",
+  "source": "https://www.zxjtmco.com/?product_36/131.html",
+  "description": "",
+  "specs": [],
+  "thumb": "/products/zx-x-cool/thumb.png",
+  "banner": "/products/zx-x-cool/banner.png",
+  "colors": [
+   {
+    "hex": null,
+    "image": "/products/zx-x-cool/color-1.png"
+   },
+   {
+    "hex": null,
+    "image": "/products/zx-x-cool/color-2.png"
+   },
+   {
+    "hex": null,
+    "image": "/products/zx-x-cool/color-3.png"
+   }
+  ],
+  "gallery": [
+   "/products/zx-x-cool/gallery-1.png"
+  ]
+ },
+ {
+  "id": 132,
+  "slug": "zx-jl",
+  "name": "ZX-JL",
+  "series": "tricycle",
+  "source": "https://www.zxjtmco.com/?product_36/132.html",
+  "description": "",
+  "specs": [],
+  "thumb": "/products/zx-jl/thumb.png",
+  "banner": "/products/zx-jl/banner.png",
+  "colors": [
+   {
+    "hex": "#eff7ff",
+    "image": "/products/zx-jl/color-1.png"
+   }
+  ],
+  "gallery": [
+   "/products/zx-jl/gallery-1.png",
+   "/products/zx-jl/gallery-2.png",
+   "/products/zx-jl/gallery-3.png"
+  ]
+ }
+]
