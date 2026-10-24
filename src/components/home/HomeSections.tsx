@@ -121,7 +121,7 @@ export function ExploreProducts({ models: all, colors }: { models: Model[]; colo
         }}
       >
         <div aria-hidden dir="ltr" className="latin-d watermark pointer-events-none absolute inset-x-0 top-1/2 -translate-y-[55%] select-none whitespace-nowrap text-center text-[19vw] font-black leading-none tracking-tight">
-          ZHONGXIANG
+          EVOLTA
         </div>
         {models.map((x, k) => {
           const d = offset(k);

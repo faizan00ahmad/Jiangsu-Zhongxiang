@@ -1,7 +1,7 @@
 /** Admin back-office copy. Chinese is the default for domestic operators; English for everyone else. */
 
 const zh = {
-  brand: "中祥电动车 · 巴基斯坦海外销售后台",
+  brand: "Evolta Bikes 中祥 · 巴基斯坦海外销售后台",
   nav: { dashboard: "数据统计", models: "车型管理", options: "选配与价格", inventory: "双库存管理", orders: "海外订单", logistics: "跨境物流", users: "海外用户", admins: "权限管理", settings: "系统设置", logout: "退出登录", site: "查看前台", switchTo: "English" },
   roles: { super: "超级管理员", operator: "国内运营", dealer: "巴基斯坦车行" },
   groups: { color: "车身颜色", wheel: "轮毂样式", gps: "GPS 定位", battery: "锂电池容量", display: "显示仪表", cruise: "定速巡航", reverse: "倒车功能", standCut: "支架断电保护", speaker: "蓝牙音箱" },
@@ -228,7 +228,7 @@ const zh = {
 export type AdminDict = typeof zh;
 
 const en: AdminDict = {
-  brand: "Zhongxiang EV · Pakistan Overseas Sales Admin",
+  brand: "Evolta Bikes Zhongxiang · Pakistan Overseas Sales Admin",
   nav: { dashboard: "Statistics", models: "Models", options: "Options & Pricing", inventory: "Dual Inventory", orders: "Overseas Orders", logistics: "Logistics", users: "Overseas Users", admins: "Permissions", settings: "Settings", logout: "Log out", site: "View site", switchTo: "中文" },
   roles: { super: "Super admin", operator: "Domestic operator", dealer: "Pakistan dealership" },
   groups: { color: "Body colour", wheel: "Wheel style", gps: "GPS positioning", battery: "Lithium battery", display: "Display type", cruise: "Cruise control", reverse: "Reverse function", standCut: "Side-stand power-off", speaker: "Bluetooth speaker" },

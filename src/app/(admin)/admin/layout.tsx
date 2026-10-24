@@ -9,7 +9,7 @@ import { currentAdmin, getAdminLang } from "@/lib/server/session";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const space = Space_Grotesk({ variable: "--font-space", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
-export const metadata: Metadata = { title: { default: "中祥电动车 · 管理后台", template: "%s · ZX Admin" }, robots: { index: false, follow: false }, icons: { icon: "/icon.svg" } };
+export const metadata: Metadata = { title: { default: "Evolta Bikes 中祥 · 管理后台", template: "%s · Evolta Admin" }, robots: { index: false, follow: false }, icons: { icon: "/icon.svg" } };
 
 const THEME_SCRIPT = `try{var t=localStorage.getItem("zx-theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t}catch(e){}`;
 

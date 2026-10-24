@@ -1,7 +1,7 @@
 /** Customer-facing copy. English is the source shape; Urdu must provide every key (enforced by the type). */
 
 const en = {
-  brand: { name: "Zhongxiang EV", sub: "Pakistan", company: "Jiangsu Zhongxiang · Overseas EV Division" },
+  brand: { name: "Evolta Bikes Zhongxiang", sub: "Pakistan", company: "Jiangsu Zhongxiang · Overseas EV Division" },
   nav: {
     home: "Home",
     customize: "Vehicle Customize",
@@ -68,6 +68,7 @@ const en = {
       orders: "Your quotations, orders and advance payments.",
       tracking: "Follow your vehicle from Jiangsu to your dealer.",
     },
+    discover: "Discover more",
     seriesTitle: "Meet the Needs of Every Rider",
     seriesText: "From daily scooters to powerful motorcycles and three-wheelers — pick your series and explore the range.",
     entryMeta: ["{n} models", "{n} cities", "Quotes & orders", "{n} stages"],
@@ -146,7 +147,7 @@ const en = {
     download: "Save as image",
     print: "Print / PDF",
     share: "Share",
-    shareText: "My Zhongxiang EV quotation",
+    shareText: "My Evolta Bikes quotation",
     modify: "Modify configuration",
     order: "Place order",
     issued: "Issued",
@@ -327,7 +328,7 @@ const en = {
 export type SiteDict = typeof en;
 
 const ur: SiteDict = {
-  brand: { name: "ژونگ شیانگ ای وی", sub: "پاکستان", company: "جیانگسو ژونگ شیانگ · اوورسیز ای وی ڈویژن" },
+  brand: { name: "ایوولٹا بائیکس ژونگ شیانگ", sub: "پاکستان", company: "جیانگسو ژونگ شیانگ · اوورسیز ای وی ڈویژن" },
   nav: {
     home: "ہوم",
     customize: "گاڑی کی تخصیص",
@@ -394,6 +395,7 @@ const ur: SiteDict = {
       orders: "آپ کی کوٹیشنز، آرڈرز اور ایڈوانس ادائیگیاں۔",
       tracking: "جیانگسو سے آپ کے ڈیلر تک اپنی گاڑی کا سفر دیکھیں۔",
     },
+    discover: "مزید جانیں",
     seriesTitle: "ہر سوار کی ضرورت کے مطابق",
     seriesText: "روزمرہ اسکوٹرز سے طاقتور موٹر سائیکلوں اور تین پہیہ گاڑیوں تک — اپنی سیریز منتخب کریں اور پوری رینج دیکھیں۔",
     entryMeta: ["{n} ماڈلز", "{n} شہر", "کوٹیشن اور آرڈر", "{n} مراحل"],
@@ -472,7 +474,7 @@ const ur: SiteDict = {
     download: "تصویر کے طور پر محفوظ کریں",
     print: "پرنٹ / پی ڈی ایف",
     share: "شیئر کریں",
-    shareText: "میری ژونگ شیانگ ای وی کوٹیشن",
+    shareText: "میری ایوولٹا بائیکس کوٹیشن",
     modify: "ترتیب میں تبدیلی",
     order: "آرڈر کریں",
     issued: "جاری کردہ",

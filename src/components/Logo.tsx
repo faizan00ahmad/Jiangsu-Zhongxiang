@@ -18,8 +18,8 @@ export default function Logo({ size = "nav", className = "", wordmark = true, to
       </svg>
       {wordmark && (
         <span className="flex flex-col leading-none">
-          <span className={`latin-d font-extrabold tracking-[0.14em] ${tone === "white" ? "text-white" : "text-ink"} ${size === "xl" ? "text-3xl" : size === "lg" ? "text-xl" : "text-[15px]"}`}>ZHONGXIANG</span>
-          <span className={`latin mt-1 font-semibold tracking-[0.42em] ${tone === "white" ? "text-white/55" : "text-ink/55"} ${size === "xl" ? "text-xs" : "text-[9px]"}`}>EV · PAKISTAN</span>
+          <span className={`latin-d font-extrabold tracking-[0.14em] ${tone === "white" ? "text-white" : "text-ink"} ${size === "xl" ? "text-3xl" : size === "lg" ? "text-xl" : "text-[15px]"}`}>EVOLTA BIKES</span>
+          <span className={`latin mt-1 font-semibold tracking-[0.42em] ${tone === "white" ? "text-white/55" : "text-ink/55"} ${size === "xl" ? "text-xs" : "text-[9px]"}`}>ZHONGXIANG</span>
         </span>
       )}
     </span>
