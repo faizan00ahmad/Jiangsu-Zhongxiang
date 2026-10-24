@@ -60,7 +60,7 @@ function specsOf(r: Raw, key: string): { specs: Specs; estimated: boolean } {
   const speed = Math.max(...nums(find(t, /max\.?\s*speed|top speed/i)), 0);
   const range = nums(find(t, /range|mileage/i))[0];
   const motor = Math.max(...nums(find(t, /^motor$|rated power|motor power/i)), 0);
-  const charge = nums(find(t, /charg/i))[0];
+  const charge = nums(find(t, /charging time|charge time|time to charge/i))[0];
   const weight = nums(find(t, /net weig|weight/i))[0];
   const specs: Specs = {
     topSpeed: speed || fb.topSpeed,

@@ -4,7 +4,8 @@ import { useTransition } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Globe } from "./Icons";
 
-/** One-click English ⇄ Urdu. Stored in a cookie, so the server renders the right language (and RTL) on every visit. */
+/** One-click English ⇄ Urdu. The choice is kept in a session cookie: it holds while the visitor browses, and every new
+ *  visit (browser reopened) starts in English. To remember it for a year instead, add `max-age=31536000` below. */
 export default function LangSwitch({ className = "", tone = "ink" }: { className?: string; tone?: "ink" | "white" }) {
   const { lang, t } = useI18n();
   const router = useRouter();
@@ -14,10 +15,7 @@ export default function LangSwitch({ className = "", tone = "ink" }: { className
     <button
       type="button"
       onClick={() => {
-        document.cookie = `zx_lang=${next}; path=/; max-age=31536000; samesite=lax`;
-        try {
-          localStorage.setItem("zx-lang", next);
-        } catch {}
+        document.cookie = `zx_lang=${next}; path=/; samesite=lax`;
         document.documentElement.lang = next === "ur" ? "ur-PK" : "en";
         document.documentElement.dir = next === "ur" ? "rtl" : "ltr";
         start(() => router.refresh());

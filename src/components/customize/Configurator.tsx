@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { KIND_META } from "@/lib/catalog";
 import { fill, pkr, signedPkr } from "@/lib/format";
-import { defaultConfig, priceQuote } from "@/lib/pricing";
+import { STD_COLOR, defaultConfig, priceQuote } from "@/lib/pricing";
 import type { Config, GroupKey, Model, OptionGroup, StockStatus } from "@/lib/types";
 import { api, configToQuery, deviceSetups, errorText, rememberQuote, saveDeviceSetup, type DeviceSetup } from "@/lib/client";
 import { useI18n, useToast } from "@/i18n/I18nProvider";
 import Vehicle, { WheelSwatch } from "@/components/vehicle/Vehicle";
 import ModelVisual from "@/components/vehicle/ModelVisual";
+import RecolorImage from "@/components/vehicle/RecolorImage";
 import ProductDetails from "./ProductDetails";
 import { Button, TweenNumber, ease } from "@/components/ui";
 import { Battery, Bookmark, Bolt, Check, Clock, Doc, Gauge, Refresh, User } from "@/components/Icons";
@@ -43,6 +44,8 @@ export default function Configurator({ model, models, options, colors, initial, 
   const color = paint?.hex ?? colors[priced.config.color ?? model.defaultColor] ?? "#cfd4dc";
   const paintPhoto = paint?.image ?? null;
   const realThumb = model.image ?? model.photos.thumb;
+  const [recolorable, setRecolorable] = useState(true);
+  const asShot = priced.config.color === STD_COLOR || !recolorable; // photo shown untouched
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -152,9 +155,9 @@ export default function Configurator({ model, models, options, colors, initial, 
               </>
             ) : realThumb ? (
               <div className="relative flex flex-1 flex-col items-center justify-center px-4 pb-8">
-                {/* no per-colour photos for this model: show the real product, not an illustration */}
-                <motion.img key={realThumb} src={realThumb} alt={model.name} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, ease }} className="max-h-[48vh] w-full max-w-[860px] object-contain mix-blend-multiply drop-shadow-[0_24px_24px_rgba(0,0,0,0.18)]" draggable={false} />
-                <p className="absolute inset-x-4 bottom-2 text-center text-[11px] text-ink/55">{t.customize.paintNote}</p>
+                {/* no per-colour photos for this model: the real photo is repainted in the chosen colour */}
+                <RecolorImage src={realThumb} color={asShot ? null : color} alt={model.name} imgClassName="max-h-[48vh] max-w-[860px]" onAnalysis={setRecolorable} />
+                <p className="absolute inset-x-4 bottom-2 text-center text-[11px] text-ink/55">{asShot ? t.customize.paintNoteStd : t.customize.paintNote}</p>
               </div>
             ) : (
               <div className="relative flex flex-1 items-center justify-center px-2">
@@ -231,7 +234,7 @@ export default function Configurator({ model, models, options, colors, initial, 
 
           <div className="mt-6 space-y-9">
             {options.map((g) => (
-              <OptionGroupView key={g.key} g={g} value={priced.config[g.key]} onPick={(id) => pick(g.key, id)} colors={colors} baseRange={model.specs.range} accent={meta.accent} />
+              <OptionGroupView key={g.key} g={g} value={priced.config[g.key]} onPick={(id) => pick(g.key, id)} colors={colors} baseRange={model.specs.range} accent={meta.accent} photo={realThumb} />
             ))}
           </div>
 
@@ -318,7 +321,7 @@ export default function Configurator({ model, models, options, colors, initial, 
   );
 }
 
-function OptionGroupView({ g, value, onPick, colors, baseRange, accent }: { g: OptionGroup; value?: string; onPick: (id: string) => void; colors: Record<string, string>; baseRange: number; accent: string }) {
+function OptionGroupView({ g, value, onPick, colors, baseRange, accent, photo }: { g: OptionGroup; value?: string; onPick: (id: string) => void; colors: Record<string, string>; baseRange: number; accent: string; photo: string | null }) {
   const { t, tx, lang } = useI18n();
   const items = g.items.filter((i) => i.enabled);
   const sel = items.find((i) => i.id === value);
@@ -336,10 +339,14 @@ function OptionGroupView({ g, value, onPick, colors, baseRange, accent }: { g: O
             {items.map((i) => {
               const on = i.id === value;
               const hex = i.hex ?? colors[i.id];
+              const std = i.id === STD_COLOR && photo;
               return (
                 <button key={i.id} role="radio" aria-checked={on} onClick={() => onPick(i.id)} className="group flex flex-col items-center gap-1.5 text-center">
-                  <span className={`relative grid h-12 w-12 place-items-center rounded-full transition-transform group-hover:scale-110 ${on ? "ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg)]" : "ring-1 ring-ink/20"}`} style={{ background: `radial-gradient(circle at 30% 28%, rgba(255,255,255,0.55), transparent 42%), ${hex}` }}>
-                    {on && <Check size={18} className={hex && parseInt(hex.slice(1), 16) > 0xb0b0b0 ? "text-black" : "text-white"} />}
+                  <span
+                    className={`relative grid h-12 w-12 place-items-center overflow-hidden rounded-full transition-transform group-hover:scale-110 ${on ? "ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg)]" : "ring-1 ring-ink/20"}`}
+                    style={std ? { backgroundColor: "#fff", backgroundImage: `url(${photo})`, backgroundSize: "175%", backgroundPosition: "40% 55%" } : { background: `radial-gradient(circle at 30% 28%, rgba(255,255,255,0.55), transparent 42%), ${hex}` }}
+                  >
+                    {on && <Check size={18} className={std ? "text-[var(--accent)] drop-shadow" : hex && parseInt(hex.slice(1), 16) > 0xb0b0b0 ? "text-black" : "text-white"} />}
                   </span>
                   <span className="text-[11px] leading-tight text-ink/75">{tx(i.label)}</span>
                   <span className="text-[10px] text-ink/45">{i.price ? `+${(i.price / 1000).toFixed(1).replace(/\.0$/, "")}k` : t.common.included}</span>

@@ -4,13 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { KIND_META, KIND_ORDER } from "@/lib/catalog";
 import { fill, pkr } from "@/lib/format";
-import type { Model, VehicleKind } from "@/lib/types";
+import type { Model, Series, VehicleKind } from "@/lib/types";
 import { useI18n } from "@/i18n/I18nProvider";
 import ModelVisual from "@/components/vehicle/ModelVisual";
 import Logo from "@/components/Logo";
 import { Button, Reveal, SectionTitle, SpotCard, ease } from "@/components/ui";
 import { Arrow, Back, Battery, Bolt, ChevronFwd, Clock, Gauge } from "@/components/Icons";
-import { CORE_ENTRIES } from "@/components/Navbar";
 
 const BRAND = "ZX";
 
@@ -38,38 +37,18 @@ const PkFlag = () => (
   </svg>
 );
 
-/* ───────────── the four fixed core entries ───────────── */
-export function CoreEntries() {
-  const { t } = useI18n();
-  return (
-    <section className="relative z-10 -mt-px border-b border-black/5 bg-white">
-      <nav aria-label={t.nav.menu} className="mx-auto grid max-w-[1440px] grid-cols-2 lg:grid-cols-4">
-        {CORE_ENTRIES.map(({ key, href, Icon, color }, k) => (
-          <motion.div key={key} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: k * 0.08, duration: 0.7, ease }} className="border-black/5 [&:not(:last-child)]:border-e max-lg:[&:nth-child(-n+2)]:border-b max-lg:[&:nth-child(2)]:border-e-0">
-            <Link href={href} className="group flex h-full items-center gap-4 px-5 py-6 transition-colors hover:bg-[#f7f7f8] md:px-8">
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" style={{ background: `${color}18`, color }}>
-                <Icon size={22} />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-semibold text-[#111]">{t.nav[key]}</span>
-                <span className="mt-0.5 hidden text-[13px] leading-snug text-[#111]/55 sm:block">{t.home.entries[key]}</span>
-              </span>
-              <ChevronFwd size={16} className="shrink-0 text-[var(--volt)] transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-            </Link>
-          </motion.div>
-        ))}
-      </nav>
-    </section>
-  );
-}
-
 /* ───────────── Explore products carousel ───────────── */
-export function ExploreProducts({ models, colors }: { models: Model[]; colors: Record<string, string> }) {
+const SERIES_ORDER: Series[] = ["scooter", "motorcycle", "tricycle", "eec", "light", "bicycle"];
+
+export function ExploreProducts({ models: all, colors }: { models: Model[]; colors: Record<string, string> }) {
   const { t, tx, lang } = useI18n();
+  const seriesList = SERIES_ORDER.filter((s) => all.some((m) => m.series === s));
+  const [series, setSeries] = useState<Series>(seriesList[0] ?? "scooter");
+  const models = all.filter((m) => m.series === series);
   const [i, setI] = useState(0);
   const n = models.length;
-  const m = models[i];
-  const go = useCallback((d: number) => setI((v) => (v + d + n) % n), [n]);
+  const m = models[Math.min(i, n - 1)];
+  const go = useCallback((d: number) => setI((v) => (n ? (v + d + n) % n : 0)), [n]);
   const touch = useRef<number | null>(null);
   const dir = lang === "ur" ? -1 : 1;
 
@@ -101,17 +80,38 @@ export function ExploreProducts({ models, colors }: { models: Model[]; colors: R
   ];
 
   return (
-    <section id="explore" className="relative overflow-hidden bg-white py-16 md:py-20">
-      <BrandTitle tpl={t.home.explore} />
-      <AnimatePresence mode="wait">
-        <motion.div key={m.slug} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease }} className="mt-8 text-center">
-          <p className="latin-d text-3xl font-semibold text-[#111] md:text-[40px]">{m.name}</p>
-          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#111]/50">{tx(KIND_META[m.kind].label)}</p>
-        </motion.div>
-      </AnimatePresence>
+    <section id="explore" className="relative overflow-hidden bg-white pb-16 pt-16 md:pb-20 md:pt-20">
+      <Reveal y={20}>
+        <h2 className="font-display mx-auto max-w-3xl px-5 text-center text-3xl font-semibold leading-tight tracking-tight text-[#111] md:text-[44px]">{t.home.seriesTitle}</h2>
+        <p className="mx-auto mt-3 max-w-xl px-5 text-center text-[15px] text-[#111]/55">{t.home.seriesText}</p>
+      </Reveal>
+
+      {/* series tabs */}
+      <div className="mt-10 border-y border-black/5 bg-[#f5f5f6]">
+        <div role="tablist" aria-label={t.home.seriesTitle} className="mx-auto flex max-w-5xl justify-start gap-1 overflow-x-auto px-3 [scrollbar-width:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+          {seriesList.map((s) => {
+            const on = s === series;
+            return (
+              <button
+                key={s}
+                role="tab"
+                aria-selected={on}
+                onClick={() => {
+                  setSeries(s);
+                  setI(0);
+                }}
+                className={`relative shrink-0 px-5 py-4 text-[15px] transition-colors md:px-8 ${on ? "font-bold text-[#111]" : "font-medium text-[#111]/55 hover:text-[#111]"}`}
+              >
+                {t.series[s]}
+                {on && <motion.span layoutId="series-underline" className="absolute inset-x-4 bottom-0 h-[3px] rounded-full bg-[var(--volt)]" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <div
-        className="relative mx-auto mt-4 h-[230px] max-w-[1600px] select-none sm:h-[320px] md:h-[400px]"
+        className="relative mx-auto mt-6 h-[230px] max-w-[1600px] select-none sm:h-[320px] md:h-[420px]"
         onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
         onTouchEnd={(e) => {
           if (touch.current === null) return;
@@ -143,14 +143,24 @@ export function ExploreProducts({ models, colors }: { models: Model[]; colors: R
             </motion.button>
           );
         })}
-        <button onClick={() => go(-dir)} aria-label="Previous" className="absolute start-[6%] top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-white text-[#111]/60 shadow-sm transition hover:text-[#111] sm:start-[18%] md:start-[21%]">
-          <Back size={15} />
-        </button>
-        <button onClick={() => go(dir)} aria-label="Next" className="absolute end-[6%] top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-white text-[#111]/60 shadow-sm transition hover:text-[#111] sm:end-[18%] md:end-[21%]">
-          <Arrow size={15} />
-        </button>
+        {n > 1 && (
+          <>
+            <button onClick={() => go(-dir)} aria-label="Previous" className="absolute start-[4%] top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-black/15 text-white backdrop-blur transition hover:bg-black/60 sm:start-[12%] md:start-[10%]">
+              <Back size={18} />
+            </button>
+            <button onClick={() => go(dir)} aria-label="Next" className="absolute end-[4%] top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-black/15 text-white backdrop-blur transition hover:bg-black/60 sm:end-[12%] md:end-[10%]">
+              <Arrow size={18} />
+            </button>
+          </>
+        )}
       </div>
 
+      <AnimatePresence mode="wait">
+        <motion.div key={m.slug} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease }} className="mt-8 text-center">
+          <p className="latin-d text-3xl font-extrabold uppercase tracking-tight text-[#111] md:text-[40px]">{m.name}</p>
+          <p className="mx-auto mt-1 max-w-md px-5 text-sm text-[#111]/55">{tx(m.tagline)}</p>
+        </motion.div>
+      </AnimatePresence>
       <dl className="mx-auto mt-8 grid max-w-2xl grid-cols-3 gap-4 px-5 text-center">
         {specs.map(({ I, l, v }) => (
           <div key={l}>
@@ -175,6 +185,13 @@ export function ExploreProducts({ models, colors }: { models: Model[]; colors: R
           {t.home.stockBtn}
         </Button>
       </div>
+      {n > 1 && (
+        <div className="mt-6 flex justify-center gap-1.5" dir="ltr">
+          {models.map((x, k) => (
+            <button key={x.slug} onClick={() => setI(k)} aria-label={x.name} aria-current={k === i} className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-[#111]" : "w-4 bg-black/15 hover:bg-black/30"}`} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -10,13 +10,14 @@ import type { VehicleKind } from "@/lib/types";
 import Logo from "./Logo";
 import LangSwitch from "./LangSwitch";
 import Vehicle from "./vehicle/Vehicle";
-import { Boxes, Chevron, ChevronFwd, Receipt, Sliders, Truck, User } from "./Icons";
+import { Chevron, ChevronFwd, User } from "./Icons";
+import { IconConfigure, IconOrders, IconStock, IconTrack } from "./CoreIcons";
 
 export const CORE_ENTRIES = [
-  { key: "customize", href: "/customize", Icon: Sliders, color: "#16b364" },
-  { key: "inventory", href: "/inventory", Icon: Boxes, color: "#f59e0b" },
-  { key: "orders", href: "/orders", Icon: Receipt, color: "#3d8bff" },
-  { key: "tracking", href: "/tracking", Icon: Truck, color: "#ef4444" },
+  { key: "customize", href: "/customize", Icon: IconConfigure, color: "#16b364", rgb: "22,179,100" },
+  { key: "inventory", href: "/inventory", Icon: IconStock, color: "#f59e0b", rgb: "245,158,11" },
+  { key: "orders", href: "/orders", Icon: IconOrders, color: "#3d8bff", rgb: "61,139,255" },
+  { key: "tracking", href: "/tracking", Icon: IconTrack, color: "#ef4444", rgb: "239,68,68" },
 ] as const;
 
 export type NavModel = { slug: string; name: string; kind: VehicleKind; variant: number; color: string; basePrice: number; thumb: string | null };
@@ -187,7 +188,7 @@ export default function Navbar({ user, models }: { user: { name: string } | null
               {CORE_ENTRIES.map((m, i) => (
                 <motion.li key={m.href} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="border-b border-black/10">
                   <Link href={m.href} className="font-display flex items-center gap-3 py-4 text-xl font-semibold text-ink">
-                    <m.Icon size={20} style={{ color: m.color }} />
+                    <m.Icon size={22} className="ico-static" style={{ color: m.color }} />
                     {t.nav[m.key]}
                   </Link>
                 </motion.li>

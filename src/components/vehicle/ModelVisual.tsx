@@ -1,6 +1,8 @@
 "use client";
 import { KIND_META } from "@/lib/catalog";
 import type { Model } from "@/lib/types";
+import { STD_COLOR } from "@/lib/pricing";
+import RecolorImage from "./RecolorImage";
 import Vehicle from "./Vehicle";
 
 export type VisualModel = Pick<Model, "kind" | "variant" | "name" | "image" | "photos" | "colors">;
@@ -36,6 +38,10 @@ export default function ModelVisual({
   photo?: boolean;
 }) {
   const p = photo ? photoFor(model, colorId) : null;
+  // a single-photo model shows the colour the customer picked (quote, order, checkout, account)
+  if (p && !p.scene && colorId && colorId !== STD_COLOR) {
+    return <RecolorImage src={p.src} color={color} alt={model.name} className="w-full" imgClassName={className} />;
+  }
   if (p) {
     return (
       // eslint-disable-next-line @next/next/no-img-element

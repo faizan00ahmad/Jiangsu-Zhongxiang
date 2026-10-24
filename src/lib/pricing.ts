@@ -5,13 +5,24 @@ import type { Config, GroupKey, Model, OptionGroup, OptionItem, QuoteLine } from
 const enabledItems = (g: OptionGroup) => g.items.filter((i) => i.enabled);
 
 /** Option groups as they apply to one model: a model with real factory paints uses those instead of the generic palette. */
-export function groupsFor(model: Pick<Model, "colors">, options: OptionGroup[]): OptionGroup[] {
+export const STD_COLOR = "std";
+
+export function groupsFor(model: Pick<Model, "colors" | "photos" | "image">, options: OptionGroup[]): OptionGroup[] {
   const live = options.filter((g) => g.enabled && enabledItems(g).length > 0);
   const paints = (model.colors ?? []).filter((c) => c.enabled);
+  const photo = model.image ?? model.photos?.thumb ?? null;
   const hint = paints.length
     ? { en: "The photo changes with every paint.", ur: "ہر رنگ کے ساتھ تصویر بدلتی ہے۔" }
-    : { en: "Choose your paint. It is applied at the factory.", ur: "اپنا رنگ منتخب کریں۔ یہ فیکٹری میں لگایا جائے گا۔" };
-  return live.map((g) => (g.key !== "color" ? g : paints.length ? { ...g, hint, items: paints.map((c) => ({ id: c.id, label: c.label, price: c.price, enabled: true, hex: c.hex })) } : { ...g, hint }));
+    : photo
+      ? { en: "Pick a colour to preview it on the product photo.", ur: "پروڈکٹ کی تصویر پر دیکھنے کے لیے رنگ منتخب کریں۔" }
+      : { en: "Choose your paint. It is applied at the factory.", ur: "اپنا رنگ منتخب کریں۔ یہ فیکٹری میں لگایا جائے گا۔" };
+  // a model with one photo gets a "Standard" swatch (the photo as shot) ahead of the colours that recolour it
+  const standard: OptionItem = { id: STD_COLOR, label: { en: "Standard", ur: "معیاری" }, price: 0, enabled: true };
+  return live.map((g) => {
+    if (g.key !== "color") return g;
+    if (paints.length) return { ...g, hint, items: paints.map((c) => ({ id: c.id, label: c.label, price: c.price, enabled: true, hex: c.hex })) };
+    return { ...g, hint, items: photo ? [standard, ...g.items] : g.items };
+  });
 }
 
 /** Kept for callers that only need the global, model-independent groups. */
@@ -21,7 +32,7 @@ export function defaultConfig(model: Model, options: OptionGroup[]): Config {
   const c: Config = {};
   for (const g of groupsFor(model, options)) {
     const items = enabledItems(g);
-    const preferred = g.key === "color" ? items.find((i) => i.id === model.defaultColor) : undefined;
+    const preferred = g.key === "color" ? (items.find((i) => i.id === STD_COLOR) ?? items.find((i) => i.id === model.defaultColor)) : undefined;
     c[g.key] = (preferred ?? items.find((i) => i.price === 0) ?? items[0]).id;
   }
   return c;

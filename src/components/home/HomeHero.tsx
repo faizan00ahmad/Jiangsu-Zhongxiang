@@ -29,7 +29,7 @@ export default function HomeHero({ models, colors, title, text }: { models: Mode
 
   return (
     <section className="banner relative overflow-hidden pt-16" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} aria-roledescription="carousel">
-      <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-10 md:px-16 md:pt-12">
+      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-10 md:px-16 md:pt-12">
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease }} className="text-center">
           <h1 className={`font-display mx-auto max-w-4xl text-[clamp(2.2rem,6vw,4.6rem)] font-black leading-[0.95] text-[#111] ${lang === "ur" ? "" : "-skew-x-6 uppercase italic"}`}>{tx(title)}</h1>
           <p className={`mx-auto mt-3 max-w-xl text-sm text-[#111]/70 md:text-base ${lang === "ur" ? "" : "italic"}`}>{tx(text)}</p>

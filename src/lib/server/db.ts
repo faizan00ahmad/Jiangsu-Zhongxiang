@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { DB_VERSION, type DB, type Order } from "../types";
+import { importCatalog } from "./catalogImport";
 import { buildSeed } from "./seed";
 
 /** Single-file JSON store. One in-memory copy per process (kept on globalThis so every route bundle shares it),
@@ -47,6 +48,20 @@ function sharedSecret() {
   return crypto.createHash("sha256").update(seed).digest("base64url");
 }
 
+/** An early import read the range figure as the charging time (e.g. "90 h"). Fix those models in place, keep everything else. */
+function repairCharging(db: DB): boolean {
+  let changed = false;
+  const fresh = new Map(importCatalog().map((m) => [m.slug, m.specs.charge]));
+  for (const m of db.models) {
+    const right = fresh.get(m.slug);
+    if (right && m.specs.charge === m.specs.range && m.specs.charge !== right) {
+      m.specs.charge = right;
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 function load(): Promise<DB> {
   if (store.data) return Promise.resolve(store.data);
   // concurrent first requests share one read (or one seed)
@@ -64,6 +79,8 @@ function load(): Promise<DB> {
     }
     if (!current) {
       current = buildSeed();
+      await persist(current);
+    } else if (repairCharging(current)) {
       await persist(current);
     }
     const shared = sharedSecret();
