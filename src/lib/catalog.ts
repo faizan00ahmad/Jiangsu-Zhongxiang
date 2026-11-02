@@ -77,6 +77,8 @@ export const STAGES: { key: string; days: number; title: L & { zh: string }; det
   },
 ];
 export const LAST_STAGE = STAGES.length - 1;
+/** First stage at which the pickup store is fixed: once the vehicle is on its last leg to the store it can no longer change. */
+export const PICKUP_LOCK_STAGE = STAGES.findIndex((s) => s.key === "local");
 
 /** Days still to go from the start of `stage` until the vehicle is in store. */
 export const daysRemaining = (stage: number) => STAGES.slice(Math.max(stage, 1)).reduce((s, x) => s + x.days, 0);

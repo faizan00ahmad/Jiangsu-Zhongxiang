@@ -12,6 +12,7 @@ import LangSwitch from "./LangSwitch";
 import Vehicle from "./vehicle/Vehicle";
 import { Chevron, ChevronFwd, User } from "./Icons";
 import { IconConfigure, IconOrders, IconStock, IconTrack } from "./CoreIcons";
+import type { NavLink } from "@/lib/server/siteConfig";
 
 export const CORE_ENTRIES = [
   { key: "customize", href: "/customize", Icon: IconConfigure, color: "#16b364", rgb: "22,179,100" },
@@ -29,7 +30,7 @@ function NavThumb({ m }: { m: NavModel }) {
 }
 
 /** REVOO-style header: dark translucent bar, logo left, Products mega menu + the four core entries right. */
-export default function Navbar({ user, models }: { user: { name: string } | null; models: NavModel[] }) {
+export default function Navbar({ user, models, links }: { user: { name: string } | null; models: NavModel[]; links: NavLink[] }) {
   const { t, tx, lang } = useI18n();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -91,10 +92,10 @@ export default function Navbar({ user, models }: { user: { name: string } | null
               {t.nav.products}
               <Chevron size={14} className={`transition-transform ${products ? "rotate-180" : ""}`} />
             </button>
-            {CORE_ENTRIES.map(({ key, href }) => (
-              <Link key={key} href={href} onMouseEnter={() => setMenuFor(null)} aria-current={active(href) ? "page" : undefined} className={`relative rounded-md px-3 py-2 text-[13px] font-medium transition ${active(href) ? "text-white" : "text-white/75 hover:text-white"}`}>
-                {t.nav[key]}
-                {active(href) && <motion.span layoutId="nav-underline" className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded bg-[var(--volt)]" />}
+            {links.map((l) => (
+              <Link key={l.href + l.label.en} href={l.href} onMouseEnter={() => setMenuFor(null)} aria-current={active(l.href) ? "page" : undefined} {...(l.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={`relative rounded-md px-3 py-2 text-[13px] font-medium transition ${active(l.href) ? "text-white" : "text-white/75 hover:text-white"}`}>
+                {tx(l.label)}
+                {active(l.href) && <motion.span layoutId="nav-underline" className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded bg-[var(--volt)]" />}
               </Link>
             ))}
           </nav>
@@ -185,14 +186,17 @@ export default function Navbar({ user, models }: { user: { name: string } | null
                   )}
                 </AnimatePresence>
               </motion.li>
-              {CORE_ENTRIES.map((m, i) => (
-                <motion.li key={m.href} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="border-b border-black/10">
-                  <Link href={m.href} className="font-display flex items-center gap-3 py-4 text-xl font-semibold text-ink">
-                    <m.Icon size={22} className="ico-static" style={{ color: m.color }} />
-                    {t.nav[m.key]}
-                  </Link>
-                </motion.li>
-              ))}
+              {links.map((m, i) => {
+                const core = CORE_ENTRIES.find((c) => c.key === m.key);
+                return (
+                  <motion.li key={m.href + m.label.en} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="border-b border-black/10">
+                    <Link href={m.href} className="font-display flex items-center gap-3 py-4 text-xl font-semibold text-ink" {...(m.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                      {core && <core.Icon size={22} className="ico-static" style={{ color: core.color }} />}
+                      {tx(m.label)}
+                    </Link>
+                  </motion.li>
+                );
+              })}
             </ul>
             <Link href={user ? "/account" : "/login"} className="mt-8 flex h-12 items-center justify-center gap-2 rounded-md bg-[#111] font-semibold text-white">
               <User size={18} />

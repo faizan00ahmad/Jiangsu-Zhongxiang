@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { api } from "@/lib/client";
+import { DEMO_ADMINS, DEMO_ON } from "@/lib/demo";
 import Logo from "@/components/Logo";
 import { useAdmin } from "./AdminProvider";
 import AdminLangSwitch from "./AdminLangSwitch";
 import { Btn, Field, inputCls } from "./ui";
 
 export default function AdminLogin() {
-  const { t, err } = useAdmin();
+  const { t, err, lang } = useAdmin();
   const router = useRouter();
   const [u, setU] = useState("");
   const [p, setP] = useState("");
@@ -58,6 +59,21 @@ export default function AdminLogin() {
         <Btn tone="primary" disabled={busy} className="mt-6 h-11 w-full">
           {busy ? t.login.working : t.login.submit}
         </Btn>
+        {DEMO_ON && (
+          <div className="mt-6 rounded-2xl border border-ink/12 bg-ink/[0.04] p-3">
+            <p className="px-1 text-xs font-semibold uppercase tracking-wider text-ink/50">{lang === "zh" ? "演示账号（点击填入）" : "Demo logins (tap to fill)"}</p>
+            <ul className="mt-2 space-y-0.5">
+              {DEMO_ADMINS.map((a) => (
+                <li key={a.username}>
+                  <button type="button" onClick={() => (setU(a.username), setP(a.password))} className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-start text-sm transition hover:bg-ink/[0.07]">
+                    <span>{a.label[lang]}</span>
+                    <span className="latin shrink-0 text-xs text-ink/55">{a.username}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </motion.form>
     </div>
   );

@@ -1,5 +1,5 @@
 import { verifyPassword } from "@/lib/server/crypto";
-import { getDb } from "@/lib/server/db";
+import { getDb, mutate } from "@/lib/server/db";
 import { clientIp, fail, ok, readJson, str, throttled } from "@/lib/server/http";
 import { startAdminSession } from "@/lib/server/session";
 
@@ -12,5 +12,9 @@ export async function POST(req: Request) {
   const a = (await getDb()).admins.find((x) => x.username === username);
   if (!a || a.disabled || !verifyPassword(password, a.passwordHash)) return fail("bad_credentials", 401);
   await startAdminSession(a.id);
+  await mutate((db) => {
+    const row = db.admins.find((x) => x.id === a.id);
+    if (row) row.lastLoginAt = new Date().toISOString();
+  });
   return ok();
 }

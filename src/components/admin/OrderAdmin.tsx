@@ -3,19 +3,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { CITIES, LAST_STAGE, STAGES } from "@/lib/catalog";
 import { date, dateTime, fill, n } from "@/lib/format";
-import type { AdminRole, Order, User } from "@/lib/types";
-import { Back, Check } from "@/components/Icons";
+import type { Order, User } from "@/lib/types";
+import { Back, Check, Printer } from "@/components/Icons";
 import { useAdmin } from "./AdminProvider";
 import { Btn, Card, Field, Pill, STATUS_COLOR, inputCls } from "./ui";
 
-export default function OrderAdmin({ order: o, user, dealer, role }: { order: Order; user: Pick<User, "name" | "phone" | "email"> | null; dealer: { name: string; city: string; phone: string } | null; role: AdminRole }) {
-  const { t, lang, call } = useAdmin();
-  const isDealer = role === "dealer";
+export default function OrderAdmin({ order: o, user, dealer, dealerScope, stores }: { order: Order; user: Pick<User, "name" | "phone" | "email"> | null; dealer: { name: string; city: string; phone: string } | null; dealerScope: boolean; stores: { id: string; name: string; city: string }[] }) {
+  const { t, k, lang, call, can, confirm } = useAdmin();
+  const isDealer = dealerScope;
+  const [note, setNote] = useState("");
   const live = o.status === "active";
   const [target, setTarget] = useState(Math.min(o.stage + 1, LAST_STAGE));
   const [eta, setEta] = useState("");
   const [ship, setShip] = useState({ trackingNo: o.trackingNo ?? "", carrier: o.carrier ?? "", eta: o.eta ? o.eta.slice(0, 10) : "" });
-  const [confirm, setConfirm] = useState(false);
   const act = (body: Record<string, unknown>) => call(`/api/admin/orders/${o.id}`, body, "PATCH");
   const stageOptions = STAGES.map((s, i) => ({ i, s })).filter(({ i }) => i >= 1 && (!isDealer || i >= LAST_STAGE - 1));
 
@@ -28,6 +28,9 @@ export default function OrderAdmin({ order: o, user, dealer, role }: { order: Or
         <h1 className="font-display text-3xl font-bold">{o.id}</h1>
         <Pill color={STATUS_COLOR[o.status]}>{t.orders.statuses[o.status]}</Pill>
         <span className="text-sm text-ink/50">{dateTime(o.createdAt, lang)}</span>
+        <Link href={`/admin/orders/${o.id}/invoice`} target="_blank" className="ms-auto inline-flex h-9 items-center gap-1.5 rounded-lg border border-ink/15 px-3.5 text-sm hover:bg-ink/10">
+          <Printer size={15} /> {lang === "zh" ? "打印发票" : "Print invoice"}
+        </Link>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
@@ -114,6 +117,13 @@ export default function OrderAdmin({ order: o, user, dealer, role }: { order: Or
                     <td className="py-2 text-end tabular-nums">{l.price ? `+ ${n(l.price)}` : "—"}</td>
                   </tr>
                 ))}
+                {!!o.discount && (
+                  <tr>
+                    <td className="py-2 text-ink/60">{k.modules.coupons}</td>
+                    <td className="latin py-2">{o.couponCode}</td>
+                    <td className="py-2 text-end tabular-nums text-[var(--volt)]">− {n(o.discount)}</td>
+                  </tr>
+                )}
                 <tr className="font-bold">
                   <td className="py-2">{t.common.total}</td>
                   <td />
@@ -121,6 +131,32 @@ export default function OrderAdmin({ order: o, user, dealer, role }: { order: Or
                 </tr>
               </tbody>
             </table>
+          </Card>
+
+          <Card title={lang === "zh" ? "内部备注（客户看不到）" : "Internal notes (never shown to the customer)"}>
+            <ul className="mb-3 space-y-2 text-sm">
+              {(o.notes ?? []).length === 0 && <li className="text-ink/45">—</li>}
+              {[...(o.notes ?? [])].reverse().map((x, i) => (
+                <li key={i} className="rounded-lg bg-ink/[0.05] p-2.5">
+                  <span className="block text-xs text-ink/45">
+                    {dateTime(x.at, lang)} · {x.by}
+                  </span>
+                  {x.text}
+                </li>
+              ))}
+            </ul>
+            <form
+              className="flex gap-2"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (note.trim() && (await act({ action: "note", text: note }))) setNote("");
+              }}
+            >
+              <input className={inputCls} value={note} onChange={(e) => setNote(e.target.value)} maxLength={600} aria-label={lang === "zh" ? "备注" : "Note"} />
+              <Btn tone="primary" disabled={!note.trim() || !can("orders.edit")}>
+                {k.form.save}
+              </Btn>
+            </form>
           </Card>
 
           <Card title={t.orders.history}>
@@ -164,20 +200,38 @@ export default function OrderAdmin({ order: o, user, dealer, role }: { order: Or
             <dl className="space-y-2 text-sm">
               <Row k={t.orders.contact} v={`${o.contact.name} · ${o.contact.phone}`} />
               {user && <Row k={t.orders.customer} v={`${user.name} · ${user.phone}${user.email ? ` · ${user.email}` : ""}`} />}
-              {dealer && <Row k={t.orders.dealer} v={`${dealer.name} · ${dealer.city} · ${dealer.phone}`} />}
+              {dealer ? <Row k={t.orders.dealer} v={`${dealer.name} · ${dealer.city} · ${dealer.phone}`} /> : <Row k={t.orders.dealer} v={lang === "zh" ? "客户尚未选择取车门店" : "Customer has not chosen a store yet"} />}
               <Row k={t.inventory.city} v={CITIES[o.contact.city][lang]} />
             </dl>
+            {!isDealer && can("orders.edit") && o.status !== "cancelled" && o.status !== "expired" && o.status !== "completed" && (
+              <label className="mt-4 block">
+                <span className="mb-1 block text-xs font-medium text-ink/60">{lang === "zh" ? "指派/更改取车门店" : "Assign or change the pickup store"}</span>
+                <select
+                  className={inputCls}
+                  value={o.contact.dealerId ?? ""}
+                  onChange={async (e) => {
+                    if (e.target.value) await act({ action: "pickup", dealerId: e.target.value });
+                  }}
+                >
+                  <option value="">{k.form.none}</option>
+                  {stores.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name} · {s.city}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </Card>
           {!isDealer && (o.status === "pending_payment" || o.status === "active") && (
             <Btn
-              tone={confirm ? "danger" : "ghost"}
+              tone="danger"
               className="w-full"
-              onClick={() => {
-                if (!confirm) return setConfirm(true);
-                act({ action: "cancel" });
+              onClick={async () => {
+                if (await confirm(lang === "zh" ? "确定取消该订单吗？" : "Cancel this order?")) act({ action: "cancel" });
               }}
             >
-              {confirm ? t.common.confirmAgain : t.orders.cancel}
+              {t.orders.cancel}
             </Btn>
           )}
         </aside>

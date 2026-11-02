@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CITIES, CITY_ORDER } from "@/lib/catalog";
 import { api, deviceQuoteIds, errorText } from "@/lib/client";
+import { DEMO_CUSTOMERS, DEMO_ON } from "@/lib/demo";
 import type { CityKey } from "@/lib/types";
 import Logo from "@/components/Logo";
 import { Button, Notice } from "@/components/ui";
@@ -90,6 +91,25 @@ export default function AuthForm({ mode, next }: { mode: "login" | "register"; n
         <Button type="submit" disabled={busy} magnetic={false} className="mt-6 w-full">
           {busy ? t.auth.working : reg ? t.auth.register : t.auth.login}
         </Button>
+        {!reg && DEMO_ON && (
+          <div className="mt-6 rounded-2xl border border-ink/12 bg-ink/[0.04] p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-ink/50">Demo accounts</p>
+            <ul className="mt-2 space-y-1.5">
+              {DEMO_CUSTOMERS.map((c) => (
+                <li key={c.phone}>
+                  <button type="button" onClick={() => setF({ ...f, phone: c.phone, password: c.password })} className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-start text-sm transition hover:bg-ink/[0.07]">
+                    <span>
+                      <b>{c.name}</b>
+                      <span className="block text-xs text-ink/55">{c.label.en}</span>
+                    </span>
+                    <span className="latin shrink-0 text-xs text-ink/55">{c.phone}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[11px] text-ink/45">Tap one to fill the form, then press Log in. Password for all: <span className="latin">Demo@2026</span></p>
+          </div>
+        )}
         <p className="mt-5 text-center text-sm text-ink/60">
           {reg ? t.auth.haveAccount : t.auth.noAccount}{" "}
           <Link href={`/${reg ? "login" : "register"}?next=${encodeURIComponent(next)}`} className="font-semibold text-[var(--volt)] hover:underline">

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { ROLE_ACCESS } from "../roles";
-import type { Admin, AdminLang, Lang, User } from "../types";
+import { has } from "../perms";
+import type { Admin, AdminCtx, AdminLang, Lang, User } from "../types";
 import { readToken, signToken } from "./crypto";
 import { getDb } from "./db";
 
@@ -43,14 +43,19 @@ export async function currentUser(): Promise<User | null> {
   return u && !u.disabled ? u : null;
 }
 
-export async function currentAdmin(): Promise<Admin | null> {
+/** The signed-in admin with the permissions of their role resolved. A role that was deleted leaves its admins with no access. */
+export async function currentAdmin(): Promise<AdminCtx | null> {
   const p = readToken<{ aid: string }>((await cookies()).get(ADMIN_COOKIE)?.value, await secretOf());
   if (!p) return null;
-  const a = (await getDb()).admins.find((x) => x.id === p.aid);
-  return a && !a.disabled ? a : null;
+  const db = await getDb();
+  const a = db.admins.find((x) => x.id === p.aid);
+  if (!a || a.disabled) return null;
+  const role = db.roles.find((r) => r.id === a.role);
+  return { ...a, perms: role?.perms ?? [], scope: role?.scope ?? "dealer" };
 }
 
-export const can = (a: Admin | null, area: string) => !!a && ROLE_ACCESS[a.role].includes(area);
+/** `can(admin, "orders.edit")`, or `can(admin, "orders")` for "any action on orders". */
+export const can = (a: AdminCtx | null, perm: string) => !!a && has(a.perms, perm);
 
 /** Public view of a user/admin — never send password hashes to the browser. */
 export const publicUser = (u: User) => ({ id: u.id, name: u.name, phone: u.phone, email: u.email, city: u.city, createdAt: u.createdAt });

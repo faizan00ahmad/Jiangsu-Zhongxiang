@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import AdminShell from "@/components/admin/AdminShell";
+import AdminShell, { type Alerts } from "@/components/admin/AdminShell";
+import { visibleOrders } from "@/lib/server/admin";
 import { getDb } from "@/lib/server/db";
 import { currentAdmin } from "@/lib/server/session";
 
@@ -8,9 +9,16 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   if (!admin) redirect("/admin/login");
   const db = await getDb();
   const dealer = admin.dealerId ? db.dealers.find((d) => d.id === admin.dealerId) : null;
-  const pending = db.orders.filter((o) => o.status === "pending_payment" || (o.payment && !o.payment.verified)).length;
+  const orders = visibleOrders(db, admin);
+  const alerts: Alerts = {
+    orders: orders.filter((o) => o.payment && !o.payment.verified && o.status !== "cancelled").length,
+    reviews: db.reviews.filter((r) => r.status === "pending").length,
+    enquiries: db.enquiries.filter((e) => e.status === "new").length,
+    chat: db.chats.reduce((n, c) => n + (c.status === "open" ? c.unread : 0), 0),
+    inventory: db.models.filter((m) => m.enabled && (db.factoryStock[m.slug] ?? 0) <= db.settings.lowStock).length,
+  };
   return (
-    <AdminShell dealerName={dealer?.name.en ?? null} badge={admin.role === "dealer" ? 0 : pending}>
+    <AdminShell dealerName={dealer?.name.en ?? null} alerts={alerts}>
       {children}
     </AdminShell>
   );

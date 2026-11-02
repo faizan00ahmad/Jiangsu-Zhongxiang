@@ -1,14 +1,14 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CITIES, CITY_ORDER } from "@/lib/catalog";
 import { fill, pkr, signedPkr } from "@/lib/format";
 import { api, errorText } from "@/lib/client";
-import type { CityKey, Dealer, QuoteLine, StockStatus } from "@/lib/types";
+import type { CityKey, QuoteLine, StockStatus } from "@/lib/types";
 import ModelVisual, { type VisualModel } from "@/components/vehicle/ModelVisual";
 import { Button, Notice } from "@/components/ui";
-import { Lock, Phone, Pin, Store } from "@/components/Icons";
+import { Lock, Store } from "@/components/Icons";
 
 type Props = {
   quoteId: string;
@@ -23,7 +23,6 @@ type Props = {
   depositPercent: number;
   lockHours: number;
   stock: StockStatus;
-  dealers: Dealer[];
   me: { name: string; phone: string; city: CityKey };
 };
 
@@ -32,21 +31,18 @@ export default function CheckoutForm(p: Props) {
   const router = useRouter();
   const [name, setName] = useState(p.me.name);
   const [phone, setPhone] = useState(p.me.phone);
-  const [city, setCity] = useState<CityKey | "">(p.dealers.some((d) => d.city === p.me.city) ? p.me.city : "");
-  const [dealerId, setDealerId] = useState("");
+  const [city, setCity] = useState<CityKey | "">(p.me.city);
   const [err, setErr] = useState<{ code: string; field?: string; n?: number } | null>(null);
   const [busy, setBusy] = useState(false);
-  const cities = useMemo(() => CITY_ORDER.filter((c) => p.dealers.some((d) => d.city === c)), [p.dealers]);
-  const list = p.dealers.filter((d) => d.city === city);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
     if (!name.trim()) return setErr({ code: "name_required", field: "name" });
     if (!/^(?:\+?92|0)3\d{9}$/.test(phone.replace(/[\s-]/g, ""))) return setErr({ code: "invalid_phone", field: "phone" });
-    if (!dealerId) return setErr({ code: "dealer_required", field: "dealer" });
+    if (!city) return setErr({ code: "city_required", field: "city" });
     setBusy(true);
-    const r = await api<{ id: string }>("/api/orders", { quoteId: p.quoteId, contact: { name, phone, dealerId } });
+    const r = await api<{ id: string }>("/api/orders", { quoteId: p.quoteId, contact: { name, phone, city } });
     if (!r.ok) {
       setBusy(false);
       return setErr({ code: r.error, n: r.n });
@@ -71,48 +67,22 @@ export default function CheckoutForm(p: Props) {
           </div>
         </section>
 
-        <section className="glass rounded-3xl p-6 md:p-8">
-          <h2 className="font-display text-xl font-semibold">{t.checkout.dealer}</h2>
+<section className="glass rounded-3xl p-6 md:p-8">
+          <h2 className="font-display text-xl font-semibold">{t.checkout.city}</h2>
           <label className="mt-5 block max-w-sm">
-            <span className="mb-1.5 block text-sm text-ink/70">{t.checkout.city}</span>
-            <select
-              className="field"
-              value={city}
-              onChange={(e) => {
-                setCity(e.target.value as CityKey);
-                setDealerId("");
-              }}
-            >
+            <select className="field" value={city} onChange={(e) => setCity(e.target.value as CityKey)} aria-invalid={err?.field === "city"} aria-label={t.checkout.city}>
               <option value="">{t.checkout.chooseCity}</option>
-              {cities.map((c) => (
+              {CITY_ORDER.map((c) => (
                 <option key={c} value={c}>
                   {tx(CITIES[c])} — {tx(CITIES[c].region)}
                 </option>
               ))}
             </select>
           </label>
-          {city && list.length === 0 && <Notice className="mt-4">{t.checkout.noDealer}</Notice>}
-          <div role="radiogroup" aria-label={t.checkout.dealer} aria-invalid={err?.field === "dealer"} className="mt-5 grid gap-3 md:grid-cols-2">
-            {list.map((d) => {
-              const on = d.id === dealerId;
-              return (
-                <button type="button" role="radio" aria-checked={on} key={d.id} onClick={() => setDealerId(d.id)} className={`rounded-2xl border p-4 text-start transition ${on ? "border-[var(--accent)] bg-[var(--accent)]/10 shadow-[0_0_0_1px_var(--accent)]" : "border-ink/12 hover:border-ink/35"}`}>
-                  <span className="flex items-center gap-2 font-semibold">
-                    <Store size={16} className="text-[var(--accent)]" />
-                    {tx(d.name)}
-                  </span>
-                  <span className="mt-2 flex items-start gap-2 text-sm text-ink/60">
-                    <Pin size={14} className="mt-1 shrink-0" />
-                    {tx(d.address)}
-                  </span>
-                  <span className="latin mt-1 flex items-center gap-2 text-sm text-ink/60">
-                    <Phone size={14} />
-                    <span dir="ltr">{d.phone}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          <p className="mt-4 flex gap-2 rounded-2xl bg-ink/[0.05] p-3 text-sm text-ink/70">
+            <Store size={16} className="mt-0.5 shrink-0 text-[var(--accent)]" />
+            {t.pickup.checkoutNote}
+          </p>
         </section>
       </div>
 

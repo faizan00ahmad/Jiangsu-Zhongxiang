@@ -1,10 +1,11 @@
 "use client";
+import QuickQuoteButton from "@/components/quote/QuickQuoteButton";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { KIND_META, KIND_ORDER } from "@/lib/catalog";
 import { fill, pkr } from "@/lib/format";
-import type { Model, Series, VehicleKind } from "@/lib/types";
+import type { Category, Model, Series, VehicleKind } from "@/lib/types";
 import { useI18n } from "@/i18n/I18nProvider";
 import ModelVisual from "@/components/vehicle/ModelVisual";
 import Logo from "@/components/Logo";
@@ -38,11 +39,10 @@ const PkFlag = () => (
 );
 
 /* ───────────── Explore products carousel ───────────── */
-const SERIES_ORDER: Series[] = ["scooter", "motorcycle", "tricycle", "eec", "light", "bicycle"];
 
-export function ExploreProducts({ models: all, colors }: { models: Model[]; colors: Record<string, string> }) {
+export function ExploreProducts({ models: all, colors, categories }: { models: Model[]; colors: Record<string, string>; categories: Category[] }) {
   const { t, tx, lang } = useI18n();
-  const seriesList = SERIES_ORDER.filter((s) => all.some((m) => m.series === s));
+  const seriesList: Series[] = [...categories].filter((c) => c.enabled).sort((a, b) => a.sort - b.sort).map((c) => c.slug).filter((s) => all.some((m) => m.series === s));
   const [series, setSeries] = useState<Series>(seriesList[0] ?? "scooter");
   const models = all.filter((m) => m.series === series);
   const [i, setI] = useState(0);
@@ -102,7 +102,7 @@ export function ExploreProducts({ models: all, colors }: { models: Model[]; colo
                 }}
                 className={`relative shrink-0 px-5 py-4 text-[15px] transition-colors md:px-8 ${on ? "font-bold text-[#111]" : "font-medium text-[#111]/55 hover:text-[#111]"}`}
               >
-                {t.series[s]}
+                {categories.find((c) => c.slug === s)?.name[lang] ?? s}
                 {on && <motion.span layoutId="series-underline" className="absolute inset-x-4 bottom-0 h-[3px] rounded-full bg-[var(--volt)]" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
               </button>
             );
@@ -213,8 +213,8 @@ export function Riders({ models, colors }: { models: Model[]; colors: Record<str
       <div className="mx-auto mt-10 max-w-[1200px] px-5">
         <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] md:mx-0 [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:px-0" data-lenis-prevent>
           {cards.map(({ k, m }, i) => (
-            <Reveal as="li" key={k} delay={i * 0.08} className="w-[78%] shrink-0 snap-center sm:w-[46%] md:w-auto">
-              <Link href={`/customize/${m.slug}`} className="group block h-full overflow-hidden rounded-md bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.3)] transition-transform duration-500 hover:-translate-y-2">
+            <Reveal as="li" key={k} delay={i * 0.08} className="flex w-[78%] shrink-0 snap-center flex-col sm:w-[46%] md:w-auto">
+              <Link href={`/customize/${m.slug}`} className="group block flex-1 overflow-hidden rounded-md bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,0.3)] transition-transform duration-500 hover:-translate-y-2">
                 <div className="relative overflow-hidden" style={{ background: SCENE[k] }}>
                   <div className="px-3 pt-8 transition-transform duration-700 group-hover:scale-105">
                     <ModelVisual model={m} color={colors[m.defaultColor] ?? "#ccc"} reflection={false} className="aspect-[1000/560] w-full" />
@@ -236,6 +236,7 @@ export function Riders({ models, colors }: { models: Model[]; colors: Record<str
                   </p>
                 </div>
               </Link>
+              <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><Link href={`/test-drive?model=${m.slug}`} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
             </Reveal>
           ))}
         </ul>
@@ -371,8 +372,8 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
             {list.map((m, i) => {
               const meta = KIND_META[m.kind];
               return (
-                <motion.li key={m.slug} layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.55, delay: (i % 3) * 0.06, ease }}>
-                  <Link href={`/customize/${m.slug}`} className="block h-full" data-cursor={t.home.configure}>
+                <motion.li key={m.slug} className="flex flex-col" layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.55, delay: (i % 3) * 0.06, ease }}>
+                  <Link href={`/customize/${m.slug}`} className="block flex-1" data-cursor={t.home.configure}>
                     <SpotCard tilt={3} className="group flex h-full flex-col overflow-hidden rounded-md border border-black/5 bg-white shadow-[0_12px_36px_-24px_rgba(0,0,0,0.35)]" style={{ ["--accent" as string]: meta.accent, ["--accent-rgb" as string]: meta.glow } as React.CSSProperties}>
                       <div className="stage relative px-4 pt-8">
                         <span className="absolute start-4 top-4 rounded bg-[#111] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">{m.wheels === 2 ? t.common.wheel2 : t.common.wheel3}</span>
@@ -427,6 +428,7 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
                       </div>
                     </SpotCard>
                   </Link>
+                  <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><Link href={`/test-drive?model=${m.slug}`} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
                 </motion.li>
               );
             })}

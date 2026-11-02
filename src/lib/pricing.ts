@@ -7,8 +7,9 @@ const enabledItems = (g: OptionGroup) => g.items.filter((i) => i.enabled);
 /** Option groups as they apply to one model: a model with real factory paints uses those instead of the generic palette. */
 export const STD_COLOR = "std";
 
-export function groupsFor(model: Pick<Model, "colors" | "photos" | "image">, options: OptionGroup[]): OptionGroup[] {
-  const live = options.filter((g) => g.enabled && enabledItems(g).length > 0);
+export function groupsFor(model: Pick<Model, "colors" | "photos" | "image"> & { hideOptions?: string[] }, options: OptionGroup[]): OptionGroup[] {
+  // a model can opt out of whole groups (e.g. solar panels on a sport bike)
+  const live = options.filter((g) => g.enabled && enabledItems(g).length > 0 && !(model.hideOptions ?? []).includes(g.key));
   const paints = (model.colors ?? []).filter((c) => c.enabled);
   const photo = model.image ?? model.photos?.thumb ?? null;
   const hint = paints.length
@@ -64,7 +65,9 @@ export function priceQuote(model: Model, options: OptionGroup[], config: Config)
   }
   const extras = lines.reduce((s, l) => s + l.price, 0);
   const factor = pickItem(options, "battery", c.battery)?.rangeFactor ?? 1;
-  return { config: c, lines, extras, total: model.basePrice + extras, range: Math.round(model.specs.range * factor) };
+  // solar panels add a little range on top of the battery's
+  const solar = (model.hideOptions ?? []).includes("solar") ? 0 : (pickItem(options, "solar", c.solar)?.rangeKm ?? 0);
+  return { config: c, lines, extras, total: model.basePrice + extras, range: Math.round(model.specs.range * factor + solar) };
 }
 
 export const depositFor = (total: number, percent: number) => Math.round((total * percent) / 100 / 100) * 100;

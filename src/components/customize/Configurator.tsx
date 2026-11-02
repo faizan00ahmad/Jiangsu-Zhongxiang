@@ -384,6 +384,11 @@ function OptionGroupView({ g, value, onPick, colors, baseRange, accent, photo }:
                       ≈ <span className="latin">{Math.round(baseRange * i.rangeFactor)}</span> {t.specs.km}
                     </span>
                   )}
+                  {g.key === "solar" && !!i.rangeKm && (
+                    <span className="mt-0.5 block text-[11px] text-[var(--volt)]">
+                      +<span className="latin">{i.rangeKm}</span> {t.specs.km}
+                    </span>
+                  )}
                   <span className={`mt-1 block text-[11px] ${i.price ? "text-ink/70" : "text-ink/45"}`}>{signedPkr(i.price, lang)}</span>
                 </button>
               );

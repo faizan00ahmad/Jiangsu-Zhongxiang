@@ -8,8 +8,10 @@ import { Notice, Reveal } from "@/components/ui";
 import { Phone, Pin, Shield, Store } from "@/components/Icons";
 import Timeline, { StatusChip, type TimelineData } from "./Timeline";
 import PayPanel from "./PayPanel";
+import PickupPanel, { type PickupStore } from "./PickupPanel";
+import type { CityKey } from "@/lib/types";
 
-export default function OrderDetail({ order, model, color, timeline, fresh }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean }) {
+export default function OrderDetail({ order, model, color, timeline, fresh, stores, pickupLocked, myCity }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean; stores: PickupStore[]; pickupLocked: boolean; myCity: CityKey }) {
   const { t, tx, lang } = useI18n();
   const meta = KIND_META[model.kind];
   const dealer = timeline.dealer;
@@ -32,6 +34,7 @@ export default function OrderDetail({ order, model, color, timeline, fresh }: { 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="space-y-8">
           {order.status === "pending_payment" && <PayPanel orderId={order.id} deposit={order.deposit} lockExpiresAt={order.lockExpiresAt} />}
+          {(order.status === "pending_payment" || order.status === "active") && <PickupPanel orderId={order.id} stores={stores} currentId={order.contact.dealerId} myCity={myCity} locked={pickupLocked} />}
           {(order.status === "cancelled" || order.status === "expired") && <Notice tone="error">{t.order.status[order.status]}</Notice>}
           <Reveal>
             <section className="glass rounded-3xl p-5 md:p-8">

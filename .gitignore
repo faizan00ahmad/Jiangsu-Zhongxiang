@@ -6,3 +6,8 @@ next-env.d.ts
 .env*.local
 # runtime data (orders, users, uploads) — never commit
 /data
+
+# admin panel runtime data and backups (docs and tests are committed)
+/admin pannel/data/
+/admin pannel/backups/
+/admin pannel/exports/

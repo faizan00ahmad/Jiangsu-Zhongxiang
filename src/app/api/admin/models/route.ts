@@ -1,13 +1,25 @@
 import { KIND_META } from "@/lib/catalog";
-import { guard } from "@/lib/server/admin";
+import { audit, guard } from "@/lib/server/admin";
+import { bust } from "@/lib/server/cache";
 import { mutate } from "@/lib/server/db";
 import { fail, int, ok, readJson, str } from "@/lib/server/http";
-import type { Model, VehicleKind } from "@/lib/types";
+import { GROUP_KEYS, type DB, type GroupKey, type Model, type Seo, type VehicleKind } from "@/lib/types";
 
 const isKind = (v: unknown): v is VehicleKind => typeof v === "string" && v in KIND_META;
 const isImage = (v: unknown) => v === null || (typeof v === "string" && /^\/api\/files\/[A-Za-z0-9_-]{6,64}\.(png|jpe?g|webp)$/.test(v));
 
-function applyPatch(m: Model, p: Record<string, unknown>, colorIds: string[]) {
+function applyPatch(m: Model, p: Record<string, unknown>, colorIds: string[], db: DB) {
+  if (typeof p.series === "string" && db.categories.some((c) => c.slug === p.series)) m.series = p.series;
+  if (p.brand === null || p.brand === "") m.brand = null;
+  else if (typeof p.brand === "string" && db.brands.some((b) => b.slug === p.brand)) m.brand = p.brand;
+  if (Array.isArray(p.hideOptions)) m.hideOptions = [...new Set(p.hideOptions.filter((k): k is GroupKey => typeof k === "string" && (GROUP_KEYS as string[]).includes(k)))];
+  if (Array.isArray(p.related)) m.related = [...new Set(p.related.filter((s): s is string => typeof s === "string" && s !== m.slug && db.models.some((x) => x.slug === s)))].slice(0, 8);
+  if (p.seo && typeof p.seo === "object") {
+    const s = p.seo as Record<string, Record<string, unknown>>;
+    const L = (o: Record<string, unknown> | undefined, n: number) => ({ en: str(o?.en, n), ur: str(o?.ur, n) });
+    const img = typeof (p.seo as Record<string, unknown>).image === "string" ? str((p.seo as Record<string, unknown>).image, 300) : "";
+    m.seo = { title: L(s.title, 120), description: L(s.description, 300), image: /^\/api\/files\//.test(img) ? img : null, noindex: (p.seo as Record<string, unknown>).noindex === true } satisfies Seo;
+  }
   if (typeof p.name === "string" && str(p.name, 60)) m.name = str(p.name, 60);
   if (p.tagline && typeof p.tagline === "object") {
     const t = p.tagline as Record<string, unknown>;
@@ -59,22 +71,24 @@ function applyPatch(m: Model, p: Record<string, unknown>, colorIds: string[]) {
 
 /** Edit a model. */
 export async function PUT(req: Request) {
-  const g = await guard("models");
+  const g = await guard("models.edit");
   if (g.res) return g.res;
   const b = await readJson(req);
   if (!b || typeof b.patch !== "object" || !b.patch) return fail("invalid_input");
   const res = await mutate((db) => {
     const m = db.models.find((x) => x.slug === b.slug);
     if (!m) return false;
-    applyPatch(m, b.patch as Record<string, unknown>, (db.options.find((o) => o.key === "color")?.items ?? []).map((i) => i.id));
+    applyPatch(m, b.patch as Record<string, unknown>, (db.options.find((o) => o.key === "color")?.items ?? []).map((i) => i.id), db);
+    audit(db, g.admin, "update", "models", m.slug, m.name);
     return true;
   });
+  if (res) bust(["catalogue"], ["/", "/customize"]);
   return res ? ok() : fail("not_found", 404);
 }
 
 /** Add a model. */
 export async function POST(req: Request) {
-  const g = await guard("models");
+  const g = await guard("models.create");
   if (g.res) return g.res;
   const b = await readJson(req);
   if (!b) return fail("invalid_input");
@@ -88,6 +102,10 @@ export async function POST(req: Request) {
       slug,
       kind,
       series: kind === "sport" ? "motorcycle" : kind === "commuter" ? "scooter" : "tricycle",
+      brand: db.brands[0]?.slug ?? null,
+      views: 0,
+      related: [],
+      seo: null,
       wheels: KIND_META[kind].wheels,
       name: str(b.name, 60),
       tagline: { en: "", ur: "" },
@@ -103,12 +121,35 @@ export async function POST(req: Request) {
       enabled: false,
       sort: db.models.length + 1,
     };
-    applyPatch(m, b, colors);
+    applyPatch(m, b, colors, db);
     m.enabled = false; // new models start unlisted until reviewed
     db.models.push(m);
     db.factoryStock[slug] = 0;
     for (const d of db.dealers) d.stock[slug] = 0;
+    audit(db, g.admin, "create", "models", slug, m.name);
     return "ok";
   });
+  if (res === "ok") bust(["catalogue"], ["/", "/customize"]);
   return res === "ok" ? ok({ slug }) : fail(res, 409);
+}
+
+/** Remove a model that has never been ordered. Quotes keep their own copy of the name and price. */
+export async function DELETE(req: Request) {
+  const g = await guard("models.delete");
+  if (g.res) return g.res;
+  const b = await readJson(req);
+  if (!b) return fail("invalid_input");
+  const res = await mutate((db) => {
+    const i = db.models.findIndex((m) => m.slug === b.slug);
+    if (i < 0) return "not_found";
+    if (db.orders.some((o) => o.model === b.slug)) return "in_use";
+    audit(db, g.admin, "delete", "models", String(b.slug), db.models[i].name);
+    db.models.splice(i, 1);
+    delete db.factoryStock[String(b.slug)];
+    for (const d of db.dealers) delete d.stock[String(b.slug)];
+    for (const m of db.models) m.related = (m.related ?? []).filter((s) => s !== b.slug);
+    return "ok";
+  });
+  if (res === "ok") bust(["catalogue"], ["/", "/customize"]);
+  return res === "ok" ? ok() : fail(res, res === "not_found" ? 404 : 409);
 }

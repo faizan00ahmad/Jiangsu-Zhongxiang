@@ -5,7 +5,7 @@ import { useAdmin } from "./AdminProvider";
 import { Btn, Card, PageTitle, Toggle, inputCls } from "./ui";
 
 export default function OptionsAdmin({ groups }: { groups: OptionGroup[] }) {
-  const { t, call } = useAdmin();
+  const { t, call, lang } = useAdmin();
   const [g, setG] = useState(() => structuredClone(groups));
   const dirty = JSON.stringify(g) !== JSON.stringify(groups);
   const upd = (gi: number, fn: (x: OptionGroup) => void) =>
@@ -43,6 +43,7 @@ export default function OptionsAdmin({ groups }: { groups: OptionGroup[] }) {
                     <th className="pb-2 text-start font-medium">{t.common.ur}</th>
                     {grp.kind === "color" && <th className="pb-2 text-start font-medium">{t.options.hex}</th>}
                     {grp.key === "battery" && <th className="pb-2 text-start font-medium">{t.options.rangeFactor}</th>}
+                    {grp.key === "solar" && <th className="pb-2 text-start font-medium">{lang === "zh" ? "增加续航 km" : "Extra range km"}</th>}
                     <th className="pb-2 text-start font-medium">{t.options.price}</th>
                     <th className="pb-2 text-start font-medium">{t.common.status}</th>
                   </tr>
@@ -66,6 +67,11 @@ export default function OptionsAdmin({ groups }: { groups: OptionGroup[] }) {
                           <input className={`${inputCls} w-20`} type="number" step="0.05" min={0.5} max={5} value={it.rangeFactor ?? 1} onChange={(e) => upd(gi, (x) => (x.items[ii].rangeFactor = Number(e.target.value)))} />
                         </td>
                       )}
+                      {grp.key === "solar" && (
+                        <td className="py-1.5 pe-2">
+                          <input className={`${inputCls} w-20`} type="number" min={0} max={200} value={it.rangeKm ?? 0} onChange={(e) => upd(gi, (x) => (x.items[ii].rangeKm = Number(e.target.value)))} />
+                        </td>
+                      )}
                       <td className="py-1.5 pe-2">
                         <input className={`${inputCls} w-28 tabular-nums`} type="number" min={0} step={500} value={it.price} onChange={(e) => upd(gi, (x) => (x.items[ii].price = Number(e.target.value)))} />
                       </td>
@@ -77,6 +83,11 @@ export default function OptionsAdmin({ groups }: { groups: OptionGroup[] }) {
                 </tbody>
               </table>
             </div>
+            {grp.key === "solar" && (
+              <Btn className="mt-3" onClick={() => upd(gi, (x) => x.items.push({ id: `s${Date.now().toString(36).slice(-5)}`, label: { en: "New solar tier", ur: "نیا سولر درجہ" }, price: 0, rangeKm: 0, enabled: true }))}>
+                + {lang === "zh" ? "新增档位" : "Add tier"}
+              </Btn>
+            )}
             {grp.kind === "color" && (
               <Btn className="mt-3" onClick={() => upd(gi, (x) => x.items.push({ id: `c${Date.now().toString(36).slice(-5)}`, label: { en: "New colour", ur: "نیا رنگ" }, price: 0, enabled: true, hex: "#888888" }))}>
                 + {t.options.addColor}

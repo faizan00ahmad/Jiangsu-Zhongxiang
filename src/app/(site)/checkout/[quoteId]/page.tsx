@@ -41,7 +41,6 @@ export default async function Checkout({ params }: { params: Promise<{ quoteId: 
           depositPercent={db.settings.depositPercent}
           lockHours={db.settings.lockHours}
           stock={factoryStatus(db, model.slug).status}
-          dealers={db.dealers.filter((d) => d.enabled)}
           me={{ name: user.name, phone: user.phone, city: user.city }}
         />
       </div>

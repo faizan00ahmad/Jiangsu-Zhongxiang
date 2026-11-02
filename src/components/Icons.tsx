@@ -27,6 +27,7 @@ export const Ship = (p: P) => <S {...p}><path d="M3 15l2 5h14l2-5zM5 15V9h14v6M1
 export const Factory = (p: P) => <S {...p}><path d="M3 21V10l6 4V10l6 4V6l6 3v12zM7 17h2M12 17h2M17 17h2" /></S>;
 export const Store = (p: P) => <S {...p}><path d="M3 9l2-5h14l2 5M4 9v11h16V9M3 9h18M9 20v-6h6v6" /></S>;
 export const User = (p: P) => <S {...p}><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></S>;
+export const Mail = (p: P) => <S {...p}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></S>;
 export const Globe = (p: P) => <S {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18" /></S>;
 export const Check = (p: P) => <S {...p}><path d="m5 12 5 5 9-10" /></S>;
 export const X = (p: P) => <S {...p}><path d="M6 6l12 12M18 6 6 18" /></S>;

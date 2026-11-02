@@ -1,7 +1,8 @@
 import crypto from "node:crypto";
 import { STAGES, daysRemaining } from "../catalog";
 import { depositFor, priceQuote } from "../pricing";
-import { DB_VERSION, type Admin, type CityKey, type Config, type DB, type Dealer, type Model, type OptionGroup, type Order, type Quote, type User } from "../types";
+import { migrate } from "./migrate";
+import { type Admin, type CityKey, type Config, type DB, type Dealer, type Model, type OptionGroup, type Order, type Quote, type User } from "../types";
 import { importCatalog } from "./catalogImport";
 import { code, hashPassword, randomId } from "./crypto";
 
@@ -206,8 +207,9 @@ export function buildSeed(): DB {
     demoOrder(demo, "alkaid", { color: "c2", wheel: "twin", gps: "no", battery: "medium", display: "led", cruise: "no", reverse: "no", standCut: "yes", speaker: "yes" }, 0, 0, "dl-lhr-1", settings),
   ];
 
-  return {
-    version: DB_VERSION,
+  // built in the version 2 shape, then upgraded by the same migration an existing database goes through
+  return migrate({
+    version: 2,
     secret: crypto.randomBytes(32).toString("base64url"),
     settings,
     models: MODELS,
@@ -222,5 +224,5 @@ export function buildSeed(): DB {
     ],
     quotes: seeded.map((s) => s.quote),
     orders: seeded.map((s) => s.order),
-  };
+  } as unknown as DB);
 }

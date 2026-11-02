@@ -14,5 +14,5 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const lang = await getAdminLang();
   const u = db.users.find((x) => x.id === o.userId);
   const d = db.dealers.find((x) => x.id === o.contact.dealerId);
-  return <OrderAdmin order={o} role={admin.role} user={u ? { name: u.name, phone: u.phone, email: u.email } : null} dealer={d ? { name: d.name.en, city: CITIES[d.city][lang], phone: d.phone } : null} />;
+  return <OrderAdmin order={o} dealerScope={admin.scope === "dealer"} stores={db.dealers.filter((x) => x.enabled).map((x) => ({ id: x.id, name: x.name.en, city: CITIES[x.city][lang] }))} user={u ? { name: u.name, phone: u.phone, email: u.email } : null} dealer={d ? { name: d.name.en, city: CITIES[d.city][lang], phone: d.phone } : null} />;
 }

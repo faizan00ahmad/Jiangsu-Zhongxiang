@@ -1,130 +1,119 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
-import { ROLE_ACCESS } from "@/lib/roles";
-import { date } from "@/lib/format";
-import type { AdminRole } from "@/lib/types";
+import type { Role } from "@/lib/types";
 import { useAdmin } from "./AdminProvider";
-import { Btn, Card, Field, PageTitle, Pill, inputCls } from "./ui";
+import DataTable, { type Col } from "./kit/DataTable";
+import Modal from "./kit/Modal";
+import { Btn, Field, PageTitle, Pill, inputCls } from "./ui";
 
-type Row = { id: string; username: string; name: string; role: AdminRole; dealerId: string | null; createdAt: string; disabled: boolean };
-const ROLE_COLOR: Record<AdminRole, string> = { super: "#ff4d3d", operator: "#3d8bff", dealer: "#f5b40c" };
+type Row = { id: string; username: string; name: string; role: string; dealerId: string | null; createdAt: string; disabled: boolean; lastLoginAt: string | null };
 
-export default function AdminsAdmin({ rows, dealers }: { rows: Row[]; dealers: { id: string; name: string }[] }) {
-  const { t, lang, me, call } = useAdmin();
-  const [f, setF] = useState({ username: "", name: "", role: "operator" as AdminRole, dealerId: dealers[0]?.id ?? "", password: "" });
-  const [reset, setReset] = useState<{ id: string; pw: string } | null>(null);
-  return (
-    <>
-      <PageTitle title={t.admins.title} intro={t.admins.intro} />
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
-        {(["super", "operator", "dealer"] as AdminRole[]).map((r) => (
-          <div key={r} className="rounded-2xl border border-ink/10 bg-card/70 p-4">
-            <Pill color={ROLE_COLOR[r]}>{t.roles[r]}</Pill>
-            <p className="mt-2 text-xs text-ink/55">
-              {t.admins.access}: {ROLE_ACCESS[r].map((a) => t.nav[a as keyof typeof t.nav]).join(lang === "zh" ? "、" : ", ")}
-            </p>
+export default function AdminsAdmin({ rows, roles, dealers }: { rows: Row[]; roles: Role[]; dealers: { id: string; name: string }[] }) {
+  const { t, k, lang, call, can, me, confirm } = useAdmin();
+  const [open, setOpen] = useState<null | { id: string | null; f: { username: string; name: string; role: string; dealerId: string; password: string } }>(null);
+  const roleName = (id: string) => roles.find((r) => r.id === id)?.name.en ?? id;
+  const dealerRole = (id: string) => roles.find((r) => r.id === id)?.scope === "dealer";
+  const edit = can("admins.edit");
+
+  const cols: Col<Row>[] = [
+    { key: "username", header: t.admins.username, value: (r) => r.username, render: (r) => <span className="latin font-medium">{r.username}</span> },
+    { key: "name", header: t.admins.name, value: (r) => r.name },
+    { key: "role", header: t.admins.role, value: (r) => roleName(r.role), render: (r) => <Pill color={r.role === "super" ? "#ff4d3d" : r.role === "dealer" ? "#f5b40c" : "#3d8bff"}>{roleName(r.role)}</Pill> },
+    { key: "dealer", header: t.admins.dealer, value: (r) => dealers.find((d) => d.id === r.dealerId)?.name ?? "" },
+    { key: "last", header: lang === "zh" ? "最近登录" : "Last sign-in", value: (r) => r.lastLoginAt ?? "", render: (r) => <span className="latin text-ink/65">{r.lastLoginAt ? new Date(r.lastLoginAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "—"}</span> },
+    { key: "status", header: t.common.status, value: (r) => (r.disabled ? 0 : 1), render: (r) => <Pill color={r.disabled ? "#8b93a3" : "#2ee6a6"}>{r.disabled ? t.common.disabled : t.common.enabled}</Pill> },
+    {
+      key: "act",
+      header: "",
+      sortable: false,
+      render: (r) =>
+        edit && r.id !== me?.id ? (
+          <div className="flex justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+            <Btn tone="ghost" onClick={() => setOpen({ id: r.id, f: { username: r.username, name: r.name, role: r.role, dealerId: r.dealerId ?? dealers[0]?.id ?? "", password: "" } })}>
+              {k.form.edit}
+            </Btn>
+            <Btn
+              tone="ghost"
+              onClick={async () => {
+                if (!r.disabled && !(await confirm(lang === "zh" ? `停用 ${r.username}？` : `Disable ${r.username}?`))) return;
+                await call("/api/admin/admins", { id: r.id, disabled: !r.disabled }, "PATCH");
+              }}
+            >
+              {r.disabled ? (lang === "zh" ? "启用" : "Enable") : lang === "zh" ? "停用" : "Disable"}
+            </Btn>
           </div>
-        ))}
-      </div>
+        ) : null,
+    },
+  ];
 
-      <Card title={t.admins.add} className="mb-6">
-        <form
-          className="grid gap-4 md:grid-cols-6 md:items-end"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            if (await call("/api/admin/admins", f)) setF({ ...f, username: "", name: "", password: "" });
-          }}
-        >
-          <Field label={t.admins.username}>
-            <input className={inputCls} value={f.username} onChange={(e) => setF({ ...f, username: e.target.value })} required pattern="[a-z0-9._\-]{3,40}" />
-          </Field>
-          <Field label={t.admins.name}>
-            <input className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} required />
-          </Field>
-          <Field label={t.admins.role}>
-            <select className={inputCls} value={f.role} onChange={(e) => setF({ ...f, role: e.target.value as AdminRole })}>
-              {(["super", "operator", "dealer"] as AdminRole[]).map((r) => (
-                <option key={r} value={r}>
-                  {t.roles[r]}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label={t.admins.dealer}>
-            <select className={inputCls} value={f.dealerId} disabled={f.role !== "dealer"} onChange={(e) => setF({ ...f, dealerId: e.target.value })}>
-              {dealers.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label={t.admins.password}>
-            <input className={inputCls} type="password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} required minLength={8} autoComplete="new-password" />
-          </Field>
-          <Btn tone="primary" className="md:mb-0">
-            + {t.common.add}
-          </Btn>
-        </form>
-      </Card>
+  const save = async () => {
+    if (!open) return;
+    const f = open.f;
+    const done = open.id
+      ? await call("/api/admin/admins", { id: open.id, name: f.name, role: f.role, dealerId: f.dealerId, password: f.password || undefined }, "PATCH")
+      : await call("/api/admin/admins", { username: f.username, name: f.name, role: f.role, dealerId: dealerRole(f.role) ? f.dealerId : undefined, password: f.password });
+    if (done) setOpen(null);
+  };
 
-      <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-card/70">
-        <table className="w-full min-w-[760px] text-sm">
-          <thead className="border-b border-ink/10 text-xs text-ink/50">
-            <tr>
-              {[t.admins.username, t.admins.name, t.admins.role, t.admins.dealer, t.users.registered, t.common.status, ""].map((h, i) => (
-                <th key={i} className="px-4 py-3 text-start font-medium">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ink/[0.07]">
-            {rows.map((r) => {
-              const self = r.id === me?.id;
-              return (
-                <tr key={r.id} className={r.disabled ? "opacity-55" : ""}>
-                  <td className="px-4 py-3 font-semibold">
-                    {r.username} {self && <span className="ms-1 rounded bg-ink/10 px-1.5 text-[10px]">{t.admins.self}</span>}
-                  </td>
-                  <td className="px-4">{r.name}</td>
-                  <td className="px-4">
-                    <Pill color={ROLE_COLOR[r.role]}>{t.roles[r.role]}</Pill>
-                  </td>
-                  <td className="px-4 text-ink/60">{dealers.find((d) => d.id === r.dealerId)?.name ?? "—"}</td>
-                  <td className="px-4 text-ink/60">{date(r.createdAt, lang)}</td>
-                  <td className="px-4">{r.disabled ? t.common.disabled : t.common.enabled}</td>
-                  <td className="px-4 py-2">
-                    <div className="flex flex-wrap justify-end gap-2">
-                      {reset?.id === r.id ? (
-                        <form
-                          className="flex gap-2"
-                          onSubmit={async (e) => {
-                            e.preventDefault();
-                            if (await call("/api/admin/admins", { id: r.id, password: reset.pw }, "PATCH")) setReset(null);
-                          }}
-                        >
-                          <input className={`${inputCls} w-36`} type="password" placeholder={t.admins.newPassword} value={reset.pw} onChange={(e) => setReset({ id: r.id, pw: e.target.value })} minLength={8} required autoComplete="new-password" />
-                          <Btn tone="primary">{t.common.save}</Btn>
-                        </form>
-                      ) : (
-                        <Btn tone="ghost" onClick={() => setReset({ id: r.id, pw: "" })}>
-                          {t.admins.resetPw}
-                        </Btn>
-                      )}
-                      {!self && (
-                        <Btn tone="ghost" onClick={() => call("/api/admin/admins", { id: r.id, disabled: !r.disabled }, "PATCH")}>
-                          {r.disabled ? t.users.enable : t.users.disable}
-                        </Btn>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
+  return (
+    <div>
+      <PageTitle
+        title={k.modules.admins}
+        intro={t.admins.intro}
+        actions={
+          can("admins.create") && (
+            <Btn tone="primary" onClick={() => setOpen({ id: null, f: { username: "", name: "", role: roles.find((r) => r.id === "operator")?.id ?? roles[0].id, dealerId: dealers[0]?.id ?? "", password: "" } })}>
+              + {k.form.new}
+            </Btn>
+          )
+        }
+      />
+      <DataTable id="admins" rows={rows} rowId={(r) => r.id} columns={cols} filters={[{ key: "role", label: t.admins.role, options: roles.map((r) => ({ value: r.id, label: r.name.en })), value: (r) => r.role }]} defaultSort={{ key: "username", dir: "asc" }} />
+      <Modal
+        open={!!open}
+        onClose={() => setOpen(null)}
+        title={`${open?.id ? k.form.edit : k.form.new} · ${k.modules.admins}`}
+        footer={
+          <>
+            <Btn onClick={() => setOpen(null)}>{k.form.cancel}</Btn>
+            <Btn tone="primary" onClick={save}>
+              {open?.id ? k.form.save : k.form.create}
+            </Btn>
+          </>
+        }
+      >
+        {open && (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={t.admins.username}>
+              <input className={`${inputCls} latin`} value={open.f.username} disabled={!!open.id} onChange={(e) => setOpen({ ...open, f: { ...open.f, username: e.target.value } })} autoComplete="off" />
+            </Field>
+            <Field label={t.admins.name}>
+              <input className={inputCls} value={open.f.name} onChange={(e) => setOpen({ ...open, f: { ...open.f, name: e.target.value } })} />
+            </Field>
+            <Field label={t.admins.role}>
+              <select className={inputCls} value={open.f.role} onChange={(e) => setOpen({ ...open, f: { ...open.f, role: e.target.value } })}>
+                {roles.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name.en}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label={t.admins.dealer}>
+              <select className={inputCls} value={open.f.dealerId} disabled={!dealerRole(open.f.role)} onChange={(e) => setOpen({ ...open, f: { ...open.f, dealerId: e.target.value } })}>
+                {dealers.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label={open.id ? (lang === "zh" ? "新密码（留空不改）" : "New password (blank = keep)") : t.admins.password} className="sm:col-span-2">
+              <input type="password" className={`${inputCls} latin`} value={open.f.password} onChange={(e) => setOpen({ ...open, f: { ...open.f, password: e.target.value } })} autoComplete="new-password" />
+            </Field>
+          </div>
+        )}
+      </Modal>
+    </div>
   );
 }

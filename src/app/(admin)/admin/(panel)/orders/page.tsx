@@ -18,6 +18,7 @@ export default async function Page() {
       total: o.total,
       deposit: o.deposit,
       verified: o.payment ? o.payment.verified : null,
+      coupon: o.couponCode ?? null,
       createdAt: o.createdAt,
     }));
   return <OrdersAdmin rows={rows} />;

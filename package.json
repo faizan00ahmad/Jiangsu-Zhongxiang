@@ -2,12 +2,13 @@
   "name": "zx-ev-pakistan",
   "version": "0.1.0",
   "private": true,
-  "description": "Zhongxiang EV Pakistan — online EV configurator, ordering, dual inventory and cross-border tracking",
+  "description": "Zhongxiang EV Pakistan â€” online EV configurator, ordering, dual inventory and cross-border tracking",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "qa": "node \"admin pannel/tests/run-all.mjs\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

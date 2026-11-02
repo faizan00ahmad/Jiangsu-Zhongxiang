@@ -1,4 +1,5 @@
 import { readdir } from "node:fs/promises";
+import type { Banner } from "@/lib/types";
 import path from "node:path";
 import CinemaHero from "@/components/home/CinemaHero";
 import Compare from "@/components/home/Compare";
@@ -21,16 +22,24 @@ async function heroScenes() {
   return out;
 }
 
+/** Home banners that are switched on and inside their schedule, in the order set in the admin. */
+const liveBanners = (all: Banner[]) => {
+  const now = Date.now();
+  return all
+    .filter((b) => b.enabled && b.placement === "home" && (!b.start || +new Date(b.start) <= now) && (!b.end || +new Date(b.end) >= now))
+    .sort((a, b) => a.sort - b.sort);
+};
+
 export default async function Home() {
   const { db, models, colors } = await siteData();
   const scenes = await heroScenes();
   const cities = new Set(db.dealers.filter((d) => d.enabled).map((d) => d.city)).size;
   return (
     <>
-      <CinemaHero models={models} scenes={scenes} />
+      <CinemaHero models={models} banners={liveBanners(db.banners)} scenes={scenes} />
       <HomeHero models={models} colors={colors} title={db.settings.heroTitle} text={db.settings.heroText} />
       <CoreEntries models={models.length} cities={cities} />
-      <ExploreProducts models={models} colors={colors} />
+      <ExploreProducts models={models} colors={colors} categories={db.categories} />
       <Compare models={models} colors={colors} />
       <Riders models={models} colors={colors} />
       <Stories models={models} colors={colors} />

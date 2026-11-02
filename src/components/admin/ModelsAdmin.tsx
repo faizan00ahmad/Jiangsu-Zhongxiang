@@ -3,20 +3,21 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { KIND_META, KIND_ORDER } from "@/lib/catalog";
 import { fill, n } from "@/lib/format";
-import type { Model, OptionItem, VehicleKind } from "@/lib/types";
+import type { Brand, Category, Model, OptionItem, VehicleKind } from "@/lib/types";
+import { MultiPick, SeoInput } from "./kit/Fields";
 import ModelVisual from "@/components/vehicle/ModelVisual";
 import { Chevron } from "@/components/Icons";
 import { useAdmin } from "./AdminProvider";
 import { Btn, Card, Field, PageTitle, Pill, Toggle, inputCls } from "./ui";
 
-export default function ModelsAdmin({ models, colors }: { models: Model[]; colors: OptionItem[] }) {
-  const { t, lang } = useAdmin();
+export default function ModelsAdmin({ models, colors, categories, brands }: { models: Model[]; colors: OptionItem[]; categories: Category[]; brands: Brand[] }) {
+  const { t, lang, can } = useAdmin();
   const [open, setOpen] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const hex = Object.fromEntries(colors.map((c) => [c.id, c.hex ?? "#888"]));
   return (
     <>
-      <PageTitle title={t.models.title} intro={t.models.intro} actions={<Btn tone="primary" onClick={() => setAdding((v) => !v)}>+ {t.models.add}</Btn>} />
+      <PageTitle title={t.models.title} intro={t.models.intro} actions={can("models.create") && <Btn tone="primary" onClick={() => setAdding((v) => !v)}>+ {t.models.add}</Btn>} />
       <AnimatePresence>{adding && <AddModel onDone={() => setAdding(false)} />}</AnimatePresence>
       <p className="mb-3 text-sm text-ink/50">
         {fill(t.models.count, { n: models.length })} · {fill(t.models.listedCount, { n: models.filter((m) => m.enabled).length })}
@@ -34,7 +35,7 @@ export default function ModelsAdmin({ models, colors }: { models: Model[]; color
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold">{m.name}</p>
                   <p className="text-xs text-ink/50">
-                    {t.models.seriesNames[m.series]} · {lang === "zh" ? meta.zh : meta.label.en} · {m.slug}
+                    {categories.find((c) => c.slug === m.series)?.name.en ?? m.series} · {lang === "zh" ? meta.zh : meta.label.en} · {m.slug}
                   </p>
                 </div>
                 <span className="hidden tabular-nums sm:block">PKR {n(m.basePrice)}</span>
@@ -44,7 +45,7 @@ export default function ModelsAdmin({ models, colors }: { models: Model[]; color
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} className="overflow-hidden">
-                    <ModelEditor m={m} colors={colors} />
+                    <ModelEditor m={m} colors={colors} categories={categories} brands={brands} others={models.filter((x) => x.slug !== m.slug)} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -56,8 +57,8 @@ export default function ModelsAdmin({ models, colors }: { models: Model[]; color
   );
 }
 
-function ModelEditor({ m, colors }: { m: Model; colors: OptionItem[] }) {
-  const { t, call, toast, err } = useAdmin();
+function ModelEditor({ m, colors, categories, brands, others }: { m: Model; colors: OptionItem[]; categories: Category[]; brands: Brand[]; others: Model[] }) {
+  const { t, k, lang, call, toast, err, can, confirm } = useAdmin();
   const [f, setF] = useState(() => structuredClone(m));
   const [busy, setBusy] = useState(false);
   const file = useRef<HTMLInputElement>(null);
@@ -141,6 +142,36 @@ function ModelEditor({ m, colors }: { m: Model; colors: OptionItem[] }) {
             ))}
           </select>
         </Field>
+        <Field label={k.modules.categories}>
+          <select className={inputCls} value={f.series} onChange={(e) => setF({ ...f, series: e.target.value })}>
+            {categories.map((c) => (
+              <option key={c.slug} value={c.slug}>
+                {c.name.en}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={k.modules.brands}>
+          <select className={inputCls} value={f.brand ?? ""} onChange={(e) => setF({ ...f, brand: e.target.value || null })}>
+            <option value="">{k.form.none}</option>
+            {brands.map((b) => (
+              <option key={b.slug} value={b.slug}>
+                {b.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={lang === "zh" ? "相似车型（手动选择，留空=同分类）" : "Similar models (pick by hand; empty = same category)"} className="sm:col-span-2">
+          <MultiPick value={f.related ?? []} options={others.map((o) => ({ value: o.slug, label: { zh: o.name, en: o.name } }))} onChange={(v) => setF({ ...f, related: v })} />
+        </Field>
+        <Field label={lang === "zh" ? "不提供的选配项（例如运动款不装太阳能板）" : "Options this model does not offer (e.g. no solar panel on a sport bike)"} className="sm:col-span-2">
+          <MultiPick value={f.hideOptions ?? []} options={(Object.keys(t.groups) as (keyof typeof t.groups)[]).map((g) => ({ value: g, label: { zh: t.groups[g], en: t.groups[g] } }))} onChange={(v) => setF({ ...f, hideOptions: v as typeof f.hideOptions })} />
+        </Field>
+        <div className="sm:col-span-2">
+          <p className="mb-1 text-xs font-semibold text-ink/60">SEO</p>
+          <SeoInput value={f.seo} onChange={(v) => setF({ ...f, seo: v })} />
+        </div>
+        <p className="text-xs text-ink/45 sm:col-span-2">{lang === "zh" ? "浏览量" : "Views"}: <b className="latin">{f.views ?? 0}</b></p>
         <div className="flex items-center gap-4 sm:col-span-2">
           <Toggle on={f.enabled} onChange={(v) => setF({ ...f, enabled: v })} label={f.enabled ? t.models.listed : t.models.unlisted} />
         </div>
@@ -199,6 +230,17 @@ function ModelEditor({ m, colors }: { m: Model; colors: OptionItem[] }) {
         </div>
         <p className="mt-2 text-[11px] leading-relaxed text-ink/45">{t.models.uploadHint}</p>
         <div className="mt-6 flex items-center justify-end gap-3">
+          {can("models.delete") && (
+            <Btn
+              tone="danger"
+              className="me-auto"
+              onClick={async () => {
+                if (await confirm(k.form.confirmDelete)) await call("/api/admin/models", { slug: m.slug }, "DELETE");
+              }}
+            >
+              {k.form.delete}
+            </Btn>
+          )}
           {dirty && <span className="text-xs text-[var(--amber)]">{t.common.unsaved}</span>}
           <Btn tone="ghost" onClick={() => setF(structuredClone(m))} disabled={!dirty}>
             {t.common.cancel}
@@ -206,7 +248,7 @@ function ModelEditor({ m, colors }: { m: Model; colors: OptionItem[] }) {
           <Btn
             tone="primary"
             disabled={!dirty}
-            onClick={() => call("/api/admin/models", { slug: m.slug, patch: { name: f.name, basePrice: f.basePrice, tagline: f.tagline, specs: { ...f.specs, seats: f.specs.seats ?? "", payload: f.specs.payload ?? "" }, defaultColor: f.defaultColor, variant: f.variant, sort: f.sort, enabled: f.enabled, image: f.image, colors: f.colors } }, "PUT")}
+            onClick={() => call("/api/admin/models", { slug: m.slug, patch: { name: f.name, basePrice: f.basePrice, tagline: f.tagline, specs: { ...f.specs, seats: f.specs.seats ?? "", payload: f.specs.payload ?? "" }, defaultColor: f.defaultColor, variant: f.variant, sort: f.sort, enabled: f.enabled, image: f.image, colors: f.colors, series: f.series, brand: f.brand ?? "", related: f.related ?? [], seo: f.seo, hideOptions: f.hideOptions ?? [] } }, "PUT")}
           >
             {t.common.save}
           </Btn>

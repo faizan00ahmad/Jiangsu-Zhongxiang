@@ -1,6 +1,7 @@
 import { SITE_DICT } from "@/i18n/site";
 import EmptyState from "@/components/EmptyState";
 import OrderDetail from "@/components/orders/OrderDetail";
+import { PICKUP_LOCK_STAGE } from "@/lib/catalog";
 import { siteData } from "@/lib/server/queries";
 import { currentUser, getLang } from "@/lib/server/session";
 import { trackingView } from "@/lib/server/views";
@@ -19,5 +20,12 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
   const order = db.orders.find((o) => o.id === id && o.userId === user.id);
   const model = order && db.models.find((m) => m.slug === order.model);
   if (!order || !model) return <EmptyState title={t.order.notFound} cta={{ href: "/orders", label: t.orders.title }} />;
-  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} />;
+  // every open store with its live stock for this model; a store with none gets the unit with the customer's shipment
+  const stores = db.dealers
+    .filter((d) => d.enabled)
+    .map((d) => {
+      const q = d.stock[order.model] ?? 0;
+      return { id: d.id, name: d.name, address: d.address, city: d.city, phone: d.phone, status: (q <= 0 ? "incoming" : q <= db.settings.lowStock ? "low" : "in") as "in" | "low" | "incoming" };
+    });
+  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} stores={stores} pickupLocked={order.stage >= PICKUP_LOCK_STAGE} myCity={order.contact.city} />;
 }
