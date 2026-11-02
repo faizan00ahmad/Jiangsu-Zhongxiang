@@ -1,5 +1,7 @@
 "use client";
 import QuickQuoteButton from "@/components/quote/QuickQuoteButton";
+import { Approx } from "@/components/Currency";
+import { WishHeart } from "@/components/Wishlist";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -346,7 +348,11 @@ export function TwoCards({ models, colors }: { models: Model[]; colors: Record<s
 export function ModelGrid({ models, colors, detailed = false }: { models: Model[]; colors: Record<string, string>; detailed?: boolean }) {
   const { t, tx, lang } = useI18n();
   const [f, setF] = useState<0 | 2 | 3>(0);
-  const list = models.filter((m) => !f || m.wheels === f);
+  const [sort, setSort] = useState<"default" | "priceUp" | "priceDown" | "range" | "speed">("default");
+  const [q, setQ] = useState("");
+  const list = models
+    .filter((m) => (!f || m.wheels === f) && (!q.trim() || m.name.toLowerCase().includes(q.trim().toLowerCase())))
+    .sort((a, b) => (sort === "priceUp" ? a.basePrice - b.basePrice : sort === "priceDown" ? b.basePrice - a.basePrice : sort === "range" ? b.specs.range - a.specs.range : sort === "speed" ? b.specs.topSpeed - a.specs.topSpeed : 0));
   const tabs: [0 | 2 | 3, string][] = [
     [0, t.common.all],
     [2, t.common.wheel2],
@@ -367,12 +373,28 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
           </div>
         </div>
 
+        {detailed && (
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t.customize.searchHint} aria-label={t.customize.searchHint} className="field min-w-0 max-w-xs flex-1" />
+            <label className="flex items-center gap-2 text-sm text-[#111]/60">
+              {t.customize.sortBy}
+              <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} className="field !w-auto">
+                <option value="default">{t.customize.sort.default}</option>
+                <option value="priceUp">{t.customize.sort.priceUp}</option>
+                <option value="priceDown">{t.customize.sort.priceDown}</option>
+                <option value="range">{t.customize.sort.range}</option>
+                <option value="speed">{t.customize.sort.speed}</option>
+              </select>
+            </label>
+          </div>
+        )}
+        {list.length === 0 && <p className="mt-10 text-[#111]/55">{t.customize.noMatch}</p>}
         <motion.ul layout className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {list.map((m, i) => {
               const meta = KIND_META[m.kind];
               return (
-                <motion.li key={m.slug} className="flex flex-col" layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.55, delay: (i % 3) * 0.06, ease }}>
+                <motion.li key={m.slug} className="relative flex flex-col" layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.55, delay: (i % 3) * 0.06, ease }}>
                   <Link href={`/customize/${m.slug}`} className="block flex-1" data-cursor={t.home.configure}>
                     <SpotCard tilt={3} className="group flex h-full flex-col overflow-hidden rounded-md border border-black/5 bg-white shadow-[0_12px_36px_-24px_rgba(0,0,0,0.35)]" style={{ ["--accent" as string]: meta.accent, ["--accent-rgb" as string]: meta.glow } as React.CSSProperties}>
                       <div className="stage relative px-4 pt-8">
@@ -419,7 +441,7 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
                         )}
                         <div className="mt-5 flex items-center justify-between">
                           <span className="text-sm text-[#111]/55">
-                            {t.common.from} <b className="text-[#111]">{pkr(m.basePrice, lang)}</b>
+                            {t.common.from} <b className="text-[#111]">{pkr(m.basePrice, lang)}</b> <Approx pkr={m.basePrice} />
                           </span>
                           <span className="inline-flex items-center gap-1 rounded bg-[#111] px-3 py-1.5 text-xs font-semibold text-white">
                             {t.home.customizeBtn} <ChevronFwd size={12} className="text-[var(--volt)]" />
@@ -428,6 +450,7 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
                       </div>
                     </SpotCard>
                   </Link>
+                  <WishHeart slug={m.slug} className="absolute end-3 top-3 z-10" />
                   <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><Link href={`/test-drive?model=${m.slug}`} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
                 </motion.li>
               );

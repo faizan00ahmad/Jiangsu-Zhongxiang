@@ -5,7 +5,7 @@ import { HERE } from "./lib.mjs";
 
 const base = process.argv[2] || process.env.BASE || "http://localhost:3000";
 let failed = 0;
-for (const f of ["foundation.mjs", "demo-logins.mjs", "features.mjs"]) {
+for (const f of ["foundation.mjs", "demo-logins.mjs", "features.mjs", "commerce.mjs"]) {
   const r = spawnSync(process.execPath, [path.join(HERE, f), base], { stdio: "inherit" });
   if (r.status) failed++;
 }

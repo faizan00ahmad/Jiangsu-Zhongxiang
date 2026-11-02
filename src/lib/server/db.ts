@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DB_VERSION, type DB, type Order } from "../types";
 import { importCatalog } from "./catalogImport";
+import { releaseCoupon } from "./coupons";
 import { ensure, migrate } from "./migrate";
 import { notify } from "./notify";
 import { ADMIN_HOME, BACKUP_DIR, DATA_DIR, DB_FILE, EXPORT_DIR, LEGACY_DB_FILE, ON_VERCEL, OUTBOX_DIR, UPLOAD_DIR } from "./paths";
@@ -229,6 +230,7 @@ function sweep(db: DB) {
 
 export function releaseUnit(db: DB, o: Order) {
   db.factoryStock[o.model] = (db.factoryStock[o.model] ?? 0) + 1;
+  releaseCoupon(db, o);
 }
 
 export function expireOrder(db: DB, o: Order, by: string) {

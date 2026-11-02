@@ -2,6 +2,7 @@ import { SITE_DICT } from "@/i18n/site";
 import EmptyState from "@/components/EmptyState";
 import OrderDetail from "@/components/orders/OrderDetail";
 import { PICKUP_LOCK_STAGE } from "@/lib/catalog";
+import { enabledMethods } from "@/lib/server/gateways";
 import { siteData } from "@/lib/server/queries";
 import { currentUser, getLang } from "@/lib/server/session";
 import { trackingView } from "@/lib/server/views";
@@ -27,5 +28,5 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
       const q = d.stock[order.model] ?? 0;
       return { id: d.id, name: d.name, address: d.address, city: d.city, phone: d.phone, status: (q <= 0 ? "incoming" : q <= db.settings.lowStock ? "low" : "in") as "in" | "low" | "incoming" };
     });
-  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} stores={stores} pickupLocked={order.stage >= PICKUP_LOCK_STAGE} myCity={order.contact.city} />;
+  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} stores={stores} pickupLocked={order.stage >= PICKUP_LOCK_STAGE} myCity={order.contact.city} methods={enabledMethods(db)} />;
 }

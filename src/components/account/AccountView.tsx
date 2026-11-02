@@ -10,7 +10,8 @@ import type { CityKey, Model, Order, Quote } from "@/lib/types";
 import ModelVisual, { type VisualModel } from "@/components/vehicle/ModelVisual";
 import OrderCard from "@/components/orders/OrderCard";
 import { Reveal } from "@/components/ui";
-import { Bookmark, Doc, Logout, Sliders, X } from "@/components/Icons";
+import { Bookmark, Doc, Heart, Logout, Sliders, X } from "@/components/Icons";
+import { WishHeart, useWishlist } from "@/components/Wishlist";
 
 type Props = {
   me: { name: string; phone: string; email: string | null; city: CityKey; createdAt: string };
@@ -31,6 +32,8 @@ export default function AccountView({ me, quotes, orders, models, colors }: Prop
   }, []);
   const byModel = (slug: string) => models.find((m) => m.slug === slug);
   const setups = quotes.filter((q) => q.label);
+  const { list: saved } = useWishlist();
+  const savedModels = saved.map((s) => models.find((m) => m.slug === s)).filter((m): m is (typeof models)[number] => !!m);
 
   async function remove(id: string) {
     const r = await api(`/api/quotes/${id}`, undefined, "DELETE");
@@ -110,6 +113,29 @@ export default function AccountView({ me, quotes, orders, models, colors }: Prop
           </div>
         </section>
       )}
+
+      <section className="mt-14">
+        <h2 className="font-display flex items-center gap-2 text-2xl font-semibold">
+          <Heart size={20} className="text-red-500" /> {t.wishlist.title}
+        </h2>
+        {savedModels.length === 0 ? (
+          <p className="mt-4 text-ink/55">{t.wishlist.none}</p>
+        ) : (
+          <ul className="mt-5 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {savedModels.map((m) => (
+              <li key={m.slug} className="glass relative overflow-hidden rounded-3xl">
+                <Link href={`/customize/${m.slug}`} className="block">
+                  <div className="stage px-3 pt-4">
+                    <ModelVisual model={m} color={m.colors?.[0]?.hex ?? "#ccc"} reflection={false} className="aspect-[1000/560] w-full" />
+                  </div>
+                  <p className="latin-d p-4 font-semibold">{m.name}</p>
+                </Link>
+                <WishHeart slug={m.slug} className="absolute end-3 top-3" />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section className="mt-14">
         <h2 className="font-display flex items-center gap-2 text-2xl font-semibold">

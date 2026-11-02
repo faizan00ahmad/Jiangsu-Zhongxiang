@@ -4,6 +4,9 @@ import "../globals.css";
 import { SITE_DICT } from "@/i18n/site";
 import I18nProvider from "@/i18n/I18nProvider";
 import Script from "next/script";
+import { cookies } from "next/headers";
+import CurrencyProvider from "@/components/Currency";
+import WishlistProvider from "@/components/Wishlist";
 import { currentAdmin, currentUser, getLang } from "@/lib/server/session";
 import { siteData } from "@/lib/server/queries";
 import { siteConfig } from "@/lib/server/siteConfig";
@@ -48,6 +51,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const cfg = await siteConfig(db);
   const staff = cfg.maintenance ? await currentAdmin() : null;
   const closed = cfg.maintenance && !staff;
+  const curCookie = (await cookies()).get("zx-cur")?.value ?? "PKR";
   return (
     <html lang={lang === "ur" ? "ur-PK" : "en"} dir={lang === "ur" ? "rtl" : "ltr"} className={`site ${inter.variable} ${space.variable} ${urdu.variable}`} data-theme="light">
       <body className="min-h-screen">
@@ -55,6 +59,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           {t.nav.skip}
         </a>
         <I18nProvider lang={lang} t={t}>
+          <CurrencyProvider list={cfg.currencies} initial={curCookie}>
+          <WishlistProvider initial={user?.wishlist ?? []} loggedIn={!!user}>
           <SmoothScroll>
             <Preloader />
             <Cursor />
@@ -90,6 +96,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
             )}
             {cfg.pixelId && <Script id="meta-pixel" strategy="afterInteractive">{`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${cfg.pixelId}');fbq('track','PageView');`}</Script>}
           </SmoothScroll>
+          </WishlistProvider>
+          </CurrencyProvider>
         </I18nProvider>
       </body>
     </html>

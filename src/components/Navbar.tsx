@@ -9,6 +9,7 @@ import { pkr } from "@/lib/format";
 import type { VehicleKind } from "@/lib/types";
 import Logo from "./Logo";
 import LangSwitch from "./LangSwitch";
+import { CurrencySwitch } from "./Currency";
 import Vehicle from "./vehicle/Vehicle";
 import { Chevron, ChevronFwd, User } from "./Icons";
 import { IconConfigure, IconOrders, IconStock, IconTrack } from "./CoreIcons";
@@ -101,6 +102,7 @@ export default function Navbar({ user, models, links }: { user: { name: string }
           </nav>
 
           <div className="flex items-center gap-2">
+            <CurrencySwitch tone="white" />
             <LangSwitch tone="white" />
             <Link href={user ? "/account" : "/login"} className="hidden h-9 items-center gap-2 rounded-md bg-white px-3.5 text-[13px] font-semibold text-[#111] transition hover:bg-white/90 md:inline-flex">
               <User size={15} />

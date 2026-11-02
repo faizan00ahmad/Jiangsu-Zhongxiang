@@ -1,6 +1,7 @@
 import { LAST_STAGE, STAGES } from "@/lib/catalog";
 import { pkr } from "@/lib/format";
 import { audit, guard, setStage } from "@/lib/server/admin";
+import { releaseCoupon } from "@/lib/server/coupons";
 import { mutate, releaseUnit } from "@/lib/server/db";
 import { fail, int, ok, readJson, str } from "@/lib/server/http";
 import { notify } from "@/lib/server/notify";
@@ -73,6 +74,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
         if (dealer) return "forbidden";
         if (o.status !== "pending_payment" && o.status !== "active") return "invalid_stage";
         if (o.stage <= 1) releaseUnit(db, o); // unit not yet built; later stages keep it allocated
+        else releaseCoupon(db, o);
         o.status = "cancelled";
         o.history.push({ at: now, by, action: "order.cancelled" });
         audit(db, admin, "cancel", "orders", o.id, "cancelled by staff");

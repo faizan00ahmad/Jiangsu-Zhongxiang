@@ -42,19 +42,19 @@ admin pannel/
 | Category creation (unlimited) | Done | Done: home series tabs |
 | Manage product-brand / Brand page | Done (brands, brand assignment per model) | Admin only |
 | Vehicle customisation engine, real-time PKR quote | Existing, plus the **solar panel** option | Done |
-| Payment gateways (2) with prepayment locking | Settings and sandbox mode done | Admin only: checkout still uses the earlier sandbox pay panel |
-| Coupon code | Done (percent/fixed, limits, models, dates) | Not built: no field at checkout yet |
-| Multiple currency | Done (rates, enable, PKR protected) | Not built: no switcher yet |
-| Shipping calculator / zone routing | Zones done | Not built at checkout |
+| Payment gateways (2) with prepayment locking | Settings and sandbox mode done | Done: the pay panel offers JazzCash / Easypaisa only while their switch is on (refused server-side too); still sandbox until real accounts |
+| Coupon code | Done (percent/fixed, limits, models, dates) | Done: field at checkout, re-checked when the order is placed, deposit worked out on the discounted total, use returned on cancel or expiry |
+| Multiple currency | Done (rates, enable, PKR protected) | Done: header switcher shows an approximate figure beside PKR on cards, configurator, checkout and orders. Charging and quotations stay in PKR |
+| Shipping calculator / zone routing | Zones done | Done: checkout shows the delivery estimate and extra days for the chosen city; stored on the order; not part of the price or advance |
 | 8-node logistics tracking | Done (board, stage changes notify the customer) | Done |
 | Customer order update | Done (email/SMS templates per event) | Done (sandbox until real accounts) |
 | Export orders to Excel | Done (real .xlsx, CSV) | n/a |
 | Estimated invoice download/print | Done: printable invoice per order | Done (quote page) |
 | Customer profile with historical quotes | Done | Done |
-| Wishlist | Customer wishlist visible in admin | Not built |
-| Product rating / reviews | Done (moderation) | Not built: no review form or stars yet |
-| Similar products, category featured banner | Admin fields done | Not built on the site |
-| Advanced filtration, multiple sorting, compare | Compare exists | Filtering/sorting not built |
+| Wishlist | Customer wishlist visible in admin | Done: heart on model cards, the model page and similar models; saved list on My Account |
+| Product rating / reviews | Done (moderation) | Done: stars and form on the model page, held for approval, one per customer per model, average from approved reviews |
+| Similar products, category featured banner | Admin fields done | Similar products done (picked models first, then same type). Category featured banner not built |
+| Advanced filtration, multiple sorting, compare | Compare exists | Sorting (price, range, speed), name search and wheel filter done |
 | Live chat | Done (inbox, reply, close) | Done (widget) |
 | Dealership locator / individual store page | Done (hours, map, photo) | Done: `/dealers/<id>` |
 | Enquiry page (multiple) | Done (4 forms, status, assignee) | Done: `/enquiry` |
@@ -65,7 +65,7 @@ admin pannel/
 | W3C validation, PageSpeed | Site health check (HTML/SEO basics) and links to the official tools | n/a |
 | Cache management | Done | n/a |
 | Webmail | Outbox (sandbox mailbox) | n/a |
-| Product views | Counter stored; shown on dashboard | Counts blog views; model views not recorded yet |
+| Product views | Counter stored; shown on dashboard | Counts blog views and model page visits (once per tab session) |
 
 ## The six extra features
 

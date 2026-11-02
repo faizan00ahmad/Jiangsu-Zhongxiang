@@ -2,6 +2,7 @@
 import { useI18n } from "@/i18n/I18nProvider";
 import { CITIES, KIND_META } from "@/lib/catalog";
 import { dateTime, fill, pkr, signedPkr } from "@/lib/format";
+import { Approx } from "@/components/Currency";
 import type { Order } from "@/lib/types";
 import ModelVisual, { type VisualModel } from "@/components/vehicle/ModelVisual";
 import { Notice, Reveal } from "@/components/ui";
@@ -9,9 +10,9 @@ import { Phone, Pin, Shield, Store } from "@/components/Icons";
 import Timeline, { StatusChip, type TimelineData } from "./Timeline";
 import PayPanel from "./PayPanel";
 import PickupPanel, { type PickupStore } from "./PickupPanel";
-import type { CityKey } from "@/lib/types";
+import type { CityKey, PayMethod } from "@/lib/types";
 
-export default function OrderDetail({ order, model, color, timeline, fresh, stores, pickupLocked, myCity }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean; stores: PickupStore[]; pickupLocked: boolean; myCity: CityKey }) {
+export default function OrderDetail({ order, model, color, timeline, fresh, stores, pickupLocked, myCity, methods }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean; stores: PickupStore[]; pickupLocked: boolean; myCity: CityKey; methods: PayMethod[] }) {
   const { t, tx, lang } = useI18n();
   const meta = KIND_META[model.kind];
   const dealer = timeline.dealer;
@@ -33,7 +34,7 @@ export default function OrderDetail({ order, model, color, timeline, fresh, stor
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="space-y-8">
-          {order.status === "pending_payment" && <PayPanel orderId={order.id} deposit={order.deposit} lockExpiresAt={order.lockExpiresAt} />}
+          {order.status === "pending_payment" && <PayPanel orderId={order.id} deposit={order.deposit} lockExpiresAt={order.lockExpiresAt} methods={methods} />}
           {(order.status === "pending_payment" || order.status === "active") && <PickupPanel orderId={order.id} stores={stores} currentId={order.contact.dealerId} myCity={myCity} locked={pickupLocked} />}
           {(order.status === "cancelled" || order.status === "expired") && <Notice tone="error">{t.order.status[order.status]}</Notice>}
           <Reveal>
@@ -65,12 +66,20 @@ export default function OrderDetail({ order, model, color, timeline, fresh, stor
                     <span className={l.price ? "" : "text-ink/40"}>{signedPkr(l.price, lang)}</span>
                   </li>
                 ))}
+                {!!order.discount && (
+                  <li className="flex justify-between gap-3">
+                    <span className="text-ink/60">
+                      {t.checkout.discount}: <span className="latin">{order.couponCode}</span>
+                    </span>
+                    <span className="text-[var(--accent)]">− {pkr(order.discount, lang)}</span>
+                  </li>
+                )}
               </ul>
               <div className="my-4 border-t border-ink/10" />
               <dl className="space-y-1.5 text-sm">
                 <div className="flex justify-between">
                   <dt className="font-semibold">{t.common.total}</dt>
-                  <dd className="font-display text-xl font-bold">{pkr(order.total, lang)}</dd>
+                  <dd className="font-display text-xl font-bold">{pkr(order.total, lang)} <Approx pkr={order.total} className="!text-xs" /></dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-ink/60">

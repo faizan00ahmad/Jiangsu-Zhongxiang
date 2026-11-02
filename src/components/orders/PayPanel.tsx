@@ -16,11 +16,12 @@ const METHODS: { id: PayMethod; I: typeof Wallet }[] = [
 ];
 
 /** Advance payment + cancel-before-payment, shown only while the order awaits its deposit. */
-export default function PayPanel({ orderId, deposit, lockExpiresAt }: { orderId: string; deposit: number; lockExpiresAt: string }) {
+export default function PayPanel({ orderId, deposit, lockExpiresAt, methods }: { orderId: string; deposit: number; lockExpiresAt: string; methods: PayMethod[] }) {
   const { t, lang } = useI18n();
   const toast = useToast();
   const router = useRouter();
-  const [method, setMethod] = useState<PayMethod>("jazzcash");
+  const offered = METHODS.filter((m) => methods.includes(m.id));
+  const [method, setMethod] = useState<PayMethod>(offered[0]?.id ?? "bank");
   const [busy, setBusy] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [err, setErr] = useState("");
@@ -59,7 +60,7 @@ export default function PayPanel({ orderId, deposit, lockExpiresAt }: { orderId:
       </div>
       <p className="mt-6 text-sm font-semibold">{t.order.method}</p>
       <div role="radiogroup" aria-label={t.order.method} className="mt-2 grid grid-cols-2 gap-2.5 md:grid-cols-4">
-        {METHODS.map(({ id, I }) => {
+        {offered.map(({ id, I }) => {
           const on = method === id;
           return (
             <button key={id} type="button" role="radio" aria-checked={on} onClick={() => setMethod(id)} className={`flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${on ? "border-[var(--amber)] bg-[var(--amber)]/15" : "border-ink/12 hover:border-ink/35"}`}>

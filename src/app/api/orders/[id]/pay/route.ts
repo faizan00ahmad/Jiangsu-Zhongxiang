@@ -1,6 +1,7 @@
 import { daysRemaining } from "@/lib/catalog";
 import { code } from "@/lib/server/crypto";
 import { mutate } from "@/lib/server/db";
+import { enabledMethods } from "@/lib/server/gateways";
 import { fail, ok, readJson } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
 import type { PayMethod } from "@/lib/types";
@@ -22,6 +23,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     if (!o) return "not_found";
     if (o.status === "expired") return "expired";
     if (o.status !== "pending_payment") return "not_payable";
+    if (!enabledMethods(db).includes(method)) return "method_disabled";
     const now = new Date();
     o.payment = { method, ref: `PAY-${code(8)}`, amount: o.deposit, paidAt: now.toISOString(), verified: false, verifiedAt: null, verifiedBy: null };
     o.status = "active";

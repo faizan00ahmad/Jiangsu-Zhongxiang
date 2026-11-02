@@ -24,6 +24,12 @@ Each row was changed through the admin API and checked on the public site (or th
 | Chat reply | Visitor's chat window, unread count | Pass |
 | Custom role | Menu and page access, API 403 | Pass |
 | Integration secret | Encrypted in the data file, masked in the admin | Pass |
+| Coupon created, disabled, expired, model-limited, usage-limited | Checkout discount, order total and deposit, use count returned on cancel | Pass |
+| Currency enabled / disabled | Header switcher options | Pass |
+| Review approved / rejected | Model page and average | Pass |
+| Zone charge changed or zone disabled | Checkout estimate, order record | Pass |
+| JazzCash / Easypaisa switched off | Order pay panel; payment refused server-side | Pass |
+| Related model picked | Similar models on the model page | Pass |
 | Backup / restore | File written, download, traversal refused | Pass (restore of a real file not run, to protect the demo data) |
 
-Not yet covered because the site side is not built: coupons at checkout, currency switch, reviews on model pages, wishlist, shipping calculator, social login.
+Still not built: social login (needs the client's Google and Facebook app keys), brand page and category featured banner on the site.

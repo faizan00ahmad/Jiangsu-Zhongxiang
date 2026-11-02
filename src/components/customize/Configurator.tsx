@@ -7,6 +7,8 @@ import { KIND_META } from "@/lib/catalog";
 import { fill, pkr, signedPkr } from "@/lib/format";
 import { STD_COLOR, defaultConfig, priceQuote } from "@/lib/pricing";
 import type { Config, GroupKey, Model, OptionGroup, StockStatus } from "@/lib/types";
+import { Approx } from "@/components/Currency";
+import { WishHeart } from "@/components/Wishlist";
 import { api, configToQuery, deviceSetups, errorText, rememberQuote, saveDeviceSetup, type DeviceSetup } from "@/lib/client";
 import { useI18n, useToast } from "@/i18n/I18nProvider";
 import Vehicle, { WheelSwatch } from "@/components/vehicle/Vehicle";
@@ -128,10 +130,13 @@ export default function Configurator({ model, models, options, colors, initial, 
                 </AnimatePresence>
                 <p className="mt-1 text-ink/60">{tx(model.tagline)}</p>
               </div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/60 px-3 py-1.5 text-xs font-semibold backdrop-blur">
-                <span className="h-2 w-2 rounded-full" style={{ background: STOCK_TONE[stock] }} />
-                {t.checkout.factoryStock}: {t.inventory.status[stock]}
-              </span>
+              <div className="flex items-center gap-2">
+                <WishHeart slug={model.slug} />
+                <span className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/60 px-3 py-1.5 text-xs font-semibold backdrop-blur">
+                  <span className="h-2 w-2 rounded-full" style={{ background: STOCK_TONE[stock] }} />
+                  {t.checkout.factoryStock}: {t.inventory.status[stock]}
+                </span>
+              </div>
             </div>
 
             {paintPhoto ? (
@@ -296,7 +301,7 @@ export default function Configurator({ model, models, options, colors, initial, 
               {t.common.total} · <span className="normal-case tracking-normal">{t.customize.livePrice}</span>
             </p>
             <p className="font-display text-2xl font-semibold md:text-3xl">
-              <TweenNumber value={priced.total} format={(n) => pkr(n, lang)} />
+              <TweenNumber value={priced.total} format={(n) => pkr(n, lang)} /> <Approx pkr={priced.total} className="ms-1 !text-sm" />
             </p>
             <p className="text-xs text-ink/50">
               {pkr(model.basePrice, lang)} + {pkr(priced.extras, lang)}

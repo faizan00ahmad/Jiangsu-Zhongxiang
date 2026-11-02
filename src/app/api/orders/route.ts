@@ -4,6 +4,8 @@ import { mutate } from "@/lib/server/db";
 import { fail, normalizePhone, ok, readJson, str } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
 import { depositFor, priceQuote } from "@/lib/pricing";
+import { evaluateCoupon } from "@/lib/server/coupons";
+import { zoneFor } from "@/lib/shipping";
 import { pkr } from "@/lib/format";
 import { notify } from "@/lib/server/notify";
 import type { Order } from "@/lib/types";
@@ -31,9 +33,21 @@ export async function POST(req: Request) {
     if (open >= db.settings.maxOpenOrders) return { error: "too_many_open", n: open };
     if ((db.factoryStock[model.slug] ?? 0) <= 0) return { error: "out_of_stock" };
 
+    const p = priceQuote(model, db.options, quote.config);
+    // a coupon is re-checked here, before anything is reserved; the number the browser showed is never trusted
+    let discount = 0;
+    let couponCode: string | null = null;
+    if (typeof b.coupon === "string" && b.coupon.trim()) {
+      const r = evaluateCoupon(db, b.coupon, { model: model.slug, total: p.total, userId: user.id });
+      if (!r.ok) return { error: r.error };
+      discount = r.discount;
+      couponCode = r.coupon.code;
+      r.coupon.used += 1;
+    }
+    const total = p.total - discount;
+
     db.factoryStock[model.slug] -= 1;
     if (quote.userId === null) quote.userId = user.id;
-    const p = priceQuote(model, db.options, quote.config);
     const now = new Date();
     let id = "";
     do id = `ZX-PK-${code(6)}`;
@@ -47,9 +61,12 @@ export async function POST(req: Request) {
       config: p.config,
       lines: p.lines,
       basePrice: model.basePrice,
-      total: p.total,
+      total,
+      discount,
+      couponCode,
+      shipping: zoneFor(db.zones.filter((z) => z.enabled), city)?.baseCost ?? 0, // estimate only; not part of the price or the advance
       depositPercent: db.settings.depositPercent,
-      deposit: depositFor(p.total, db.settings.depositPercent),
+      deposit: depositFor(total, db.settings.depositPercent),
       contact: { name, phone, city, dealerId: null }, // the pickup store is chosen after ordering
       status: "pending_payment",
       stage: 0,
