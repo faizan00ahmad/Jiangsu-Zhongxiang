@@ -57,6 +57,84 @@ export default function ModelsAdmin({ models, colors, categories, brands }: { mo
   );
 }
 
+/** A full turntable set: one lap of photos in order, uploaded together. The site turns smoothly through them. */
+function SpinUploader({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
+  const { lang, toast, err } = useAdmin();
+  const z = (zh: string, en: string) => (lang === "zh" ? zh : en);
+  const pick = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState("");
+
+  async function add(files: FileList | null) {
+    if (!files?.length) return;
+    // photo files are taken in name order, so 001.jpg … 036.jpg arrive as one lap
+    const list = [...files].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })).slice(0, 72 - value.length);
+    const urls: string[] = [];
+    for (let i = 0; i < list.length; i++) {
+      setBusy(`${i + 1} / ${list.length}`);
+      const fd = new FormData();
+      fd.append("file", list[i]);
+      const r = await fetch("/api/admin/upload", { method: "POST", body: fd })
+        .then((x) => x.json())
+        .catch(() => ({ ok: false, error: "network" }));
+      if (!r.ok) {
+        toast(`${list[i].name}: ${err(r.error)}`, "error");
+        break;
+      }
+      urls.push(r.url);
+    }
+    setBusy("");
+    if (urls.length) onChange([...value, ...urls]);
+    if (pick.current) pick.current.value = "";
+  }
+  const move = (i: number, d: number) => {
+    const j = i + d;
+    if (j < 0 || j >= value.length) return;
+    const v = [...value];
+    [v[i], v[j]] = [v[j], v[i]];
+    onChange(v);
+  };
+
+  return (
+    <div>
+      <p className="text-xs font-semibold text-ink/60">{z("360° 全景图（一圈）", "360° turntable photos")}</p>
+      <p className="mb-2 text-[11px] leading-relaxed text-ink/45">
+        {z(
+          "按顺序上传绕车一圈的照片（建议 24–36 张，从正面开始，向车辆右侧转动，机位与构图一致，每张不超过 5MB）。12 张以上即为流畅旋转；未上传时网站使用现有的真实角度照片。",
+          "Upload one lap of photos around the bike, in order (24 to 36 is ideal): start at the front and turn toward the bike's right, with the same camera and framing, under 5 MB each. 12 or more turn smoothly. Without a set, the site uses the real angle photos it already has.",
+        )}
+      </p>
+      {value.length > 0 && (
+        <ol className="mb-2 flex gap-2 overflow-x-auto pb-1">
+          {value.map((u, i) => (
+            <li key={u + i} className="relative shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={u} alt="" className="h-16 w-24 rounded-md bg-white object-contain" />
+              <span className="absolute start-1 top-1 rounded bg-black/65 px-1 text-[10px] text-white">{i + 1}</span>
+              <span className="absolute inset-x-0 bottom-0 flex justify-between px-0.5 text-white">
+                <button type="button" onClick={() => move(i, -1)} aria-label={z("前移", "Move earlier")} className="rounded bg-black/55 px-1.5 text-xs">‹</button>
+                <button type="button" onClick={() => onChange(value.filter((_, k) => k !== i))} aria-label={z("删除", "Remove")} className="rounded bg-black/55 px-1.5 text-xs">✕</button>
+                <button type="button" onClick={() => move(i, 1)} aria-label={z("后移", "Move later")} className="rounded bg-black/55 px-1.5 text-xs">›</button>
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+      <input ref={pick} type="file" multiple accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => add(e.target.files)} />
+      <div className="flex flex-wrap items-center gap-2">
+        <Btn onClick={() => pick.current?.click()} disabled={!!busy || value.length >= 72}>
+          {busy ? `${z("上传中", "Uploading")} ${busy}` : z("添加照片", "Add photos")}
+        </Btn>
+        {value.length > 0 && (
+          <Btn tone="ghost" onClick={() => onChange([])}>
+            {z("清空（改用现有角度照片）", "Clear (use the real angle photos)")}
+          </Btn>
+        )}
+        <span className="text-xs text-ink/50">{value.length ? z(`${value.length} 张${value.length >= 12 ? "，流畅旋转" : "，少于 12 张，按角度切换"}`, `${value.length} photos${value.length >= 12 ? ", turns smoothly" : ", under 12: steps between angles"}`) : ""}</span>
+      </div>
+    </div>
+  );
+}
+
 function ModelEditor({ m, colors, categories, brands, others }: { m: Model; colors: OptionItem[]; categories: Category[]; brands: Brand[]; others: Model[] }) {
   const { t, k, lang, call, toast, err, can, confirm } = useAdmin();
   const [f, setF] = useState(() => structuredClone(m));
@@ -199,6 +277,10 @@ function ModelEditor({ m, colors, categories, brands, others }: { m: Model; colo
           </div>
         )}
 
+        <div className="sm:col-span-2">
+          <SpinUploader value={f.spin ?? []} onChange={(v) => setF({ ...f, spin: v })} />
+        </div>
+
         {f.photos.gallery.length > 0 && (
           <div className="sm:col-span-2">
             <p className="mb-2 text-xs font-semibold text-ink/60">{t.models.gallery}</p>
@@ -248,7 +330,7 @@ function ModelEditor({ m, colors, categories, brands, others }: { m: Model; colo
           <Btn
             tone="primary"
             disabled={!dirty}
-            onClick={() => call("/api/admin/models", { slug: m.slug, patch: { name: f.name, basePrice: f.basePrice, tagline: f.tagline, specs: { ...f.specs, seats: f.specs.seats ?? "", payload: f.specs.payload ?? "" }, defaultColor: f.defaultColor, variant: f.variant, sort: f.sort, enabled: f.enabled, image: f.image, colors: f.colors, series: f.series, brand: f.brand ?? "", related: f.related ?? [], seo: f.seo, hideOptions: f.hideOptions ?? [] } }, "PUT")}
+            onClick={() => call("/api/admin/models", { slug: m.slug, patch: { name: f.name, basePrice: f.basePrice, tagline: f.tagline, specs: { ...f.specs, seats: f.specs.seats ?? "", payload: f.specs.payload ?? "" }, defaultColor: f.defaultColor, variant: f.variant, sort: f.sort, enabled: f.enabled, image: f.image, colors: f.colors, series: f.series, brand: f.brand ?? "", related: f.related ?? [], spin: f.spin ?? [], seo: f.seo, hideOptions: f.hideOptions ?? [] } }, "PUT")}
           >
             {t.common.save}
           </Btn>

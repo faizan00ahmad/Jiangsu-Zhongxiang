@@ -4,6 +4,7 @@ import ModelReviews from "@/components/customize/ModelReviews";
 import SimilarModels from "@/components/customize/SimilarModels";
 import ViewPing from "@/components/customize/ViewPing";
 import { groupsFor, normalizeConfig } from "@/lib/pricing";
+import { spinFor } from "@/lib/spin";
 import { factoryStatus, siteData } from "@/lib/server/queries";
 import { currentUser } from "@/lib/server/session";
 
@@ -40,7 +41,7 @@ export default async function CustomizeModel({ params, searchParams }: { params:
   const similar = [...picked, ...fill].slice(0, 3).map((m) => ({ slug: m.slug, kind: m.kind, variant: m.variant, name: m.name, image: m.image, photos: m.photos, colors: m.colors, basePrice: m.basePrice, color: colors[m.defaultColor] ?? m.colors?.[0]?.hex ?? "#ccc" }));
   return (
     <>
-      <Configurator model={model} models={models} options={groupsFor(model, db.options)} colors={colors} initial={initial} fromQuote={quote ? quote.id : null} loggedIn={!!user} stock={factoryStatus(db, model.slug).status} />
+      <Configurator model={model} models={models} options={groupsFor(model, db.options)} colors={colors} initial={initial} fromQuote={quote ? quote.id : null} loggedIn={!!user} stock={factoryStatus(db, model.slug).status} spin={spinFor(model)} />
       <ModelReviews slug={model.slug} reviews={reviews} signedIn={!!user} alreadyReviewed={reviewed} />
       <SimilarModels models={similar} />
       <ViewPing slug={model.slug} />

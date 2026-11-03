@@ -15,6 +15,8 @@ import Vehicle, { WheelSwatch } from "@/components/vehicle/Vehicle";
 import ModelVisual from "@/components/vehicle/ModelVisual";
 import RecolorImage from "@/components/vehicle/RecolorImage";
 import ProductDetails from "./ProductDetails";
+import Spin360 from "./Spin360";
+import type { SpinSet } from "@/lib/spin";
 import { Button, TweenNumber, ease } from "@/components/ui";
 import { Battery, Bookmark, Bolt, Check, Clock, Doc, Gauge, Refresh, User } from "@/components/Icons";
 
@@ -27,12 +29,14 @@ type Props = {
   fromQuote: string | null;
   loggedIn: boolean;
   stock: StockStatus;
+  spin: SpinSet | null;
 };
 
 const STOCK_TONE: Record<StockStatus, string> = { in: "#2ee6a6", low: "#f5b40c", out: "#ff4d3d" };
 
-export default function Configurator({ model, models, options, colors, initial, fromQuote, loggedIn, stock }: Props) {
+export default function Configurator({ model, models, options, colors, initial, fromQuote, loggedIn, stock, spin }: Props) {
   const { t, tx, lang } = useI18n();
+  const [view360, setView360] = useState(false);
   const toast = useToast();
   const router = useRouter();
   const [config, setConfig] = useState<Config>(initial);
@@ -118,7 +122,7 @@ export default function Configurator({ model, models, options, colors, initial, 
               <i />
               <i />
             </div>
-            <div className="flex flex-wrap items-start justify-between gap-3 p-5 md:p-8">
+            <div className="relative z-10 flex flex-wrap items-start justify-between gap-3 p-5 md:p-8">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: meta.accent }}>
                   {tx(meta.label)}
@@ -131,6 +135,11 @@ export default function Configurator({ model, models, options, colors, initial, 
                 <p className="mt-1 text-ink/60">{tx(model.tagline)}</p>
               </div>
               <div className="flex items-center gap-2">
+                {spin && (
+                  <button type="button" onClick={() => setView360((v) => !v)} aria-pressed={view360} className={`inline-flex h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-bold tracking-wide transition ${view360 ? "border-[#111] bg-[#111] text-white" : "border-black/10 bg-white/90 text-[#111] hover:scale-105"}`}>
+                    <span className="latin">360°</span> {view360 ? t.spin.photo : t.spin.view}
+                  </button>
+                )}
                 <WishHeart slug={model.slug} />
                 <span className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/60 px-3 py-1.5 text-xs font-semibold backdrop-blur">
                   <span className="h-2 w-2 rounded-full" style={{ background: STOCK_TONE[stock] }} />
@@ -139,7 +148,11 @@ export default function Configurator({ model, models, options, colors, initial, 
               </div>
             </div>
 
-            {paintPhoto ? (
+            {view360 && spin ? (
+              <div className="relative min-h-[380px] flex-1">
+                <Spin360 set={spin} name={model.name} note={priced.config.color !== defaultConfig(model, options).color ? t.spin.colourNote : undefined} />
+              </div>
+            ) : paintPhoto ? (
               <>
                 {/* real studio photo of the selected paint, cross-fading between colours */}
                 <AnimatePresence initial={false}>

@@ -42,6 +42,7 @@ admin pannel/
 | Category creation (unlimited) | Done | Done: home series tabs |
 | Manage product-brand / Brand page | Done (brands, brand assignment per model) | Admin only |
 | Vehicle customisation engine, real-time PKR quote | Existing, plus the **solar panel** option | Done |
+| 360° view of each bike | Done: Models screen takes a full turntable set (upload one lap of photos, reorder, clear) | Done for the 10 live models: drag, swipe, arrow keys or auto-turn on the model page. Built from the factory's real 3 to 5 angle photos (left/right mirrored), stepping between angles. A full set of 12+ photos turns smoothly. Not yet on the 18 unlisted models |
 | Payment gateways (2) with prepayment locking | Settings and sandbox mode done | Done: the pay panel offers JazzCash / Easypaisa only while their switch is on (refused server-side too); still sandbox until real accounts |
 | Coupon code | Done (percent/fixed, limits, models, dates) | Done: field at checkout, re-checked when the order is placed, deposit worked out on the discounted total, use returned on cancel or expiry |
 | Multiple currency | Done (rates, enable, PKR protected) | Done: header switcher shows an approximate figure beside PKR on cards, configurator, checkout and orders. Charging and quotations stay in PKR |

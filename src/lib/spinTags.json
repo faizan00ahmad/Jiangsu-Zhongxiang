@@ -1,0 +1,12 @@
+{
+  "crown-ii": [{ "file": "gallery-2.webp", "deg": 0 }, { "file": "gallery-1.webp", "deg": 225 }, { "file": "gallery-3.webp", "deg": 260 }],
+  "phoenix": [{ "file": "gallery-1.webp", "deg": 0 }, { "file": "gallery-2.webp", "deg": 60 }, { "file": "gallery-3.webp", "deg": 125 }],
+  "griffin": [{ "file": "gallery-1.webp", "deg": 0 }, { "file": "banner.webp", "deg": 320 }, { "file": "gallery-2.webp", "deg": 275 }, { "file": "gallery-4.webp", "deg": 230 }, { "file": "gallery-3.webp", "deg": 180 }],
+  "dubhe": [{ "file": "gallery-1.webp", "deg": 315 }, { "file": "gallery-2.webp", "deg": 245 }, { "file": "gallery-3.webp", "deg": 270 }],
+  "alkaid": [{ "file": "gallery-5.webp", "deg": 0 }, { "file": "gallery-1.webp", "deg": 320 }, { "file": "gallery-4.webp", "deg": 270 }, { "file": "gallery-2.webp", "deg": 235 }, { "file": "gallery-3.webp", "deg": 180 }],
+  "r-xfx": [{ "file": "gallery-1.webp", "deg": 0 }, { "file": "gallery-3.webp", "deg": 90 }, { "file": "gallery-2.webp", "deg": 130 }],
+  "r-jlong": [{ "file": "gallery-1.webp", "deg": 0 }, { "file": "gallery-2.webp", "deg": 315 }, { "file": "gallery-3.webp", "deg": 290 }],
+  "retro-cg": [{ "file": "gallery-1.webp", "deg": 0 }, { "file": "gallery-2.webp", "deg": 315 }, { "file": "gallery-3.webp", "deg": 285 }],
+  "zx-x-cool": [{ "file": "gallery-1.png", "deg": 0 }, { "file": "banner.png", "deg": 90 }],
+  "zx-jl": [{ "file": "gallery-1.png", "deg": 0 }, { "file": "banner.png", "deg": 45 }, { "file": "gallery-2.png", "deg": 90 }]
+}

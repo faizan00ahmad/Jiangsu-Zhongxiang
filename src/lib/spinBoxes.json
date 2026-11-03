@@ -1,0 +1,249 @@
+{
+ "boxes": {
+  "crown-ii/gallery-2.webp": [
+   0.384,
+   0.214,
+   0.623,
+   0.947
+  ],
+  "crown-ii/gallery-1.webp": [
+   0.355,
+   0.331,
+   0.72,
+   0.892
+  ],
+  "crown-ii/gallery-3.webp": [
+   0.325,
+   0.336,
+   0.744,
+   0.858
+  ],
+  "phoenix/gallery-1.webp": [
+   0.37,
+   0.156,
+   0.613,
+   0.978
+  ],
+  "phoenix/gallery-2.webp": [
+   0.258,
+   0.264,
+   0.745,
+   0.894
+  ],
+  "phoenix/gallery-3.webp": [
+   0.205,
+   0.225,
+   0.645,
+   0.894
+  ],
+  "griffin/gallery-1.webp": [
+   0.369,
+   0.02,
+   0.63,
+   0.971
+  ],
+  "griffin/banner.webp": [
+   0.267,
+   0.062,
+   0.67,
+   0.971
+  ],
+  "griffin/gallery-2.webp": [
+   0.228,
+   0.062,
+   0.791,
+   0.928
+  ],
+  "griffin/gallery-4.webp": [
+   0.302,
+   0.055,
+   0.722,
+   0.961
+  ],
+  "griffin/gallery-3.webp": [
+   0.392,
+   0.036,
+   0.606,
+   0.974
+  ],
+  "dubhe/gallery-1.webp": [
+   0.25,
+   0.059,
+   0.684,
+   0.977
+  ],
+  "dubhe/gallery-2.webp": [
+   0.259,
+   0.075,
+   0.728,
+   0.974
+  ],
+  "dubhe/gallery-3.webp": [
+   0.191,
+   0.072,
+   0.802,
+   0.912
+  ],
+  "alkaid/gallery-5.webp": [
+   0.372,
+   0.033,
+   0.625,
+   0.974
+  ],
+  "alkaid/gallery-1.webp": [
+   0.309,
+   0.02,
+   0.706,
+   0.974
+  ],
+  "alkaid/gallery-4.webp": [
+   0.208,
+   0.049,
+   0.786,
+   0.935
+  ],
+  "alkaid/gallery-2.webp": [
+   0.297,
+   0.101,
+   0.748,
+   0.974
+  ],
+  "alkaid/gallery-3.webp": [
+   0.383,
+   0.046,
+   0.605,
+   0.951
+  ],
+  "r-xfx/gallery-1.webp": [
+   0.364,
+   0.247,
+   0.617,
+   0.958
+  ],
+  "r-xfx/gallery-3.webp": [
+   0.269,
+   0.383,
+   0.739,
+   0.892
+  ],
+  "r-xfx/gallery-2.webp": [
+   0.225,
+   0.317,
+   0.641,
+   0.928
+  ],
+  "r-jlong/gallery-1.webp": [
+   0.395,
+   0.311,
+   0.617,
+   0.933
+  ],
+  "r-jlong/gallery-2.webp": [
+   0.341,
+   0.369,
+   0.708,
+   0.931
+  ],
+  "r-jlong/gallery-3.webp": [
+   0.309,
+   0.447,
+   0.763,
+   0.9
+  ],
+  "retro-cg/gallery-1.webp": [
+   0.383,
+   0.256,
+   0.625,
+   0.95
+  ],
+  "retro-cg/gallery-2.webp": [
+   0.292,
+   0.292,
+   0.736,
+   0.919
+  ],
+  "retro-cg/gallery-3.webp": [
+   0.253,
+   0.342,
+   0.817,
+   0.889
+  ],
+  "zx-x-cool/gallery-1.png": [
+   0.375,
+   0.144,
+   0.611,
+   0.964
+  ],
+  "zx-x-cool/banner.png": [
+   0.277,
+   0.219,
+   0.728,
+   0.894
+  ],
+  "zx-jl/gallery-1.png": [
+   0.386,
+   0.3,
+   0.597,
+   0.944
+  ],
+  "zx-jl/banner.png": [
+   0.227,
+   0.3,
+   0.748,
+   0.881
+  ],
+  "zx-jl/gallery-2.png": [
+   0.173,
+   0.331,
+   0.767,
+   0.842
+  ]
+ },
+ "ar": {
+  "crown-ii/gallery-2.webp": 1.778,
+  "crown-ii/gallery-1.webp": 1.778,
+  "crown-ii/gallery-3.webp": 1.778,
+  "phoenix/gallery-1.webp": 1.778,
+  "phoenix/gallery-2.webp": 1.778,
+  "phoenix/gallery-3.webp": 1.778,
+  "griffin/gallery-1.webp": 2.085,
+  "griffin/banner.webp": 2.085,
+  "griffin/gallery-2.webp": 2.085,
+  "griffin/gallery-4.webp": 2.085,
+  "griffin/gallery-3.webp": 2.085,
+  "dubhe/gallery-1.webp": 2.085,
+  "dubhe/gallery-2.webp": 2.085,
+  "dubhe/gallery-3.webp": 2.085,
+  "alkaid/gallery-5.webp": 2.085,
+  "alkaid/gallery-1.webp": 2.085,
+  "alkaid/gallery-4.webp": 2.085,
+  "alkaid/gallery-2.webp": 2.085,
+  "alkaid/gallery-3.webp": 2.085,
+  "r-xfx/gallery-1.webp": 1.778,
+  "r-xfx/gallery-3.webp": 1.778,
+  "r-xfx/gallery-2.webp": 1.778,
+  "r-jlong/gallery-1.webp": 1.778,
+  "r-jlong/gallery-2.webp": 1.778,
+  "r-jlong/gallery-3.webp": 1.778,
+  "retro-cg/gallery-1.webp": 1.778,
+  "retro-cg/gallery-2.webp": 1.778,
+  "retro-cg/gallery-3.webp": 1.778,
+  "zx-x-cool/gallery-1.png": 1.778,
+  "zx-x-cool/banner.png": 1.778,
+  "zx-jl/gallery-1.png": 1.778,
+  "zx-jl/banner.png": 1.778,
+  "zx-jl/gallery-2.png": 1.778
+ },
+ "bg": {
+  "crown-ii": "#f0c09c",
+  "phoenix": "#91cddc",
+  "griffin": "#c9ccbd",
+  "dubhe": "#d9d9d9",
+  "alkaid": "#d3dfce",
+  "r-xfx": "#f5b5be",
+  "r-jlong": "#95b7f2",
+  "retro-cg": "#8cbf8d",
+  "zx-x-cool": "#f5b5be",
+  "zx-jl": "#f5b5be"
+ }
+}

@@ -1,5 +1,5 @@
 // Commerce features on the customer site that the admin controls: coupons at checkout (more added below as they are built).
-import { ADMINS, client, readDb, suite } from "./lib.mjs";
+import { ADMINS, BASE, client, readDb, suite } from "./lib.mjs";
 
 const s = suite("commerce");
 const adminC = client();
@@ -125,6 +125,44 @@ const stock = (m) => readDb().factoryStock[m];
   s.check("staff cancel returns the coupon use", usedBefore === 1 && cp(P).used === 0, `${usedBefore} → ${cp(P).used}`);
 
   for (const id of ids) await adminC.del(`/api/admin/r/coupons/${id}`);
+}
+
+/* ── 360° viewer ── */
+{
+  const site = client();
+  const live = readDb().models.filter((m) => m.enabled).map((m) => m.slug);
+  const unescape = (t) => t.replaceAll("\\", "");
+  let withSpin = 0;
+  for (const slug of live) {
+    const html = (await site.get(`/customize/${slug}`)).text;
+    if (/360°<\/span>/.test(html)) withSpin++;
+  }
+  s.check("every live model offers the 360° view", withSpin === live.length, `${withSpin}/${live.length}`);
+  const alk = unescape((await site.get("/customize/alkaid")).text);
+  s.check("angle shots come with the mirrored side", /"flip":true/.test(alk) && /"flip":false/.test(alk));
+  s.check("the page says it is not a smooth set yet", /"smooth":false/.test(alk));
+  s.check("each angle carries where the bike sits", /"box":\[0\.\d+,0\.\d+,0\.\d+,0\.\d+\]/.test(alk));
+
+  // a full turntable set uploaded in the admin replaces the angle shots
+  const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAHsyqbQAAAABJRU5ErkJggg==", "base64");
+  const urls = [];
+  for (let i = 0; i < 12; i++) {
+    const fd = new FormData();
+    fd.append("file", new Blob([png], { type: "image/png" }), `${String(i + 1).padStart(3, "0")}.png`);
+    const r = await adminC.req("/api/admin/upload", { method: "POST", body: fd, headers: { origin: BASE } });
+    const j = await r.json();
+    if (j.ok) urls.push(j.url);
+  }
+  s.check("twelve frames upload", urls.length === 12, String(urls.length));
+  const before = readDb().models.find((m) => m.slug === "crown-ii").spin ?? [];
+  s.check("admin saves the set", (await adminC.put("/api/admin/models", { slug: "crown-ii", patch: { spin: urls } })).ok);
+  const full = unescape((await site.get("/customize/crown-ii")).text);
+  s.check("the page now turns through the uploaded frames", urls.every((u) => full.includes(u)) && /"smooth":true/.test(full));
+  s.check("the angle shots are no longer used for it", !/"src":"\/products\/crown-ii\/gallery/.test(full));
+  s.check("a link that is not an uploaded file is dropped", (await adminC.put("/api/admin/models", { slug: "crown-ii", patch: { spin: ["https://evil.example/x.png", urls[0]] } })).ok && (readDb().models.find((m) => m.slug === "crown-ii").spin ?? []).length === 1);
+  s.check("one frame alone is not a spin: back to the angle shots", /"src":"\/products\/crown-ii\/gallery/.test(unescape((await site.get("/customize/crown-ii")).text)));
+  await adminC.put("/api/admin/models", { slug: "crown-ii", patch: { spin: before } });
+  s.check("clearing the set restores the angle shots", /"smooth":false/.test(unescape((await site.get("/customize/crown-ii")).text)));
 }
 
 /* ── model page: views, similar models, list sorting ── */

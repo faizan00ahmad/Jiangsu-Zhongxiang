@@ -30,6 +30,7 @@ export type Model = {
   brand?: string | null; // brand slug
   views?: number;
   related?: string[]; // hand-picked similar models (slugs); empty = same category
+  spin?: string[]; // full 360° turntable photos in order (one lap, evenly spaced); empty = the built-in angle shots
   hideOptions?: GroupKey[]; // option groups this model does not offer (e.g. solar on a sport bike)
   seo?: Seo | null;
   wheels: 2 | 3;

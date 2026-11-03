@@ -13,6 +13,7 @@ function applyPatch(m: Model, p: Record<string, unknown>, colorIds: string[], db
   if (p.brand === null || p.brand === "") m.brand = null;
   else if (typeof p.brand === "string" && db.brands.some((b) => b.slug === p.brand)) m.brand = p.brand;
   if (Array.isArray(p.hideOptions)) m.hideOptions = [...new Set(p.hideOptions.filter((k): k is GroupKey => typeof k === "string" && (GROUP_KEYS as string[]).includes(k)))];
+  if (Array.isArray(p.spin)) m.spin = p.spin.filter((s): s is string => typeof s === "string" && isImage(s)).slice(0, 72);
   if (Array.isArray(p.related)) m.related = [...new Set(p.related.filter((s): s is string => typeof s === "string" && s !== m.slug && db.models.some((x) => x.slug === s)))].slice(0, 8);
   if (p.seo && typeof p.seo === "object") {
     const s = p.seo as Record<string, Record<string, unknown>>;

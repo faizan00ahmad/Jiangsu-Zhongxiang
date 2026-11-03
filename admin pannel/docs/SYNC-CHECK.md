@@ -30,6 +30,7 @@ Each row was changed through the admin API and checked on the public site (or th
 | Zone charge changed or zone disabled | Checkout estimate, order record | Pass |
 | JazzCash / Easypaisa switched off | Order pay panel; payment refused server-side | Pass |
 | Related model picked | Similar models on the model page | Pass |
+| 360° turntable set uploaded, cleared, or given an unsafe link | Model page viewer frames and smooth/steps mode | Pass |
 | Backup / restore | File written, download, traversal refused | Pass (restore of a real file not run, to protect the demo data) |
 
 Still not built: social login (needs the client's Google and Facebook app keys), brand page and category featured banner on the site.
