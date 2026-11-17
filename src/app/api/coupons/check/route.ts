@@ -3,6 +3,7 @@ import { evaluateCoupon } from "@/lib/server/coupons";
 import { getDb } from "@/lib/server/db";
 import { clientIp, fail, ok, readJson, str, throttled } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
+import { QUOTE_ID_MAX, findQuote } from "@/lib/quoteKey";
 
 /** Tells the checkout what a coupon would take off. Nothing is reserved here; the order itself re-checks and counts the use. */
 export async function POST(req: Request) {
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
   const user = await currentUser();
   if (!user) return fail("unauthorized", 401);
   const db = await getDb();
-  const quote = db.quotes.find((q) => q.id === str(b.quoteId, 40) && (q.userId === user.id || q.userId === null));
+  const quote = findQuote(db, str(b.quoteId, QUOTE_ID_MAX), user.id);
   const model = quote && db.models.find((m) => m.slug === quote.model && m.enabled);
   if (!quote || !model) return fail("not_found", 404);
   const p = priceQuote(model, db.options, quote.config);

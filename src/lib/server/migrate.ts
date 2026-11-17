@@ -1,7 +1,7 @@
 import { DEFAULT_ROLES, ALL_PERMS } from "../perms";
 import { DEMO_ADMINS, DEMO_CUSTOMERS } from "../demo";
 import { DB_VERSION, type CityKey, type DB } from "../types";
-import { hashPassword, randomId } from "./crypto";
+import { hashPassword, stableId } from "./crypto";
 import { defaultCompany, defaultSocial, defaultTemplates, defaultTestDrive, solarGroup, v3Collections } from "./defaultsV3";
 
 /** Modules added after the first version 3 release: built-in roles pick up their default permissions for them once. */
@@ -98,12 +98,12 @@ export function ensure(db: DB): boolean {
   for (const a of DEMO_ADMINS) {
     if (db.admins.some((x) => x.username === a.username)) continue;
     if (a.dealerId && !db.dealers.some((d) => d.id === a.dealerId)) continue;
-    db.admins.push({ id: randomId(8), username: a.username, name: a.name, role: a.role, dealerId: a.dealerId, passwordHash: hashPassword(a.password), createdAt: new Date().toISOString(), disabled: false, lastLoginAt: null });
+    db.admins.push({ id: stableId("adm", a.username), username: a.username, name: a.name, role: a.role, dealerId: a.dealerId, passwordHash: hashPassword(a.password), createdAt: new Date().toISOString(), disabled: false, lastLoginAt: null });
     changed = true;
   }
   for (const c of DEMO_CUSTOMERS) {
     if (db.users.some((u) => u.phone === c.phone)) continue;
-    db.users.push({ id: randomId(8), name: c.name, phone: c.phone, email: c.email, city: c.city as CityKey, passwordHash: hashPassword(c.password), createdAt: new Date(Date.now() - 20 * 86400000).toISOString(), disabled: false, wishlist: [] });
+    db.users.push({ id: stableId("usr", c.phone), name: c.name, phone: c.phone, email: c.email, city: c.city as CityKey, passwordHash: hashPassword(c.password), createdAt: new Date(Date.now() - 20 * 86400000).toISOString(), disabled: false, wishlist: [] });
     changed = true;
   }
   return changed;

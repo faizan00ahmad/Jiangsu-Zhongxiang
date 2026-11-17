@@ -43,6 +43,28 @@ const cancelAll = async (c, ids) => {
 const mine = [];
 const track = (...ids) => mine.push(...ids);
 
+/* ── a quotation works on a server that never stored it (serverless hosts run several copies) ── */
+{
+  const g = client();
+  const q = await quote(g, "crown-ii");
+  const parts = q.split("~");
+  s.check("a quotation number carries the build", parts[0] === "crown-ii" && parts.length >= 4 && parts.slice(1, -1).every((v) => v.length > 0), q);
+  const ghost = [...parts.slice(0, -1), "GHOST"].join("~"); // same build, never stored
+  const page = await client().get(`/quote/${ghost}`);
+  s.check("an unknown number is read back from the build", page.status === 200 && page.text.includes("250,000"), String(page.status));
+  s.check("the natural (uncustomised) price is the base price", readDb().quotes.find((x) => x.id === q).total === 250000);
+  s.check("an unknown model is not found", /could not be found/.test((await client().get("/quote/no-such~a~b~c")).text));
+  const { c, phone } = await fresh("ghost");
+  const add = await c.post("/api/cart", { quoteId: ghost, qty: 1 });
+  s.check("such a quotation can go into the cart", add.ok && add.items.length === 1, JSON.stringify(add));
+  const co = await checkout(c, phone);
+  s.check("and be ordered", co.ok, JSON.stringify(co));
+  await settle();
+  const oid = readDb().orders.find((o) => o.groupId === co.groupId)?.id;
+  track(oid);
+  s.check("the order is priced from the build", order(oid)?.total === 250000);
+}
+
 /* ── the cart ── */
 {
   const guest = client();

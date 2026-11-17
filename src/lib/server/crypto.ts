@@ -43,3 +43,7 @@ export function code(len: number) {
   return Array.from(b, (x) => A[x % A.length]).join("");
 }
 export const randomId = (bytes = 12) => crypto.randomBytes(bytes).toString("base64url");
+
+/** An id that is the same every time it is made from the same key. Demo accounts use it so that every server instance
+ *  (Vercel starts several, each seeding its own copy of the demo data) agrees on who "admin" or "03001234567" is, and a sign-in made on one still works on the next. */
+export const stableId = (kind: string, key: string) => `${kind}-${crypto.createHash("sha256").update(`zx-demo:${kind}:${key}`).digest("base64url").slice(0, 10)}`;

@@ -4,7 +4,7 @@ import { depositFor, priceQuote } from "../pricing";
 import { migrate } from "./migrate";
 import { type Admin, type CityKey, type Config, type DB, type Dealer, type Model, type OptionGroup, type Order, type Quote, type User } from "../types";
 import { importCatalog } from "./catalogImport";
-import { code, hashPassword, randomId } from "./crypto";
+import { code, hashPassword, randomId, stableId } from "./crypto";
 
 /** First-run data. Models come from the ZXTec factory catalogue; prices and stock are placeholders the team edits
  *  in the admin panel. Demo logins are listed in README.md. */
@@ -196,8 +196,8 @@ export function buildSeed(): DB {
     heroText: { en: "Configure your EV online, see your price in PKR instantly, and track it from our factory to your local dealer.", ur: "اپنی الیکٹرک گاڑی آن لائن ترتیب دیں، قیمت فوراً روپے میں دیکھیں، اور فیکٹری سے مقامی ڈیلر تک اس کی ترسیل ٹریک کریں۔" },
   };
   const now = new Date().toISOString();
-  const admin = (username: string, name: string, role: Admin["role"], pw: string, dealerId: string | null = null): Admin => ({ id: randomId(8), username, name, role, dealerId, passwordHash: hashPassword(pw), createdAt: now, disabled: false });
-  const demo: User = { id: randomId(8), name: "Ahmed Raza", phone: "03001234567", email: "ahmed@example.com", city: "lahore", passwordHash: hashPassword("Demo@2026"), createdAt: daysAgo(70), disabled: false };
+  const admin = (username: string, name: string, role: Admin["role"], pw: string, dealerId: string | null = null): Admin => ({ id: stableId("adm", username), username, name, role, dealerId, passwordHash: hashPassword(pw), createdAt: now, disabled: false });
+  const demo: User = { id: stableId("usr", "03001234567"), name: "Ahmed Raza", phone: "03001234567", email: "ahmed@example.com", city: "lahore", passwordHash: hashPassword("Demo@2026"), createdAt: daysAgo(70), disabled: false };
 
   // the 30-day pickup order is stage 7; the others are mid-journey so every tracking node can be seen
   const seeded = [

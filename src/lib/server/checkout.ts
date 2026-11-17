@@ -3,6 +3,7 @@ import { depositFor, priceQuote } from "../pricing";
 import { pkr } from "../format";
 import { zoneFor } from "../shipping";
 import type { CartItem, CityKey, DB, Order, QuoteLine, User } from "../types";
+import { QUOTE_ID_MAX, ensureQuote, findQuote } from "../quoteKey";
 import { evaluateCoupon } from "./coupons";
 import { code, randomId } from "./crypto";
 import { notify } from "./notify";
@@ -32,7 +33,7 @@ const clampQty = (v: unknown) => Math.max(1, Math.min(MAX_QTY, Math.round(typeof
 export function priceCart(db: DB, userId: string | null, items: { id?: string; quoteId: string; qty: number }[]): CartView {
   const taken: Record<string, number> = {};
   const lines: CartLine[] = items.map((it, i) => {
-    const q = db.quotes.find((x) => x.id === it.quoteId && (x.userId === null || (userId !== null && x.userId === userId)));
+    const q = findQuote(db, it.quoteId, userId);
     const base = { id: it.id ?? `l${i}`, quoteId: it.quoteId, qty: clampQty(it.qty) };
     const model = q && db.models.find((m) => m.slug === q.model);
     if (!q || !model) return { ...base, slug: q?.model ?? "", name: q?.modelName ?? "", lines: [], unit: 0, total: 0, stock: 0, problem: "gone", config: {} };
@@ -54,7 +55,7 @@ export function priceCart(db: DB, userId: string | null, items: { id?: string; q
 const cartOf = (u: User) => (u.cart ??= []);
 
 export function addToCart(db: DB, user: User, quoteId: string, qty: number, replace: boolean): "ok" | "not_found" | "cart_full" {
-  const q = db.quotes.find((x) => x.id === quoteId && (x.userId === null || x.userId === user.id));
+  const q = ensureQuote(db, quoteId, user.id);
   if (!q || !db.models.some((m) => m.slug === q.model && m.enabled)) return "not_found";
   if (q.userId === null) q.userId = user.id;
   if (replace) user.cart = [];
@@ -86,7 +87,7 @@ export function mergeCart(db: DB, user: User, items: unknown) {
   for (const it of items.slice(0, 20)) {
     const r = it as Record<string, unknown>;
     if (typeof r?.quoteId !== "string") continue;
-    addToCart(db, user, r.quoteId.slice(0, 40), clampQty(r.qty), false);
+    addToCart(db, user, r.quoteId.slice(0, QUOTE_ID_MAX), clampQty(r.qty), false);
   }
 }
 
@@ -128,7 +129,7 @@ export function placeOrders(db: DB, user: User, contact: { name: string; phone: 
   const groupId = `CK-${code(8)}`;
   const orders: Order[] = [];
   for (const l of view.lines) {
-    const q = db.quotes.find((x) => x.id === l.quoteId)!;
+    const q = ensureQuote(db, l.quoteId, user.id)!;
     const model = db.models.find((m) => m.slug === l.slug)!;
     if (q.userId === null) q.userId = user.id;
     db.factoryStock[l.slug] = (db.factoryStock[l.slug] ?? 0) - l.qty;

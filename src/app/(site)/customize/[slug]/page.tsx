@@ -5,6 +5,7 @@ import SimilarModels from "@/components/customize/SimilarModels";
 import ViewPing from "@/components/customize/ViewPing";
 import { groupsFor, normalizeConfig } from "@/lib/pricing";
 import { spinFor } from "@/lib/spin";
+import { findQuote } from "@/lib/quoteKey";
 import { factoryStatus, siteData } from "@/lib/server/queries";
 import { currentUser } from "@/lib/server/session";
 
@@ -24,7 +25,7 @@ export default async function CustomizeModel({ params, searchParams }: { params:
 
   // "Modify configuration" from a saved quotation, else whatever is in the URL
   const qid = typeof sp.q === "string" ? sp.q : null;
-  const quote = qid ? db.quotes.find((q) => q.id === qid && (q.userId === null || q.userId === user?.id)) : undefined;
+  const quote = qid ? findQuote(db, qid, user?.id ?? null) : undefined;
   const flat = Object.fromEntries(Object.entries(sp).filter(([, v]) => typeof v === "string")) as Record<string, string>;
   const initial = normalizeConfig(model, db.options, quote && quote.model === model.slug ? quote.config : flat);
 

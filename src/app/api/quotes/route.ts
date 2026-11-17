@@ -3,6 +3,7 @@ import { mutate } from "@/lib/server/db";
 import { clientIp, fail, ok, readJson, str, throttled } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
 import { priceQuote } from "@/lib/pricing";
+import { quoteIdFor } from "@/lib/quoteKey";
 import type { Quote } from "@/lib/types";
 
 /** Generates a PKR quotation from a configuration. Prices are always recomputed on the server. */
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
     const model = db.models.find((m) => m.slug === slug && m.enabled);
     if (!model) return null;
     const p = priceQuote(model, db.options, (b.config ?? {}) as Record<string, unknown>);
-    const q: Quote = { id: randomId(9), userId: user?.id ?? null, model: model.slug, modelName: model.name, basePrice: model.basePrice, config: p.config, lines: p.lines, total: p.total, range: p.range, label, createdAt: new Date().toISOString() };
+    const q: Quote = { id: quoteIdFor(model, db.options, p.config, randomId(5)), userId: user?.id ?? null, model: model.slug, modelName: model.name, basePrice: model.basePrice, config: p.config, lines: p.lines, total: p.total, range: p.range, label, createdAt: new Date().toISOString() };
     db.quotes.push(q);
     return q;
   });

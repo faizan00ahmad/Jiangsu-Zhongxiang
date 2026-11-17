@@ -3,6 +3,7 @@ import { evaluateCoupon } from "@/lib/server/coupons";
 import { getDb } from "@/lib/server/db";
 import { clientIp, fail, ok, readJson, str, throttled } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
+import { QUOTE_ID_MAX } from "@/lib/quoteKey";
 import { depositFor } from "@/lib/pricing";
 
 /** Prices a cart the browser holds (guests) or previews a coupon. Nothing is saved; the order is priced again when it is placed. */
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
   if (throttled(`cartprice:${clientIp(req)}`, 120, 10 * 60 * 1000)) return fail("too_many_attempts", 429);
   const user = await currentUser();
   const db = await getDb();
-  const items = b.items.slice(0, 20).map((x: Record<string, unknown>) => ({ quoteId: str(x?.quoteId, 40), qty: typeof x?.qty === "number" ? x.qty : 1, id: str(x?.id, 20) || undefined }));
+  const items = b.items.slice(0, 20).map((x: Record<string, unknown>) => ({ quoteId: str(x?.quoteId, QUOTE_ID_MAX), qty: typeof x?.qty === "number" ? x.qty : 1, id: str(x?.id, 20) || undefined }));
   const view = priceCart(db, user?.id ?? null, items);
   const percent = db.settings.depositPercent;
 

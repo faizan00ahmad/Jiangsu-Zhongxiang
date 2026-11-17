@@ -4,6 +4,7 @@ import { mutate } from "@/lib/server/db";
 import { fail, normalizePhone, ok, readJson, str } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
 import { depositFor, priceQuote } from "@/lib/pricing";
+import { QUOTE_ID_MAX, ensureQuote } from "@/lib/quoteKey";
 import { evaluateCoupon } from "@/lib/server/coupons";
 import { zoneFor } from "@/lib/shipping";
 import { pkr } from "@/lib/format";
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
   if (!city) return fail("city_required");
 
   const res = await mutate((db): { error: string; n?: number } | { order: Order } => {
-    const quote = db.quotes.find((q) => q.id === str(b.quoteId, 40) && (q.userId === user.id || q.userId === null));
+    const quote = ensureQuote(db, str(b.quoteId, QUOTE_ID_MAX), user.id);
     if (!quote) return { error: "not_found" };
     const model = db.models.find((m) => m.slug === quote.model && m.enabled);
     if (!model) return { error: "model_unavailable" };

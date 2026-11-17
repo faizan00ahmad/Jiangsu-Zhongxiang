@@ -2,6 +2,7 @@ import { addToCart, cartItems, priceCart, removeFromCart, setCartQty } from "@/l
 import { getDb, mutate } from "@/lib/server/db";
 import { fail, ok, readJson, sameOrigin, str } from "@/lib/server/http";
 import { currentUser } from "@/lib/server/session";
+import { QUOTE_ID_MAX } from "@/lib/quoteKey";
 
 /** The signed-in customer's cart. Guests keep theirs in the browser and use /api/cart/price. The browser only ever sends ids and quantities. */
 export async function GET() {
@@ -30,7 +31,7 @@ async function change(run: (u: NonNullable<Awaited<ReturnType<typeof getDb>>["us
 export async function POST(req: Request) {
   if (!sameOrigin(req)) return fail("invalid_input", 403);
   const b = await readJson(req);
-  const quoteId = str(b?.quoteId, 40);
+  const quoteId = str(b?.quoteId, QUOTE_ID_MAX);
   if (!b || !quoteId) return fail("invalid_input");
   const qty = typeof b.qty === "number" ? b.qty : 1;
   return change((u, db) => addToCart(db, u, quoteId, qty, b.replace === true));
