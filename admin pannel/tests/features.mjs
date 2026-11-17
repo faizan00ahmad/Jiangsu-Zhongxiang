@@ -1,7 +1,7 @@
 // The six requested features, plus the admin framework (content, backups, roles, export) checked end to end.
 import fs from "node:fs";
 import path from "node:path";
-import { ADMINS, BASE, ROOT, client, readDb, suite } from "./lib.mjs";
+import { ADMINS, BASE, ROOT, client, payOrder, readDb, suite } from "./lib.mjs";
 
 const s = suite("features");
 const adminC = client();
@@ -78,7 +78,7 @@ let orderId;
   s.check("operator can assign a store", asg.ok && rec().contact.dealerId === "dl-lhr-2", JSON.stringify(asg));
   s.check("dealer role cannot assign stores", !(await lhr.patch(`/api/admin/orders/${orderId}`, { action: "pickup", dealerId: "dl-lhr-1" })).ok);
   // pay, verify, move to the last leg: the choice locks
-  await c.post(`/api/orders/${orderId}/pay`, { method: "bank" });
+  await payOrder(c, orderId);
   await adminC.patch(`/api/admin/orders/${orderId}`, { action: "verify" });
   await adminC.patch(`/api/admin/orders/${orderId}`, { action: "stage", stage: 6 });
   const late = await c.post(`/api/orders/${orderId}/pickup`, { dealerId: "dl-lhr-1" });
@@ -266,7 +266,7 @@ let orderId;
   s.check("customers export", (await adminC.get("/api/admin/users/export")).status === 200);
   s.check("customer export has no password hashes", !(await adminC.get("/api/admin/users/export?format=csv")).text.includes("s1$"));
 
-  const integ = await adminC.put("/api/admin/integrations", { payments: { jazzcash: { enabled: true, mode: "sandbox", merchantId: "M123", secret: "TOPSECRET-KEY" }, easypaisa: { enabled: true, mode: "sandbox", merchantId: "", secret: "" } }, social: { google: { enabled: false, clientId: "", secret: "" }, facebook: { enabled: false, clientId: "", secret: "" } }, sms: { enabled: false, provider: "", sender: "EVOLTA", apiKey: "" }, meta: { pixelId: "12345", whatsapp: "", capiToken: "" }, smtp: { enabled: false, host: "", port: 587, user: "", pass: "", from: "x@y.z" }, webmaster: { googleVerification: "", bingVerification: "", analyticsId: "" }, chat: { enabled: true, welcome: { en: "Hi", ur: "" } } });
+  const integ = await adminC.put("/api/admin/integrations", { payments: { ...readDb().integrations.payments, jazzcash: { enabled: true, mode: "sandbox", merchantId: "M123", secret: "TOPSECRET-KEY" }, easypaisa: { enabled: true, mode: "sandbox", merchantId: "", secret: "" } }, social: { google: { enabled: false, clientId: "", secret: "" }, facebook: { enabled: false, clientId: "", secret: "" } }, sms: { enabled: false, provider: "", sender: "EVOLTA", apiKey: "" }, meta: { pixelId: "12345", whatsapp: "", capiToken: "" }, smtp: { enabled: false, host: "", port: 587, user: "", pass: "", from: "x@y.z" }, webmaster: { googleVerification: "", bingVerification: "", analyticsId: "" }, chat: { enabled: true, welcome: { en: "Hi", ur: "" } } });
   s.check("integrations save", integ.ok, JSON.stringify(integ));
   const raw = fs.readFileSync(path.join(ROOT, "admin pannel", "data", "db.json"), "utf8");
   s.check("gateway secret is encrypted at rest", !raw.includes("TOPSECRET-KEY") && raw.includes("enc1:"));

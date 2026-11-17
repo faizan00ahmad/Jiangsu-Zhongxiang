@@ -12,6 +12,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const orders = visibleOrders(db, admin);
   const alerts: Alerts = {
     orders: orders.filter((o) => o.payment && !o.payment.verified && o.status !== "cancelled").length,
+    payments: db.payIntents.filter((i) => i.status === "review").length,
     reviews: db.reviews.filter((r) => r.status === "pending").length,
     enquiries: db.enquiries.filter((e) => e.status === "new").length,
     chat: db.chats.reduce((n, c) => n + (c.status === "open" ? c.unread : 0), 0),

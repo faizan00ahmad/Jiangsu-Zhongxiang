@@ -1,5 +1,5 @@
 // Commerce features on the customer site that the admin controls: coupons at checkout (more added below as they are built).
-import { ADMINS, BASE, client, readDb, suite } from "./lib.mjs";
+import { ADMINS, BASE, client, payOrder, readDb, suite } from "./lib.mjs";
 
 const s = suite("commerce");
 const adminC = client();
@@ -188,22 +188,23 @@ const stock = (m) => readDb().factoryStock[m];
 {
   const setPay = (jc, ep) => {
     const i = readDb().integrations;
-    return adminC.put("/api/admin/integrations", { payments: { jazzcash: { ...i.payments.jazzcash, enabled: jc }, easypaisa: { ...i.payments.easypaisa, enabled: ep } }, social: i.social, sms: i.sms, meta: i.meta, smtp: i.smtp, webmaster: i.webmaster, chat: i.chat });
+    return adminC.put("/api/admin/integrations", { payments: { ...i.payments, jazzcash: { ...i.payments.jazzcash, enabled: jc }, easypaisa: { ...i.payments.easypaisa, enabled: ep } }, social: i.social, sms: i.sms, meta: i.meta, smtp: i.smtp, webmaster: i.webmaster, chat: i.chat });
   };
   const { c, phone } = await fresh("pay");
   const q = await quote(c, "crown-ii");
   const o = await order(c, q, phone);
   const radios = async () => ((await c.get(`/orders/${o.id}`)).text.match(/role="radio"/g) ?? []).length;
-  s.check("all four methods offered by default", (await radios()) === 4, String(await radios()));
+  // two radios choose advance / full, the rest are the payment methods
+  s.check("all four methods offered by default", (await radios()) === 6, String(await radios()));
   s.check("admin switches JazzCash off", (await setPay(false, true)).ok);
-  s.check("order page offers three methods", (await radios()) === 3);
-  s.check("paying with a switched-off method is refused", (await c.post(`/api/orders/${o.id}/pay`, { method: "jazzcash" })).error === "method_disabled");
+  s.check("order page offers three methods", (await radios()) === 5);
+  s.check("paying with a switched-off method is refused", (await c.post("/api/pay/start", { orderId: o.id, method: "jazzcash" })).error === "method_disabled");
   s.check("order still unpaid after refusal", rec(o.id).status === "pending_payment" && !rec(o.id).payment);
   s.check("admin switches both mobile wallets off", (await setPay(false, false)).ok);
-  s.check("order page offers bank and card only", (await radios()) === 2);
+  s.check("order page offers bank and card only", (await radios()) === 4);
   await setPay(true, true);
-  s.check("methods restored", (await radios()) === 4);
-  const pay = await c.post(`/api/orders/${o.id}/pay`, { method: "jazzcash" });
+  s.check("methods restored", (await radios()) === 6);
+  const pay = await payOrder(c, o.id, { method: "jazzcash" });
   s.check("an enabled method is accepted", pay.ok, JSON.stringify(pay));
   await adminC.patch(`/api/admin/orders/${o.id}`, { action: "cancel" });
 }
@@ -213,19 +214,21 @@ const stock = (m) => readDb().factoryStock[m];
   const z = readDb().zones.find((x) => x.id === "zone-punjab");
   const { c, phone } = await fresh("ship");
   const q = await quote(c, "crown-ii");
-  const page = await c.get(`/checkout/${q}`);
+  await c.post("/api/cart", { quoteId: q, qty: 1 });
+  const page = await c.get("/checkout");
   // the page data is embedded as escaped JSON, so drop the backslashes before looking
   const hasCost = (text, n) => text.replaceAll("\\", "").includes(`"baseCost":${n}`);
   s.check("checkout carries the zone rules", page.status === 200 && hasCost(page.text, z.baseCost), String(page.status));
   s.check("admin changes a zone charge", (await adminC.put("/api/admin/r/zones/zone-punjab", { baseCost: 15500 })).ok);
-  s.check("checkout shows the new charge", hasCost((await c.get(`/checkout/${q}`)).text, 15500));
+  s.check("checkout shows the new charge", hasCost((await c.get("/checkout")).text, 15500));
   const o = await order(c, q, phone);
   s.check("order stores the estimate for its city", o.ok && rec(o.id).shipping === 15500, JSON.stringify(rec(o.id)?.shipping));
   s.check("estimate is not added to the price", rec(o.id).total === readDb().quotes.find((x) => x.id === q).total);
   await adminC.put("/api/admin/r/zones/zone-punjab", { enabled: false });
-  s.check("a disabled zone leaves the checkout", !hasCost((await c.get(`/checkout/${q}`)).text, 15500));
+  s.check("a disabled zone leaves the checkout", !hasCost((await c.get("/checkout")).text, 15500));
   await adminC.put("/api/admin/r/zones/zone-punjab", { enabled: true, baseCost: z.baseCost });
   await c.post(`/api/orders/${o.id}/cancel`, {});
+  await c.del("/api/cart", {});
 }
 
 /* ── currency switcher ── */

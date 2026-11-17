@@ -4,7 +4,7 @@ import { mutate } from "@/lib/server/db";
 import { clientIp, fail, normalizePhone, ok, readJson, str, throttled } from "@/lib/server/http";
 import { publicUser, startUserSession } from "@/lib/server/session";
 import type { User } from "@/lib/types";
-import { claimQuotes } from "../claim";
+import { claimGuest } from "../claim";
 
 export async function POST(req: Request) {
   const b = await readJson(req);
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     if (db.users.some((u) => u.phone === phone)) return null;
     const u: User = { id: randomId(8), name, phone, email, city, passwordHash, createdAt: new Date().toISOString(), disabled: false };
     db.users.push(u);
-    claimQuotes(db, u.id, b.claim);
+    claimGuest(db, u, b.claim, b.cart);
     return u;
   });
   if (!user) return fail("phone_taken", 409);

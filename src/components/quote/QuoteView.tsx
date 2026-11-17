@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { AddQuoteToCart } from "@/components/cart/AddToCart";
 import { SITE_DICT } from "@/i18n/site";
 import { useI18n, useToast } from "@/i18n/I18nProvider";
 import { KIND_META } from "@/lib/catalog";
@@ -174,7 +175,8 @@ export default function QuoteView({ quote, model, color, depositPercent, prepare
         <Button href={`/customize/${model.slug}?q=${quote.id}`} variant="ghost" arrow={false}>
           <Sliders size={16} /> {t.quote.modify}
         </Button>
-        <Button href={`/checkout/${quote.id}`}>{t.quote.order}</Button>
+        <AddQuoteToCart quoteId={quote.id} className="inline-flex h-12 items-center gap-2 rounded-full border border-ink/20 px-5 text-sm font-semibold transition hover:bg-ink/10 disabled:opacity-60" />
+        <Button href={`/checkout/${quote.id}`}>{t.cart.buyNow}</Button>
       </div>
       <p className="no-print mt-4 text-center text-xs text-ink/50">{lang === "ur" ? UR.quote.formula : EN.quote.formula}</p>
     </div>

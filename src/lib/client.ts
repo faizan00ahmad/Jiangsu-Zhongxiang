@@ -43,6 +43,12 @@ const write = (k: string, v: unknown) => {
 export const deviceQuoteIds = () => read<string[]>(QKEY, []);
 export const rememberQuote = (id: string) => write(QKEY, [id, ...deviceQuoteIds().filter((x) => x !== id)].slice(0, 50));
 export const forgetDeviceQuotes = () => write(QKEY, []);
+/** The cart of a visitor who is not signed in: only quotation ids and quantities. It joins the account on sign-in. */
+const CKEY = "zx-cart";
+export type DeviceCartItem = { quoteId: string; qty: number };
+export const deviceCart = () => read<DeviceCartItem[]>(CKEY, []);
+export const setDeviceCart = (items: DeviceCartItem[]) => write(CKEY, items.slice(0, 20));
+export const clearDeviceCart = () => write(CKEY, []);
 export const deviceSetups = () => read<DeviceSetup[]>(SKEY, []);
 export const saveDeviceSetup = (s: DeviceSetup) => write(SKEY, [s, ...deviceSetups()].slice(0, 20));
 export const removeDeviceSetup = (id: string) => write(SKEY, deviceSetups().filter((s) => s.id !== id));

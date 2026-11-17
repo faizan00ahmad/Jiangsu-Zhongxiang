@@ -66,3 +66,25 @@ export function suite(name) {
 }
 
 export const ADMINS = { super: ["admin", "Admin@2026"], operator: ["operator", "Operator@2026"], dealer: ["dealer.lahore", "Dealer@2026"] };
+
+/** The sandbox test values every payment suite uses (see docs/PAYMENT-TEST.md). */
+export const TEST = { card: "4242424242424242", declined: "4000000000000002", noFunds: "4000000000009995", mastercard: "5555555555554444", paypak: "2205000000000009", wallet: "03001234567", walletEmpty: "03001230000", walletOff: "03001239999", otp: "123456" };
+const year2 = String(new Date().getFullYear() + 3).slice(2);
+export const CARD_FORM = { number: TEST.card, expiry: `12/${year2}`, cvv: "123", name: "QA Tester" };
+
+/** Pays for an order (or a whole checkout group) the way a customer does: start an attempt, card form, 3-D Secure code. Returns the last API answer plus the attempt id. */
+export async function payOrder(c, target, opts = {}) {
+  const { method = "card", mode = "advance" } = opts;
+  const start = await c.post("/api/pay/start", typeof target === "string" ? { orderId: target, method, mode } : target);
+  if (!start.ok) return { ...start, step: "start" };
+  const id = start.id;
+  if (method === "card") {
+    const a = await c.post(`/api/pay/${id}/card`, CARD_FORM);
+    if (!a.ok) return { ...a, id, step: "card" };
+  } else if (method === "jazzcash" || method === "easypaisa") {
+    const a = await c.post(`/api/pay/${id}/wallet`, { number: TEST.wallet });
+    if (!a.ok) return { ...a, id, step: "wallet" };
+  } else return { ok: true, id, step: "bank" };
+  const o = await c.post(`/api/pay/${id}/otp`, { code: TEST.otp });
+  return { ...o, id, step: "otp" };
+}

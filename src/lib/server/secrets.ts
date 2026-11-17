@@ -29,7 +29,7 @@ export const MASK = "••••••••";
 export const masked = (stored: string) => (stored ? MASK : "");
 
 /** Which fields of the integrations object hold secrets (everything else is plain). */
-const SECRET_PATHS = ["payments.jazzcash.secret", "payments.easypaisa.secret", "social.google.secret", "social.facebook.secret", "sms.apiKey", "meta.capiToken", "smtp.pass"];
+const SECRET_PATHS = ["payments.jazzcash.secret", "payments.easypaisa.secret", "payments.card.secret", "social.google.secret", "social.facebook.secret", "sms.apiKey", "meta.capiToken", "smtp.pass"];
 
 const get = (o: unknown, p: string) => p.split(".").reduce<unknown>((a, k) => (a as Record<string, unknown>)?.[k], o);
 function set(o: unknown, p: string, v: unknown) {

@@ -1,6 +1,6 @@
 # QA report
 
-Run: `npm run qa` (needs the site running). Last run: 398 checks, all passing.
+Run: `npm run qa` (needs the site running). Last run: 531 checks, all passing.
 
 | Suite | Checks | What it proves |
 |---|---|---|
@@ -8,6 +8,7 @@ Run: `npm run qa` (needs the site running). Last run: 398 checks, all passing.
 | `demo-logins.mjs` | 74 | All 6 admin and 3 customer demo logins sign in; each role reaches only its screens; dealers see only their own store; wrong passwords refused |
 | `features.mjs` | 160 | Solar add-on, pickup store flow, test drive booking, contact and social, partner portal, enquiry, CMS pages, blog, sitemap, robots, banners, maintenance, chat, roles, backups, exports, encryption, coupons and currency rules |
 | `commerce.mjs` | 108 | Coupons (every rule, usage returned on cancel), currency switcher, reviews and moderation, wishlist, shipping estimate, payment methods, model views, similar models, sorting, 360° viewer data and the admin turntable upload |
+| `payments.mjs` | 133 | Cart (add, cap, merge on sign-up), atomic multi-bike checkout, every card / wallet / bank outcome, 3-D Secure and OTP lockout, advance vs full, bank receipt review (approve / reject), private receipts, no card digits in stored data, admin switches and permissions |
 | `qa.mjs` (earlier work) | 1,100+ | Every bike's quote prices, orders, deposits and cancellation (run before this phase) |
 
 Also: `tsc --noEmit` clean, ESLint 0 errors.

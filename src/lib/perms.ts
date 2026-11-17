@@ -17,6 +17,7 @@ export const MODULES = [
   { key: "inventory", group: "catalogue", href: "/inventory" },
   { key: "quotes", group: "sales", href: "/quotes" },
   { key: "orders", group: "sales", href: "/orders" },
+  { key: "payments", group: "sales", href: "/payments" },
   { key: "coupons", group: "sales", href: "/coupons" },
   { key: "logistics", group: "logistics", href: "/logistics" },
   { key: "zones", group: "logistics", href: "/zones" },

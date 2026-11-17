@@ -152,7 +152,8 @@ export function IntegrationsAdmin({ initial }: { initial: Integrations }) {
   const dirty = JSON.stringify(f) !== JSON.stringify(initial);
   const edit = can("integrations.edit");
   const up = <K extends keyof Integrations>(key: K, patch: Partial<Integrations[K]>) => setF({ ...f, [key]: { ...f[key], ...patch } });
-  const upPay = (id: "jazzcash" | "easypaisa", patch: Partial<Integrations["payments"]["jazzcash"]>) => setF({ ...f, payments: { ...f.payments, [id]: { ...f.payments[id], ...patch } } });
+  const upBank = (patch: Partial<Integrations["payments"]["bank"]>) => setF({ ...f, payments: { ...f.payments, bank: { ...f.payments.bank, ...patch } } });
+  const upPay = (id: "jazzcash" | "easypaisa" | "card", patch: Partial<Integrations["payments"]["jazzcash"]>) => setF({ ...f, payments: { ...f.payments, [id]: { ...f.payments[id], ...patch } } });
   const upSoc = (id: "google" | "facebook", patch: Partial<Integrations["social"]["google"]>) => setF({ ...f, social: { ...f.social, [id]: { ...f.social[id], ...patch } } });
   const field = (label: string, value: string, on: (v: string) => void, opts: { secret?: boolean; hint?: string; type?: string } = {}) => (
     <Field label={label} hint={opts.hint}>
@@ -175,8 +176,8 @@ export function IntegrationsAdmin({ initial }: { initial: Integrations }) {
         }
       />
       <div className="grid gap-5 lg:grid-cols-2">
-        {(["jazzcash", "easypaisa"] as const).map((id) => (
-          <Card key={id} title={id === "jazzcash" ? "JazzCash" : "Easypaisa"} sub={z("支付网关（预付款锁单）", "Payment gateway (advance payment locks the order)")} actions={f.payments[id].mode === "sandbox" ? sandbox : <Pill color="#2ee6a6">Live</Pill>}>
+        {(["jazzcash", "easypaisa", "card"] as const).map((id) => (
+          <Card key={id} title={id === "jazzcash" ? "JazzCash" : id === "easypaisa" ? "Easypaisa" : z("银行卡（Visa / Mastercard / PayPak）", "Debit / credit card (Visa, Mastercard, PayPak)")} sub={z("支付网关（预付款锁单）", "Payment gateway (advance payment locks the order)")} actions={f.payments[id].mode === "sandbox" ? sandbox : <Pill color="#2ee6a6">Live</Pill>}>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <Toggle on={f.payments[id].enabled} onChange={(v) => upPay(id, { enabled: v })} label={z("在结算页显示", "Offer at checkout")} />
@@ -186,12 +187,29 @@ export function IntegrationsAdmin({ initial }: { initial: Integrations }) {
                   <option value="sandbox">{z("沙盒（模拟）", "Sandbox (simulated)")}</option>
                   <option value="live">{z("正式", "Live")}</option>
                 </select>
+                {f.payments[id].mode === "live" && <p className="mt-1 text-[11px] text-[var(--amber)]">{z("尚未安装正式网关连接器：切换为正式后，该方式会从结算页隐藏。", "No live gateway connector is installed yet: set to Live, this method is hidden at checkout.")}</p>}
               </Field>
               {field(z("商户号", "Merchant ID"), f.payments[id].merchantId, (v) => upPay(id, { merchantId: v }))}
               <div className="sm:col-span-2">{field(z("密钥 / 集成密码", "Secret / integrity salt"), f.payments[id].secret, (v) => upPay(id, { secret: v }), { secret: true })}</div>
             </div>
           </Card>
         ))}
+        <Card title={z("银行转账 / Raast", "Bank transfer / Raast")} sub={z("客户转账并上传回单，由您核对", "Customers transfer and upload the receipt; you check it")} actions={f.payments.bank.enabled ? <Pill color="#2ee6a6">{z("已启用", "Active")}</Pill> : <Pill color="#8b93a3">{z("未启用", "Off")}</Pill>}>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Toggle on={f.payments.bank.enabled} onChange={(v) => upBank({ enabled: v })} label={z("在结算页显示", "Offer at checkout")} />
+            </div>
+            {field(z("户名", "Account title"), f.payments.bank.accountTitle, (v) => upBank({ accountTitle: v }))}
+            {field(z("银行 / 分行", "Bank and branch"), f.payments.bank.bankName, (v) => upBank({ bankName: v }))}
+            {field(z("账号", "Account number"), f.payments.bank.accountNo, (v) => upBank({ accountNo: v }))}
+            {field("IBAN", f.payments.bank.iban, (v) => upBank({ iban: v }))}
+            {field(z("Raast 号码", "Raast ID"), f.payments.bank.raastId, (v) => upBank({ raastId: v }))}
+            <div className="sm:col-span-2">
+              <p className="mb-1 text-xs font-semibold text-ink/60">{z("给客户的说明（英文 / 乌尔都文）", "Instructions for the customer (English / Urdu)")}</p>
+              <LangInput value={f.payments.bank.instructions} onChange={(v) => upBank({ instructions: v })} area maxLen={300} />
+            </div>
+          </div>
+        </Card>
         {(["google", "facebook"] as const).map((id) => (
           <Card key={id} title={id === "google" ? "Google" : "Facebook"} sub={z("社交登录", "Social login")} actions={f.social[id].enabled && f.social[id].clientId ? <Pill color="#2ee6a6">{z("已启用", "Active")}</Pill> : <Pill color="#8b93a3">{z("未启用", "Off")}</Pill>}>
             <div className="grid gap-3">

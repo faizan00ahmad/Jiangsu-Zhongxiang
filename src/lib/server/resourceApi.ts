@@ -252,7 +252,7 @@ export async function resourceUpdate(req: Request, key: string, id: string) {
     audit(db, g.admin, "update", res.key, id, summary(doc));
     return { doc };
   });
-  if ("error" in out) return fail(out.error, out.error === "not_found" ? 404 : 400);
+  if ("error" in out) return fail(out.error ?? "invalid_input", out.error === "not_found" ? 404 : 400);
   bust(res.tags, res.paths);
   return ok();
 }

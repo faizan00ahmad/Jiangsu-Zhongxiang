@@ -3,16 +3,17 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { CITIES, KIND_META } from "@/lib/catalog";
 import { dateTime, fill, pkr, signedPkr } from "@/lib/format";
 import { Approx } from "@/components/Currency";
+import { balanceDue } from "@/lib/pricing";
 import type { Order } from "@/lib/types";
 import ModelVisual, { type VisualModel } from "@/components/vehicle/ModelVisual";
 import { Notice, Reveal } from "@/components/ui";
 import { Phone, Pin, Shield, Store } from "@/components/Icons";
 import Timeline, { StatusChip, type TimelineData } from "./Timeline";
-import PayPanel from "./PayPanel";
+import PayPanel, { type PayInfo } from "./PayPanel";
 import PickupPanel, { type PickupStore } from "./PickupPanel";
-import type { CityKey, PayMethod } from "@/lib/types";
+import type { CityKey } from "@/lib/types";
 
-export default function OrderDetail({ order, model, color, timeline, fresh, stores, pickupLocked, myCity, methods }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean; stores: PickupStore[]; pickupLocked: boolean; myCity: CityKey; methods: PayMethod[] }) {
+export default function OrderDetail({ order, model, color, timeline, fresh, stores, pickupLocked, myCity, pay }: { order: Order; model: VisualModel; color: string; timeline: TimelineData; fresh: boolean; stores: PickupStore[]; pickupLocked: boolean; myCity: CityKey; pay: PayInfo }) {
   const { t, tx, lang } = useI18n();
   const meta = KIND_META[model.kind];
   const dealer = timeline.dealer;
@@ -34,7 +35,7 @@ export default function OrderDetail({ order, model, color, timeline, fresh, stor
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="space-y-8">
-          {order.status === "pending_payment" && <PayPanel orderId={order.id} deposit={order.deposit} lockExpiresAt={order.lockExpiresAt} methods={methods} />}
+          {order.status === "pending_payment" && <PayPanel orderId={order.id} lockExpiresAt={order.lockExpiresAt} pay={pay} />}
           {(order.status === "pending_payment" || order.status === "active") && <PickupPanel orderId={order.id} stores={stores} currentId={order.contact.dealerId} myCity={myCity} locked={pickupLocked} />}
           {(order.status === "cancelled" || order.status === "expired") && <Notice tone="error">{t.order.status[order.status]}</Notice>}
           <Reveal>
@@ -89,7 +90,7 @@ export default function OrderDetail({ order, model, color, timeline, fresh, stor
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-ink/60">{t.common.balance}</dt>
-                  <dd>{pkr(order.total - order.deposit, lang)}</dd>
+                  <dd>{pkr(balanceDue(order), lang)}</dd>
                 </div>
               </dl>
               {order.payment && (

@@ -178,7 +178,8 @@ export default function OrderAdmin({ order: o, user, dealer, dealerScope, stores
               <Row k={t.orders.deposit} v={`PKR ${n(o.deposit)} (${o.depositPercent}%)`} />
               {o.payment ? (
                 <>
-                  <Row k={t.orders.method} v={o.payment.method} />
+                  <Row k={t.orders.method} v={o.payment.last4 ? `${o.payment.method} · ${o.payment.brand} ····${o.payment.last4}` : o.payment.method} />
+                  <Row k={lang === "zh" ? "已付金额" : "Paid online"} v={`PKR ${n(o.payment.amount)}${o.payment.mode === "full" ? (lang === "zh" ? "（全款）" : " (in full)") : ""}`} />
                   <Row k={t.orders.ref} v={o.payment.ref} />
                   <Row k={t.orders.paidAt} v={dateTime(o.payment.paidAt, lang)} />
                   <Row k={t.common.status} v={o.payment.verified ? `${t.orders.verified} · ${o.payment.verifiedBy}` : t.orders.unverified} />

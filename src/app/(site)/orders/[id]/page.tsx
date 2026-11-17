@@ -28,5 +28,15 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
       const q = d.stock[order.model] ?? 0;
       return { id: d.id, name: d.name, address: d.address, city: d.city, phone: d.phone, status: (q <= 0 ? "incoming" : q <= db.settings.lowStock ? "low" : "in") as "in" | "low" | "incoming" };
     });
-  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} stores={stores} pickupLocked={order.stage >= PICKUP_LOCK_STAGE} myCity={order.contact.city} methods={enabledMethods(db)} />;
+  // paying covers every unpaid order of the same checkout
+  const group = order.groupId ? db.orders.filter((o) => o.userId === user.id && o.groupId === order.groupId && o.status === "pending_payment") : db.orders.filter((o) => o.id === order.id);
+  const pay = {
+    methods: enabledMethods(db),
+    advance: group.reduce((s, o) => s + o.deposit, 0),
+    full: group.reduce((s, o) => s + o.total, 0),
+    groupId: order.groupId ?? null,
+    count: group.length,
+    reviewId: db.payIntents.find((i) => i.status === "review" && i.orderIds.includes(order.id))?.id ?? null,
+  };
+  return <OrderDetail order={order} model={model} color={model.colors.find((c) => c.id === order.config.color)?.hex ?? colors[order.config.color ?? model.defaultColor] ?? "#ccc"} timeline={trackingView(db, order)} fresh={fresh} stores={stores} pickupLocked={order.stage >= PICKUP_LOCK_STAGE} myCity={order.contact.city} pay={pay} />;
 }

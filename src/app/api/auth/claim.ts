@@ -1,8 +1,15 @@
-import type { DB } from "@/lib/types";
+import { mergeCart } from "@/lib/server/checkout";
+import type { DB, User } from "@/lib/types";
 
 /** Quotes a guest generated on this device (ids kept in localStorage) move into the account on login/sign-up. */
 export function claimQuotes(db: DB, userId: string, ids: unknown) {
   if (!Array.isArray(ids)) return;
   const wanted = new Set(ids.filter((x): x is string => typeof x === "string").slice(0, 50));
   for (const q of db.quotes) if (q.userId === null && wanted.has(q.id)) q.userId = userId;
+}
+
+/** What a guest built up on this device joins the account: the quotes first (a cart line points at one), then the cart. */
+export function claimGuest(db: DB, user: User, claim: unknown, cart: unknown) {
+  claimQuotes(db, user.id, claim);
+  mergeCart(db, user, cart);
 }

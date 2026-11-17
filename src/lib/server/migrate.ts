@@ -5,7 +5,7 @@ import { hashPassword, randomId } from "./crypto";
 import { defaultCompany, defaultSocial, defaultTemplates, defaultTestDrive, solarGroup, v3Collections } from "./defaultsV3";
 
 /** Modules added after the first version 3 release: built-in roles pick up their default permissions for them once. */
-const LATE_MODULES = ["testdrives", "partners"];
+const LATE_MODULES = ["testdrives", "partners", "payments"];
 
 /** Idempotent top-up: adds anything newer code expects that an existing database does not have yet. Never removes or overwrites.
  *  Runs on every start. Returns true when something was added (so the caller saves). */
@@ -21,6 +21,17 @@ export function ensure(db: DB): boolean {
   const fresh = v3Collections();
   add("testDrives", fresh.testDrives);
   add("partners", fresh.partners);
+  add("payIntents", []);
+  // card and bank transfer sit next to the two wallets in Integrations
+  const pay = db.integrations.payments as unknown as Record<string, unknown>;
+  if (!pay.card) {
+    pay.card = fresh.integrations.payments.card;
+    changed = true;
+  }
+  if (!pay.bank) {
+    pay.bank = fresh.integrations.payments.bank;
+    changed = true;
+  }
 
   // roles: keep what the admins edited, add built-in roles that are missing, and give them the new modules once
   for (const def of DEFAULT_ROLES) {

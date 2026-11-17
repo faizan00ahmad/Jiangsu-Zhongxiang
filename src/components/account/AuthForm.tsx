@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CITIES, CITY_ORDER } from "@/lib/catalog";
-import { api, deviceQuoteIds, errorText } from "@/lib/client";
+import { api, clearDeviceCart, deviceCart, deviceQuoteIds, errorText } from "@/lib/client";
 import { DEMO_CUSTOMERS, DEMO_ON } from "@/lib/demo";
 import type { CityKey } from "@/lib/types";
 import Logo from "@/components/Logo";
@@ -23,11 +23,12 @@ export default function AuthForm({ mode, next }: { mode: "login" | "register"; n
     setErr("");
     if (reg && f.password.length < 8) return setErr(t.errors.weak_password);
     setBusy(true);
-    const r = await api(reg ? "/api/auth/register" : "/api/auth/login", { ...f, claim: deviceQuoteIds() });
+    const r = await api(reg ? "/api/auth/register" : "/api/auth/login", { ...f, claim: deviceQuoteIds(), cart: deviceCart() });
     if (!r.ok) {
       setBusy(false);
       return setErr(errorText(t, r.error));
     }
+    clearDeviceCart(); // it now lives in the account
     // full navigation so the header and every server component pick up the session
     window.location.assign(next);
   }

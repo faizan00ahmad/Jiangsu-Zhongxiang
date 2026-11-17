@@ -107,7 +107,11 @@ export type User = {
   disabled: boolean;
   wishlist?: string[]; // model slugs
   provider?: "google" | "facebook" | null; // set when the account was created through social login
+  cart?: CartItem[]; // bikes waiting in the cart while signed in (guests keep theirs in the browser)
 };
+
+/** One line of the cart: a saved quotation (the build and its price) and how many of that bike. */
+export type CartItem = { id: string; quoteId: string; qty: number };
 
 /** A role id: "super", "operator", "dealer" or one the admins created. Permissions live in `DB.roles`. */
 /** days: 0 = Sunday … 6 = Saturday. `models` empty = every model. */
@@ -165,8 +169,10 @@ export type Channel = "email" | "sms" | "whatsapp";
 export type Template = { id: string; event: string; channel: Channel; subject: L; body: L; enabled: boolean };
 export type OutboxItem = { id: string; channel: Channel; to: string; subject: string; body: string; event: string; ref: string | null; status: "sandbox" | "sent" | "failed"; at: string };
 export type AuditEntry = { id: string; at: string; adminId: string; adminName: string; action: string; entity: string; entityId: string; summary: string };
+/** Where customers send a bank / Raast transfer. Shown on the payment page and checked by staff against the receipt. */
+export type BankDetails = { enabled: boolean; accountTitle: string; bankName: string; accountNo: string; iban: string; raastId: string; instructions: L };
 export type Integrations = {
-  payments: Record<"jazzcash" | "easypaisa", { enabled: boolean; mode: "sandbox" | "live"; merchantId: string; secret: string }>;
+  payments: Record<"jazzcash" | "easypaisa" | "card", { enabled: boolean; mode: "sandbox" | "live"; merchantId: string; secret: string }> & { bank: BankDetails };
   social: Record<"google" | "facebook", { enabled: boolean; clientId: string; secret: string }>;
   sms: { enabled: boolean; provider: string; sender: string; apiKey: string };
   meta: { pixelId: string; whatsapp: string; capiToken: string };
@@ -178,14 +184,46 @@ export type Integrations = {
 export type OrderStatus = "pending_payment" | "active" | "completed" | "cancelled" | "expired";
 export type PayMethod = "jazzcash" | "easypaisa" | "bank" | "card";
 
+export type PayMode = "advance" | "full";
 export type Payment = {
   method: PayMethod;
   ref: string;
-  amount: number;
+  amount: number; // paid online for this order (the advance, or the whole price)
   paidAt: string;
   verified: boolean;
   verifiedAt: string | null;
   verifiedBy: string | null;
+  intentId?: string;
+  mode?: PayMode;
+  brand?: string; // card brand, never the number
+  last4?: string;
+};
+
+/** One try at paying for a checkout. A checkout (groupId) can have several tries: a declined card, then a wallet. */
+export type PayStatus = "created" | "awaiting" | "review" | "succeeded" | "failed" | "cancelled" | "expired";
+export type PayStep = "details" | "approve" | "otp" | "receipt";
+export type PayAttempt = { at: string; result: string; note?: string };
+export type PayIntent = {
+  id: string;
+  userId: string;
+  groupId: string;
+  orderIds: string[];
+  mode: PayMode;
+  method: PayMethod;
+  amount: number;
+  status: PayStatus;
+  step: PayStep;
+  ref: string; // customer-facing reference; for bank transfers it is the remark to put on the transfer
+  attempts: PayAttempt[];
+  channel: { wallet?: string; brand?: string; last4?: string }; // masked details only
+  otpTries: number;
+  approveUntil: string | null; // wallet approval window
+  receipt: string | null; // private file name of an uploaded bank receipt
+  reviewNote: string;
+  reviewedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
 };
 
 export type Order = {
@@ -213,6 +251,7 @@ export type Order = {
   history: { at: string; by: string; action: string }[];
   discount?: number; // PKR taken off by a coupon
   couponCode?: string | null;
+  groupId?: string | null; // orders placed in the same checkout share one
   shipping?: number; // PKR cross-border + zone charge estimate shown at checkout
   notes?: { at: string; by: string; text: string }[]; // internal, never shown to the customer
 };
@@ -246,6 +285,7 @@ export type DB = {
   admins: Admin[];
   quotes: Quote[];
   orders: Order[];
+  payIntents: PayIntent[];
   // version 3
   roles: Role[];
   banners: Banner[];

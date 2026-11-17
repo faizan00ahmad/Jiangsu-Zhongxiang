@@ -2,7 +2,7 @@ import { verifyPassword } from "@/lib/server/crypto";
 import { getDb, mutate } from "@/lib/server/db";
 import { clientIp, fail, normalizePhone, ok, readJson, throttled } from "@/lib/server/http";
 import { publicUser, startUserSession } from "@/lib/server/session";
-import { claimQuotes } from "../claim";
+import { claimGuest } from "../claim";
 
 export async function POST(req: Request) {
   const b = await readJson(req);
@@ -13,7 +13,12 @@ export async function POST(req: Request) {
   if (throttled(`login:${clientIp(req)}:${phone}`)) return fail("too_many_attempts", 429);
   const user = (await getDb()).users.find((u) => u.phone === phone);
   if (!user || user.disabled || !verifyPassword(password, user.passwordHash)) return fail("bad_credentials", 401);
-  if (Array.isArray(b.claim) && b.claim.length) await mutate((db) => claimQuotes(db, user.id, b.claim));
+  if ((Array.isArray(b.claim) && b.claim.length) || (Array.isArray(b.cart) && b.cart.length)) {
+    await mutate((db) => {
+      const u = db.users.find((x) => x.id === user.id);
+      if (u) claimGuest(db, u, b.claim, b.cart);
+    });
+  }
   await startUserSession(user.id);
   return ok({ user: publicUser(user) });
 }

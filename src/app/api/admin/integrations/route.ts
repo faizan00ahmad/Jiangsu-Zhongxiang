@@ -28,6 +28,16 @@ function clean(i: Record<string, Record<string, unknown>> & Record<string, unkno
     payments: {
       jazzcash: { enabled: B(p("jazzcash").enabled), mode: mode(p("jazzcash").mode), merchantId: S(p("jazzcash").merchantId, 80), secret: S(p("jazzcash").secret, 300) },
       easypaisa: { enabled: B(p("easypaisa").enabled), mode: mode(p("easypaisa").mode), merchantId: S(p("easypaisa").merchantId, 80), secret: S(p("easypaisa").secret, 300) },
+      card: { enabled: B(p("card").enabled), mode: mode(p("card").mode), merchantId: S(p("card").merchantId, 80), secret: S(p("card").secret, 300) },
+      bank: {
+        enabled: B(p("bank").enabled),
+        accountTitle: S(p("bank").accountTitle, 120),
+        bankName: S(p("bank").bankName, 120),
+        accountNo: S(p("bank").accountNo, 40),
+        iban: S(p("bank").iban, 40).toUpperCase(),
+        raastId: S(p("bank").raastId, 40),
+        instructions: L2(p("bank").instructions),
+      },
     },
     social: {
       google: { enabled: B(so("google").enabled), clientId: S(so("google").clientId, 200), secret: S(so("google").secret, 300) },

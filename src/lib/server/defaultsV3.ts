@@ -167,6 +167,12 @@ export function defaultTemplates(): Template[] {
     tpl("order.created", "sms", l("", ""), l("Evolta: order {order} reserved. Pay {deposit} before {lockUntil}.", "ایوولٹا: آرڈر {order} محفوظ۔ {lockUntil} سے پہلے {deposit} ادا کریں۔")),
     tpl("payment.verified", "email", l("Advance confirmed for {order}", "{order} کا ایڈوانس تصدیق شدہ"), l("Hello {name}, we confirmed your advance of {deposit}. Your {model} is now in the factory queue.", "{name} صاحب/صاحبہ، آپ کا {deposit} ایڈوانس تصدیق ہو گیا۔ آپ کی {model} اب فیکٹری قطار میں ہے۔")),
     tpl("payment.verified", "sms", l("", ""), l("Evolta: advance for {order} confirmed. Track it on the site.", "ایوولٹا: {order} کا ایڈوانس تصدیق شدہ۔ سائٹ پر ٹریک کریں۔")),
+    tpl("payment.received", "email", l("Payment received: {amount}", "ادائیگی موصول: {amount}"), l("Hello {name}, we received {amount} by {method} (reference {ref}) for {orders}. Your order is confirmed and goes into the factory queue. Choose your pickup store and follow every step on the site.", "{name} صاحب/صاحبہ، ہمیں {method} کے ذریعے {amount} موصول ہوئے (حوالہ {ref}) برائے {orders}۔ آپ کا آرڈر پکا ہو گیا اور فیکٹری قطار میں ہے۔ سائٹ پر وصولی کا اسٹور منتخب کریں اور ہر مرحلہ دیکھیں۔")),
+    tpl("payment.received", "sms", l("", ""), l("Evolta: payment {amount} received ({method}, ref {ref}). Order(s) {orders} confirmed.", "ایوولٹا: ادائیگی {amount} موصول ({method}، حوالہ {ref})۔ آرڈر {orders} پکا۔")),
+    tpl("payment.review", "email", l("We are checking your transfer {ref}", "ہم آپ کی ٹرانسفر {ref} کی جانچ کر رہے ہیں"), l("Hello {name}, we received your receipt for {amount} (reference {ref}). We will confirm it within one working day and your order moves on as soon as we do.", "{name} صاحب/صاحبہ، ہمیں {amount} کی رسید مل گئی (حوالہ {ref})۔ ہم ایک کاروباری دن میں تصدیق کریں گے، تصدیق ہوتے ہی آپ کا آرڈر آگے بڑھے گا۔")),
+    tpl("payment.rejected", "email", l("We could not confirm transfer {ref}", "ہم ٹرانسفر {ref} کی تصدیق نہیں کر سکے"), l("Hello {name}, we could not confirm your transfer {ref} for {amount}. Reason: {reason}. Your order is still reserved: please pay again from your order page.", "{name} صاحب/صاحبہ، ہم {amount} کی ٹرانسفر {ref} کی تصدیق نہیں کر سکے۔ وجہ: {reason}۔ آپ کا آرڈر ابھی محفوظ ہے: براہ کرم اپنے آرڈر کے صفحے سے دوبارہ ادائیگی کریں۔")),
+    tpl("payment.rejected", "sms", l("", ""), l("Evolta: transfer {ref} could not be confirmed ({reason}). Please pay again from your order page.", "ایوولٹا: ٹرانسفر {ref} کی تصدیق نہ ہو سکی ({reason})۔ اپنے آرڈر کے صفحے سے دوبارہ ادائیگی کریں۔")),
+    tpl("payment.review", "sms", l("", ""), l("Evolta: we received your receipt for {amount} (ref {ref}) and are checking it. We will confirm within one working day.", "ایوولٹا: ہمیں {amount} کی رسید مل گئی (حوالہ {ref})، ہم جانچ رہے ہیں۔ ایک کاروباری دن میں تصدیق کریں گے۔")),
     tpl("stage.changed", "email", l("{order}: {stage}", "{order}: {stage}"), l("Hello {name}, your {model} reached the step \"{stage}\". Estimated arrival: {eta}.", "{name} صاحب/صاحبہ، آپ کی {model} مرحلہ \"{stage}\" پر پہنچ گئی۔ متوقع آمد: {eta}۔")),
     tpl("stage.changed", "sms", l("", ""), l("Evolta: {order} is now \"{stage}\". ETA {eta}.", "ایوولٹا: {order} اب \"{stage}\" پر ہے۔ متوقع آمد {eta}۔")),
     tpl("order.cancelled", "email", l("Order {order} cancelled", "آرڈر {order} منسوخ"), l("Hello {name}, order {order} was cancelled and the reserved unit released.", "{name} صاحب/صاحبہ، آرڈر {order} منسوخ ہو گیا اور محفوظ یونٹ چھوڑ دی گئی۔")),
@@ -220,11 +226,24 @@ export const defaultCompany = (): NonNullable<DB["settings"]["company"]> => ({
 
 export const defaultTestDrive = (): NonNullable<Dealer["testDrive"]> => ({ enabled: true, models: [], days: [1, 2, 3, 4, 5, 6], from: "10:00", to: "17:00", slotMinutes: 60, capacity: 2 });
 
+/** Placeholder account details: the team replaces them with the real company account before going live. */
+export const defaultBank = (): DB["integrations"]["payments"]["bank"] => ({
+  enabled: true,
+  accountTitle: "Evolta Bikes Zhongxiang (Pvt) Ltd",
+  bankName: "Meezan Bank, PECHS Branch, Karachi",
+  accountNo: "0123 4567 8901 23",
+  iban: "PK36 MEZN 0001 2345 6789 0123",
+  raastId: "03001234567",
+  instructions: l("Transfer the exact amount from your banking app (IBFT or Raast), put the reference below in the remarks, then upload a screenshot or PDF of the receipt. We confirm it within one working day.", "اپنی بینکنگ ایپ سے (آئی بی ایف ٹی یا راست کے ذریعے) بالکل یہی رقم منتقل کریں، نیچے دیا گیا حوالہ ریمارکس میں لکھیں، پھر رسید کا اسکرین شاٹ یا پی ڈی ایف اپ لوڈ کریں۔ ہم ایک کاروباری دن میں تصدیق کریں گے۔"),
+});
+
 export function defaultIntegrations(): DB["integrations"] {
   return {
     payments: {
       jazzcash: { enabled: true, mode: "sandbox", merchantId: "", secret: "" },
       easypaisa: { enabled: true, mode: "sandbox", merchantId: "", secret: "" },
+      card: { enabled: true, mode: "sandbox", merchantId: "", secret: "" },
+      bank: defaultBank(),
     },
     social: { google: { enabled: false, clientId: "", secret: "" }, facebook: { enabled: false, clientId: "", secret: "" } },
     sms: { enabled: false, provider: "", sender: "EVOLTA", apiKey: "" },

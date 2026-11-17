@@ -7,6 +7,7 @@ import Script from "next/script";
 import { cookies } from "next/headers";
 import CurrencyProvider from "@/components/Currency";
 import WishlistProvider from "@/components/Wishlist";
+import CartProvider from "@/components/cart/CartProvider";
 import { currentAdmin, currentUser, getLang } from "@/lib/server/session";
 import { siteData } from "@/lib/server/queries";
 import { siteConfig } from "@/lib/server/siteConfig";
@@ -61,6 +62,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <I18nProvider lang={lang} t={t}>
           <CurrencyProvider list={cfg.currencies} initial={curCookie}>
           <WishlistProvider initial={user?.wishlist ?? []} loggedIn={!!user}>
+          <CartProvider initial={(user?.cart ?? []).map((c) => ({ ...c }))} loggedIn={!!user}>
           <SmoothScroll>
             <Preloader />
             <Cursor />
@@ -96,6 +98,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
             )}
             {cfg.pixelId && <Script id="meta-pixel" strategy="afterInteractive">{`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${cfg.pixelId}');fbq('track','PageView');`}</Script>}
           </SmoothScroll>
+          </CartProvider>
           </WishlistProvider>
           </CurrencyProvider>
         </I18nProvider>

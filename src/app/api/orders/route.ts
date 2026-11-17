@@ -64,6 +64,7 @@ export async function POST(req: Request) {
       total,
       discount,
       couponCode,
+      groupId: `CK-${code(8)}`,
       shipping: zoneFor(db.zones.filter((z) => z.enabled), city)?.baseCost ?? 0, // estimate only; not part of the price or the advance
       depositPercent: db.settings.depositPercent,
       deposit: depositFor(total, db.settings.depositPercent),

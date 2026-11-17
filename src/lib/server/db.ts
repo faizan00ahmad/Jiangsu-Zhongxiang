@@ -4,6 +4,7 @@ import path from "node:path";
 import { DB_VERSION, type DB, type Order } from "../types";
 import { importCatalog } from "./catalogImport";
 import { releaseCoupon } from "./coupons";
+import { inReview } from "./payments";
 import { ensure, migrate } from "./migrate";
 import { notify } from "./notify";
 import { ADMIN_HOME, BACKUP_DIR, DATA_DIR, DB_FILE, EXPORT_DIR, LEGACY_DB_FILE, ON_VERCEL, OUTBOX_DIR, UPLOAD_DIR } from "./paths";
@@ -218,13 +219,13 @@ export function mutate<T>(fn: (db: DB) => T | Promise<T>): Promise<T> {
   return run;
 }
 
-const hasStale = (db: DB) => db.orders.some((o) => o.status === "pending_payment" && new Date(o.lockExpiresAt).getTime() < Date.now());
+const hasStale = (db: DB) => db.orders.some((o) => o.status === "pending_payment" && new Date(o.lockExpiresAt).getTime() < Date.now() && !inReview(db, o.id));
 
 /** Unpaid orders past their lock window expire and hand their reserved unit back to factory stock. */
 function sweep(db: DB) {
   const now = Date.now();
   for (const o of db.orders) {
-    if (o.status === "pending_payment" && new Date(o.lockExpiresAt).getTime() < now) expireOrder(db, o, "system");
+    if (o.status === "pending_payment" && new Date(o.lockExpiresAt).getTime() < now && !inReview(db, o.id)) expireOrder(db, o, "system");
   }
 }
 

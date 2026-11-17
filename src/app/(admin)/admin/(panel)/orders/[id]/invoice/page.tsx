@@ -16,7 +16,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const u = db.users.find((x) => x.id === o.userId);
   const d = db.dealers.find((x) => x.id === o.contact.dealerId);
   const co = db.settings.company;
-  const balance = o.total - (o.payment?.verified ? o.deposit : 0);
+  const paid = o.payment?.verified ? o.payment.amount : 0;
+  const balance = o.total - paid;
   return (
     <div className="mx-auto max-w-3xl rounded-2xl border border-ink/10 bg-white p-8 text-[#111] print:border-0 print:p-0" id="invoice">
       <div className="flex items-start justify-between gap-6 border-b border-black/10 pb-6">
@@ -88,9 +89,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </tr>
           <tr>
             <td className="py-1 text-black/65" colSpan={2}>
-              Advance ({o.depositPercent}%) {o.payment ? (o.payment.verified ? "· paid" : "· awaiting verification") : "· not paid yet"}
+              {o.payment?.mode === "full" ? "Paid in full" : `Advance (${o.depositPercent}%)`} {o.payment ? (o.payment.verified ? "· paid" : "· awaiting verification") : "· not paid yet"}
             </td>
-            <td className="py-1 text-end">PKR {n(o.deposit)}</td>
+            <td className="py-1 text-end">PKR {n(o.payment?.amount ?? o.deposit)}</td>
           </tr>
           <tr className="font-semibold">
             <td colSpan={2}>Balance due at pickup</td>

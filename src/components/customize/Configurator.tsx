@@ -8,6 +8,7 @@ import { fill, pkr, signedPkr } from "@/lib/format";
 import { STD_COLOR, defaultConfig, priceQuote } from "@/lib/pricing";
 import type { Config, GroupKey, Model, OptionGroup, StockStatus } from "@/lib/types";
 import { Approx } from "@/components/Currency";
+import AddToCart from "@/components/cart/AddToCart";
 import { WishHeart } from "@/components/Wishlist";
 import { api, configToQuery, deviceSetups, errorText, rememberQuote, saveDeviceSetup, type DeviceSetup } from "@/lib/client";
 import { useI18n, useToast } from "@/i18n/I18nProvider";
@@ -329,6 +330,7 @@ export default function Configurator({ model, models, options, colors, initial, 
               <Bookmark size={16} />
               <span className="hidden sm:inline">{t.customize.save}</span>
             </button>
+            <AddToCart slug={model.slug} config={priced.config} className="inline-flex h-12 items-center gap-2 rounded-full border border-ink/20 px-4 text-sm font-semibold transition hover:bg-ink/10 disabled:opacity-60" />
             <Button onClick={quote} disabled={busy === "quote"} magnetic={false}>
               {busy === "quote" ? t.customize.quoting : t.customize.quote}
             </Button>

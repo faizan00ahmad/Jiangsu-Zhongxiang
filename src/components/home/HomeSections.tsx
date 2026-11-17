@@ -1,6 +1,7 @@
 "use client";
 import QuickQuoteButton from "@/components/quote/QuickQuoteButton";
 import { Approx } from "@/components/Currency";
+import AddToCart from "@/components/cart/AddToCart";
 import { WishHeart } from "@/components/Wishlist";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -238,7 +239,7 @@ export function Riders({ models, colors }: { models: Model[]; colors: Record<str
                   </p>
                 </div>
               </Link>
-              <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><Link href={`/test-drive?model=${m.slug}`} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
+              <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><AddToCart slug={m.slug} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[#111] px-2 text-[13px] font-semibold text-white transition hover:bg-black disabled:opacity-60" /><Link href={`/test-drive?model=${m.slug}`} className="col-span-2 inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
             </Reveal>
           ))}
         </ul>
@@ -451,7 +452,7 @@ export function ModelGrid({ models, colors, detailed = false }: { models: Model[
                     </SpotCard>
                   </Link>
                   <WishHeart slug={m.slug} className="absolute end-3 top-3 z-10" />
-                  <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><Link href={`/test-drive?model=${m.slug}`} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
+                  <div className="mt-2 grid grid-cols-2 gap-2"><QuickQuoteButton slug={m.slug} className="!px-2 text-[13px]" /><AddToCart slug={m.slug} className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[#111] px-2 text-[13px] font-semibold text-white transition hover:bg-black disabled:opacity-60" /><Link href={`/test-drive?model=${m.slug}`} className="col-span-2 inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md bg-[var(--volt)] px-2 text-center text-[13px] font-semibold text-black transition hover:bg-[#111] hover:text-white">{t.testDrive.title}</Link></div>
                 </motion.li>
               );
             })}

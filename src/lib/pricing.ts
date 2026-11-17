@@ -71,3 +71,6 @@ export function priceQuote(model: Model, options: OptionGroup[], config: Config)
 }
 
 export const depositFor = (total: number, percent: number) => Math.round((total * percent) / 100 / 100) * 100;
+
+/** What is still to pay at pickup: the price less what was paid online, or less the advance while it is yet to come. */
+export const balanceDue = (o: { total: number; deposit: number; payment?: { amount: number } | null }) => Math.max(0, o.total - (o.payment?.amount ?? o.deposit));
