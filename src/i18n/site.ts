@@ -308,6 +308,7 @@ const en = {
     forOrders: "For",
     securedBy: "Your card number is never stored.",
     triesLeft: "Tries left: {n}",
+    fill: { title: "Demo helpers: fill in test values", visa: "Visa (works)", mastercard: "Mastercard (works)", paypak: "PayPak (works)", declined: "Declined card", noFunds: "No funds", wallet: "Demo number (works)", walletEmpty: "Empty wallet", walletOff: "Inactive wallet", otp: "Fill the code (123456)", receipt: "Attach a demo receipt" },
     cancel: "Cancel this payment",
     wallet: {
       title: "Pay with {name}",
@@ -964,6 +965,7 @@ const ur: SiteDict = {
     forOrders: "برائے",
     securedBy: "آپ کا کارڈ نمبر کبھی محفوظ نہیں کیا جاتا۔",
     triesLeft: "باقی کوششیں: {n}",
+    fill: { title: "ڈیمو مددگار: ٹیسٹ اقدار بھریں", visa: "ویزا (کام کرتا ہے)", mastercard: "ماسٹر کارڈ (کام کرتا ہے)", paypak: "پے پیک (کام کرتا ہے)", declined: "مسترد ہونے والا کارڈ", noFunds: "رقم نہیں", wallet: "ڈیمو نمبر (کام کرتا ہے)", walletEmpty: "خالی والٹ", walletOff: "غیر فعال والٹ", otp: "کوڈ بھریں (123456)", receipt: "ڈیمو رسید منسلک کریں" },
     cancel: "یہ ادائیگی منسوخ کریں",
     wallet: {
       title: "{name} سے ادائیگی",

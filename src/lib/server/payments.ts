@@ -31,6 +31,8 @@ export function intentView(db: DB, i: PayIntent) {
     reviewNote: i.reviewNote,
     lastResult: i.attempts[i.attempts.length - 1]?.result ?? null,
     sandbox: i.method === "bank" ? false : db.integrations.payments[i.method].mode === "sandbox",
+    // demo helpers (fill buttons) are offered only while no live gateway is connected
+    demo: ["jazzcash", "easypaisa", "card"].every((m) => db.integrations.payments[m as "card"].mode === "sandbox"),
     bank: i.method === "bank" ? { accountTitle: bank.accountTitle, bankName: bank.bankName, accountNo: bank.accountNo, iban: bank.iban, raastId: bank.raastId, instructions: bank.instructions } : null,
     orders: ordersOf(db, i).map((o) => ({ id: o.id, model: o.model, name: o.modelName, total: o.total, deposit: o.deposit, status: o.status, paid: o.payment?.amount ?? 0 })),
   };

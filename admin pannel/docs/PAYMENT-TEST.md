@@ -24,6 +24,17 @@ Everything below runs in **sandbox**: no real money moves and nothing is sent to
 | JazzCash / Easypaisa | a number ending `9999` | Wallet not active |
 | Bank transfer / Raast | any photo, screenshot or PDF up to 5 MB | Waits for staff in **Admin > Payments** |
 
+## Demo helper buttons
+
+While every gateway is in sandbox mode, each payment page shows a **Demo helpers** box so nobody has to type test values:
+
+* **Card**: Visa, Mastercard and PayPak (work), a declined card and a no-funds card fill the form with one tap.
+* **JazzCash / Easypaisa**: a demo number that works, an empty wallet and an inactive wallet.
+* **Approval / 3-D Secure**: fills the code (123456).
+* **Bank transfer**: attaches a generated demo receipt, no file needed.
+
+The box disappears as soon as any gateway is switched to Live.
+
 ## What happens after
 
 * **Card and wallets**: confirmed by the gateway. Every order of the checkout moves into the factory queue at once, the payment is marked verified, and the customer gets an SMS and email (`payment.received`).

@@ -16,6 +16,29 @@ export type PayView = ReturnType<typeof intentView>;
 type Res = { ok: boolean; error?: string; view?: PayView | null };
 
 const inputCls = "field latin";
+
+/** Demo values for the sandbox pages. Never shown once a live gateway is connected. */
+const yy = String(new Date().getFullYear() + 3).slice(2);
+const DEMO_CARDS = { visa: "4242 4242 4242 4242", mastercard: "5555 5555 5555 4444", paypak: "2205 0000 0000 0009", declined: "4000 0000 0000 0002", noFunds: "4000 0000 0000 9995" } as const;
+const DEMO_WALLETS = { wallet: "0300 1234567", walletEmpty: "0300 1230000", walletOff: "0300 1239999" } as const;
+
+/** A tiny valid PNG made in the browser, so a demo bank transfer needs no file on the computer. */
+function demoReceipt(): Promise<File | null> {
+  const c = document.createElement("canvas");
+  c.width = 480;
+  c.height = 220;
+  const g = c.getContext("2d");
+  if (!g) return Promise.resolve(null);
+  g.fillStyle = "#ffffff";
+  g.fillRect(0, 0, c.width, c.height);
+  g.fillStyle = "#111111";
+  g.font = "bold 22px sans-serif";
+  g.fillText("DEMO TRANSFER RECEIPT", 24, 50);
+  g.font = "16px sans-serif";
+  g.fillText("Sandbox only. Not a real payment.", 24, 90);
+  g.fillText(new Date().toISOString().slice(0, 16).replace("T", " "), 24, 130);
+  return new Promise((res) => c.toBlob((b) => res(b ? new File([b], "demo-receipt.png", { type: "image/png" }) : null), "image/png"));
+}
 const spaced = (v: string) => v.replace(/\D/g, "").slice(0, 19).replace(/(.{4})/g, "$1 ").trim();
 const expiryFmt = (v: string) => {
   const d = v.replace(/\D/g, "").slice(0, 4);
@@ -290,7 +313,26 @@ export default function PayFlow({ initial, methods, lockUntil }: { initial: PayV
           </form>
         )}
 
-        {view.sandbox && open && sandboxTxt && <p className="rounded-2xl border border-dashed border-ink/25 p-4 text-xs leading-relaxed text-ink/65">{sandboxTxt}</p>}
+        {view.demo && open && (
+          <div className="rounded-2xl border border-dashed border-ink/25 p-4">
+            <p className="text-xs font-bold uppercase tracking-wide text-ink/55">{t.pay.fill.title}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {view.method === "card" && (view.step === "details" || editing) && (Object.keys(DEMO_CARDS) as (keyof typeof DEMO_CARDS)[]).map((k) => (
+                <button key={k} type="button" onClick={() => setCard({ number: DEMO_CARDS[k], expiry: "12/" + yy, cvv: "123", name: card.name || "Demo Customer" })} className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold hover:bg-ink/10">{t.pay.fill[k]}</button>
+              ))}
+              {wal && (view.step === "details" || editing) && (Object.keys(DEMO_WALLETS) as (keyof typeof DEMO_WALLETS)[]).map((k) => (
+                <button key={k} type="button" onClick={() => setWallet(DEMO_WALLETS[k])} className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold hover:bg-ink/10">{t.pay.fill[k]}</button>
+              ))}
+              {(view.step === "otp" || view.step === "approve") && !editing && (view.method === "card" || wal) && (
+                <button type="button" onClick={() => setOtp("123456")} className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold hover:bg-ink/10">{t.pay.fill.otp}</button>
+              )}
+              {view.method === "bank" && (
+                <button type="button" onClick={() => void demoReceipt().then((f) => f && setFile(f))} className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold hover:bg-ink/10">{t.pay.fill.receipt}</button>
+              )}
+            </div>
+            {sandboxTxt && <p className="mt-3 text-xs leading-relaxed text-ink/65">{sandboxTxt}</p>}
+          </div>
+        )}
 
         {open && (
           <button type="button" onClick={cancel} disabled={busy} className="mx-auto block text-sm font-semibold text-ink/60 underline">
